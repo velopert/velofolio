@@ -7,3 +7,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: VELOPOLIOISGOOD!
+    volumes:
+      - ./db:/var/lib/mysql
+    ports:
+      - 3307:3306
