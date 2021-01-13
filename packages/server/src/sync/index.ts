@@ -1,5 +1,9 @@
 import 'dotenv/config'
+import 'reflect-metadata'
+import { createConnection } from 'typeorm'
 import Syncbot from './Syncbot'
 
-const syncbot = new Syncbot()
-syncbot.syncStocks()
+createConnection().then((connection) => {
+  const syncbot = new Syncbot()
+  syncbot.syncStocks()
+})
