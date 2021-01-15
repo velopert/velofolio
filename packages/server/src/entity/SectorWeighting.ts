@@ -5,7 +5,7 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm'
-import { Stock } from './Stock'
+import { Asset } from './Asset'
 
 @Entity({
   name: 'sector_weigthings',
@@ -14,11 +14,11 @@ export class SectorWeighting {
   @PrimaryGeneratedColumn()
   id: number
 
-  @ManyToOne((type) => Stock, { cascade: true })
+  @ManyToOne((type) => Asset, { cascade: true })
   @JoinColumn({
-    name: 'stock_id',
+    name: 'asset_id',
   })
-  stock: Stock
+  symbol: Asset
 
   @Column()
   sector: string

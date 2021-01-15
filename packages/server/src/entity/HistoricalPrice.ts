@@ -6,7 +6,7 @@ import {
   JoinColumn,
   ManyToOne,
 } from 'typeorm'
-import { Stock } from './Stock'
+import { Asset } from './Asset'
 
 @Entity({
   name: 'historical_prices',
@@ -16,7 +16,7 @@ export class HistoricalPrice {
   id: number
 
   @Column()
-  stock_id: number
+  asset_id: number
 
   @Column({
     type: 'varchar',
@@ -45,7 +45,7 @@ export class HistoricalPrice {
   @Column({ type: 'double' })
   volume: number
 
-  @ManyToOne((type) => Stock, { cascade: true })
-  @JoinColumn({ name: 'stock_id' })
-  stock: Stock
+  @ManyToOne((type) => Asset, { cascade: true })
+  @JoinColumn({ name: 'asset_id' })
+  asset: Asset
 }

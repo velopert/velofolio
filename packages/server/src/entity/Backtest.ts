@@ -9,7 +9,7 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm'
-import { Stock } from './Stock'
+import { Asset } from './Asset'
 import { User } from './User'
 
 @Entity({
@@ -40,17 +40,17 @@ export class Backtest {
   @JoinColumn({ name: 'user_id' })
   user: User
 
-  @ManyToMany((type) => Stock)
+  @ManyToMany((type) => Asset)
   @JoinTable({
-    name: 'backtests_stocks',
+    name: 'backtests_symbols',
     joinColumn: {
       name: 'backtest_id',
       referencedColumnName: 'id',
     },
     inverseJoinColumn: {
-      name: 'stock_id',
+      name: 'asset_id',
       referencedColumnName: 'id',
     },
   })
-  stocks: Stock[]
+  assets: Asset[]
 }

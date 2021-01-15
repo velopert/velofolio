@@ -5,12 +5,12 @@ import {
   OneToOne,
   JoinColumn,
 } from 'typeorm'
-import { Stock } from './Stock'
+import { Asset } from './Asset'
 
 @Entity({
-  name: 'stock_meta',
+  name: 'symbol_meta',
 })
-export class StockMeta {
+export class SymbolMeta {
   @PrimaryGeneratedColumn()
   id: number
 
@@ -25,7 +25,7 @@ export class StockMeta {
   @Column()
   is_tracking: boolean
 
-  @OneToOne((type) => Stock, (stock) => stock.stockMeta, { cascade: true })
-  @JoinColumn({ name: 'stock_id' })
-  stock: Stock
+  @OneToOne((type) => Asset, (symbol) => symbol.symbol_meta, { cascade: true })
+  @JoinColumn({ name: 'asset_id' })
+  symbol: Asset
 }
