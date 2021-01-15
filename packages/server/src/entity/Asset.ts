@@ -6,8 +6,8 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm'
-import { SymbolMeta } from './SymbolMeta'
-import { AssetType } from './SymbolType'
+import { AssetMeta } from './AssetMeta'
+import { AssetType } from './AssetType'
 
 @Entity({
   name: 'assets',
@@ -47,12 +47,12 @@ export class Asset {
   @Column()
   is_etf: boolean
 
-  @OneToOne((type) => SymbolMeta, (symbolMeta) => symbolMeta.symbol)
-  symbol_meta: SymbolMeta
+  @OneToOne((type) => AssetMeta, (assetMeta) => assetMeta.asset)
+  asset_meta: AssetMeta
 
   @ManyToOne((type) => AssetType, { cascade: true })
   @JoinColumn({
-    name: 'symbol_type_id',
+    name: 'asset_type_id',
   })
-  symbol_type: AssetType
+  asset_type: AssetType
 }
