@@ -8,6 +8,7 @@
     "@types/node": "^14.14.20"
   },
   "dependencies": {
+    "fastify-plugin": "^3.0.0",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.29"
   }

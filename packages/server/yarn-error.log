@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/Cellar/node/15.5.0/bin/node /usr/local/Cellar/yarn/1.22.0/libexec/bin/yarn.js init
+  /usr/local/Cellar/node/15.5.0/bin/node /usr/local/Cellar/yarn/1.22.0/libexec/bin/yarn.js add @type/cli-progress
 
 PATH: 
   /Users/public.velopert/.yarn/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Users/public.velopert/.yarn/bin:/Users/public.velopert
@@ -14,17 +14,17 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: canceled
-      at Interface.<anonymous> (/usr/local/Cellar/yarn/1.22.0/libexec/lib/cli.js:136987:13)
-      at Interface.emit (node:events:376:20)
-      at Interface._ttyWrite (node:readline:909:16)
-      at ReadStream.onkeypress (node:readline:234:10)
-      at ReadStream.emit (node:events:376:20)
-      at emitKeys (node:internal/readline/utils:358:14)
-      at emitKeys.next (<anonymous>)
-      at ReadStream.onData (node:readline:1178:36)
-      at ReadStream.emit (node:events:376:20)
-      at addChunk (node:internal/streams/readable:311:12)
+  Error: https://registry.yarnpkg.com/@type%2fcli-progress: Not found
+      at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.22.0/libexec/lib/cli.js:66975:18)
+      at Request.self.callback (/usr/local/Cellar/yarn/1.22.0/libexec/lib/cli.js:140727:22)
+      at Request.emit (node:events:376:20)
+      at Request.<anonymous> (/usr/local/Cellar/yarn/1.22.0/libexec/lib/cli.js:141699:10)
+      at Request.emit (node:events:376:20)
+      at IncomingMessage.<anonymous> (/usr/local/Cellar/yarn/1.22.0/libexec/lib/cli.js:141621:12)
+      at Object.onceWrapper (node:events:482:28)
+      at IncomingMessage.emit (node:events:388:22)
+      at endReadableNT (node:internal/streams/readable:1305:12)
+      at processTicksAndRejections (node:internal/process/task_queues:80:21)
 
 npm manifest: 
   {
@@ -51,7 +51,7 @@ npm manifest:
         "start:dev": "ts-node-dev --respawn --transpile-only src/index.ts | pino-pretty",
         "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
         "syncbot": "ts-node src/sync/index.ts",
-        "init": "ts-node src/init.ts"
+        "initialize": "ts-node src/init.ts"
      },
      "workspaces": {
         "nohoist": [

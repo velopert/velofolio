@@ -8,21 +8,21 @@ import {
 import { Asset } from './Asset'
 
 @Entity({
-  name: 'sector_weigthings',
+  name: 'sector_weightings',
 })
 export class SectorWeighting {
   @PrimaryGeneratedColumn()
-  id: number
+  id!: number
 
-  @ManyToOne((type) => Asset, { cascade: true })
+  @ManyToOne((type) => Asset, { onDelete: 'CASCADE' })
   @JoinColumn({
     name: 'asset_id',
   })
-  asset: Asset
+  asset!: Asset
 
   @Column()
-  sector: string
+  sector!: string
 
   @Column({ type: 'double' })
-  percentage: number
+  percentage!: number
 }

@@ -11,22 +11,22 @@ import {
 })
 export class User {
   @PrimaryGeneratedColumn()
-  id: number
+  id!: number
 
   @Column()
-  email: string
+  email!: string
 
   @Column({ length: 16 })
-  username: string
+  username!: string
 
   @Column({ length: 48 })
-  display_name: string
+  display_name!: string
 
   @Index()
   @CreateDateColumn({ type: 'timestamp' })
-  created_at: Date
+  created_at!: Date
 
   @Index()
   @Column()
-  is_certified: boolean
+  is_certified!: boolean
 }

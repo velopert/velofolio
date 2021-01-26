@@ -5,9 +5,9 @@ import { Entity, PrimaryGeneratedColumn, Column, Index } from 'typeorm'
 })
 export class AssetType {
   @PrimaryGeneratedColumn()
-  id: number
+  id!: number
 
   @Index()
   @Column({ length: 32 })
-  type: string
+  type!: string
 }

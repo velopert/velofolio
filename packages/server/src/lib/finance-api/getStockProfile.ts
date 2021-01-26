@@ -1,8 +1,8 @@
 import client from './client'
 
 export async function getStockProfile(ticker: string) {
-  const response = await client.get<StockProfile>(`/api/v3/profile/${ticker}`)
-  return response.data
+  const response = await client.get<StockProfile[]>(`/api/v3/profile/${ticker}`)
+  return response.data[0]
 }
 
 interface StockProfile {

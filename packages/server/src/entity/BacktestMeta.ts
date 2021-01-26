@@ -13,17 +13,17 @@ import { Backtest } from './Backtest'
 })
 export class BacktestMeta {
   @PrimaryGeneratedColumn()
-  id: number
+  id!: number
 
   @ManyToOne((type) => Backtest)
   @JoinColumn({ name: 'backtest_id' })
-  backtest: Backtest
+  backtest!: Backtest
 
   @Index()
   @Column({ length: 32 })
-  type: string
+  type!: string
 
   @Index()
   @Column({ type: 'double' })
-  value: number
+  value!: number
 }
