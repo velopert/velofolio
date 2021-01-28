@@ -1,0 +1,6 @@
+{
+  "title": "GetHistoricalPrices Params",
+  "type": "object",
+  "properties": { "ticker": { "type": "string" } },
+  "required": ["ticker"]
+}

@@ -1,0 +1,6 @@
+{
+  "title": "Autocomplete Querystring",
+  "type": "object",
+  "properties": { "keyword": { "type": "string" } },
+  "required": ["keyword"]
+}

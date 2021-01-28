@@ -1,0 +1,6 @@
+{
+  "title": "GetTicker Params",
+  "type": "object",
+  "properties": { "ticker": { "type": "string" } },
+  "required": ["ticker"]
+}
