@@ -9176,6 +9176,13 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.1.tgz#5b3531bd76a645a4c9fb6e693ed36419e3301339"
   integrity sha512-NAnt2iGDXohE5LI7uBnLnqvLQMtzhkiAOLXTmv+qnF9Ky7xAPcX8Up/xWIhxvLVGJvuLiNc4xQLtuqDRzb4fSA==
 
+react-month-picker@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-month-picker/-/react-month-picker-2.2.0.tgz#37e728056a2e2813fdda7470f86fd8e30664699e"
+  integrity sha512-nn4pwmlqA6xtOWY3/FiTpKbSJHVNvIH0iwRIvvIJVcqFSU5HrsroKtrFkKJolwFo6owhl7fiDuaoj4VWCZQpdw==
+  dependencies:
+    react-tapper "^0.1.16"
+
 react-query@^3.6.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/react-query/-/react-query-3.6.0.tgz#3da307a4a4cb6ea95f9c95b7e50b5281d5244e4d"
@@ -9217,6 +9224,11 @@ react-router@5.2.0:
     react-is "^16.6.0"
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
+
+react-tapper@^0.1.16:
+  version "0.1.20"
+  resolved "https://registry.yarnpkg.com/react-tapper/-/react-tapper-0.1.20.tgz#6caa95d6e5f1d1015a496593c8ebb8605e4c9dc5"
+  integrity sha512-jKfB/YMaOzrRkJ+yU99NHohFiEdz0XnVFRStVPzhc/tMq2XvwNmGE3gn4+83gZEvr6uhsI9PN4mc2st5msuPCQ==
 
 react@^17.0.1:
   version "17.0.1"

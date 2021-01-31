@@ -1,13 +1,17 @@
 import { css } from '@emotion/react'
 import palette from '../../lib/palette'
+import InputBase from '../InputBase'
 import LabSettingsSection from '../LabSettingsSection'
+import MonthPickerInput from '../MonthPickerInput'
 
 export type LabSettingsProps = {}
 
 function LabSettings({}: LabSettingsProps) {
   return (
     <div css={blockStyle}>
-      <LabSettingsSection title="Test Period">asdfs</LabSettingsSection>
+      <LabSettingsSection title="Test Period">
+        <MonthPickerInput />
+      </LabSettingsSection>
     </div>
   )
 }
