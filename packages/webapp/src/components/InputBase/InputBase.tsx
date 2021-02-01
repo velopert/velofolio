@@ -1,14 +1,19 @@
+import { forwardRef } from 'react'
+
 import { css } from '@emotion/react'
 import palette from '../../lib/palette'
 export type InputBaseProps = {
   className?: string
   style?: React.CSSProperties
   children?: React.ReactNode
-}
+} & React.HTMLAttributes<HTMLDivElement>
 
-function InputBase({ className, style, children }: InputBaseProps) {
+function InputBase(
+  { className, style, children, ...rest }: InputBaseProps,
+  ref: React.Ref<HTMLDivElement>
+) {
   return (
-    <div css={wrapper} style={style} className={className}>
+    <div css={wrapper} {...rest} style={style} className={className} ref={ref}>
       {children}
     </div>
   )
@@ -24,4 +29,4 @@ const wrapper = css`
   display: flex;
 `
 
-export default InputBase
+export default forwardRef<HTMLDivElement, InputBaseProps>(InputBase)
