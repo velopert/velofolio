@@ -1,21 +1,17 @@
 import { css } from '@emotion/react'
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import palette from '../../lib/palette'
 import VeloIcon from '../VeloIcon'
 import useOnClickOutside from 'use-onclickoutside'
+import { MonthYearValue } from '../../types/MonthYearValue'
 
 export type MonthPickerProps = {
   minimum?: MonthYearValue
   maximum?: MonthYearValue
-  value: MonthYearValue
   visible: boolean
+  value: MonthYearValue
   onChange(value: MonthYearValue): void
   onClose: Parameters<typeof useOnClickOutside>[1]
-}
-
-export type MonthYearValue = {
-  month: number
-  year: number
 }
 
 export const months = [
@@ -33,15 +29,46 @@ export const months = [
   'Dec',
 ]
 
-function MonthPicker({ value, onChange, onClose, visible }: MonthPickerProps) {
+function getMonthDisabled(
+  current: MonthYearValue,
+  i: number,
+  min?: MonthYearValue,
+  max?: MonthYearValue
+) {
+  if (current.year === min?.year) {
+    return i + 1 < min.month
+  } else if (current.year === max?.year) {
+    return i + 1 > max.month
+  } else {
+    return false
+  }
+}
+function MonthPicker({
+  value,
+  onChange,
+  onClose,
+  visible,
+  minimum,
+  maximum,
+}: MonthPickerProps) {
   const [localValue, setLocalValue] = useState(value)
   const onClickPrev = () => {
+    if (localValue.year === minimum?.year) return
     setLocalValue({ ...localValue, year: localValue.year - 1 })
   }
   const onClickNext = () => {
+    if (localValue.year === maximum?.year) return
     setLocalValue({ ...localValue, year: localValue.year + 1 })
   }
   const ref = useRef<HTMLDivElement>(null)
+
+  const years = useMemo(() => {
+    const { year: minYear } = minimum || { year: 1950 }
+    const { year: maxYear } = maximum || { year: new Date().getFullYear() + 50 }
+    return Array.from({ length: maxYear - minYear + 1 }).map(
+      (_, i) => minYear + i
+    )
+  }, [])
 
   useOnClickOutside(ref, onClose)
 
@@ -50,33 +77,57 @@ function MonthPicker({ value, onChange, onClose, visible }: MonthPickerProps) {
   return (
     <div css={block} ref={ref}>
       <div css={header}>
-        <button css={arrowButton} onClick={onClickPrev}>
+        <button
+          css={arrowButton}
+          onClick={onClickPrev}
+          disabled={localValue.year === minimum?.year}
+        >
           <VeloIcon name="arrow_left" />
         </button>
-        <div css={year}>{localValue.year}</div>
-        <button css={arrowButton} onClick={onClickNext}>
+        <select
+          name="year"
+          value={localValue.year}
+          onChange={(e) => {
+            setLocalValue({
+              ...localValue,
+              year: parseInt(e.target.value, 10),
+            })
+          }}
+          css={year}
+        >
+          {years.map((year) => (
+            <option value={year} key={year}>
+              {year}
+            </option>
+          ))}
+        </select>
+        <button
+          css={arrowButton}
+          onClick={onClickNext}
+          disabled={localValue.year === maximum?.year}
+        >
           <VeloIcon name="arrow_right" />
         </button>
       </div>
       <div css={monthsStyle}>
         {months.map((month, i) => {
           return (
-            <div
+            <button
               css={monthItem(
                 localValue.year === value.year &&
                   months[value.month - 1] === month
               )}
               key={month}
-              tabIndex={0}
               onClick={() => {
                 onChange({
                   month: i + 1,
                   year: localValue.year,
                 })
               }}
+              disabled={getMonthDisabled(localValue, i, minimum, maximum)}
             >
               {month}
-            </div>
+            </button>
           )
         })}
       </div>
@@ -108,10 +159,18 @@ const arrowButton = css`
   border: none;
   outline: none;
   padding: 0.5rem;
-  cursor: pointer;
   display: flex;
-  &:hover {
-    background: rgba(0, 0, 0, 0.05);
+
+  &:enabled {
+    cursor: pointer;
+    &:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  color: ${palette.blueGrey[900]};
+  &:disabled {
+    color: ${palette.blueGrey[200]};
   }
 `
 
@@ -119,6 +178,19 @@ const year = css`
   line-height: 1.5;
   font-size: 1rem;
   font-weight: bold;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: none;
+  color: inherit;
+  outline: none;
+  &:focus-visible {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  background: none;
+  &:focus {
+    background: none;
+  }
+  cursor: pointer;
 `
 
 const monthsStyle = css`
@@ -127,6 +199,9 @@ const monthsStyle = css`
   color: ${palette.blueGrey[600]};
 `
 const monthItem = (active?: boolean) => css`
+  border: none;
+  background: none;
+  color: inherit;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   display: flex;
@@ -135,19 +210,21 @@ const monthItem = (active?: boolean) => css`
   font-size: 0.875rem;
   user-select: none;
   outline: none;
-  cursor: pointer;
-  &:hover {
-    background: rgba(0, 0, 0, 0.05);
-  }
-  ${active &&
-  css`
-    background: ${palette.teal[500]};
-    color: white;
-    font-weight: bold;
+  &:enabled {
+    cursor: pointer;
     &:hover {
-      background: ${palette.teal[400]};
+      background: ${active ? palette.teal[400] : 'rgba(0, 0, 0, 0.05)'};
     }
-  `}
+    ${active &&
+    css`
+      background: ${palette.teal[500]};
+      color: white;
+      font-weight: bold;
+    `}
+  }
+  &:disabled {
+    color: ${palette.blueGrey[100]};
+  }
 
   &:focus-visible {
     background: rgba(0, 0, 0, 0.05);
