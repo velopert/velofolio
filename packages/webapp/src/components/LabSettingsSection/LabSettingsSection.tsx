@@ -1,17 +1,22 @@
 import React from 'react'
-import { css } from '@emotion/react'
+import { css, SerializedStyles } from '@emotion/react'
 import palette from '../../lib/palette'
 
 export type LabSettingsSectionProps = {
   title: string
   children: React.ReactNode
+  contentStyle?: SerializedStyles
 }
 
-function LabSettingsSection({ title, children }: LabSettingsSectionProps) {
+function LabSettingsSection({
+  title,
+  children,
+  contentStyle,
+}: LabSettingsSectionProps) {
   return (
     <section css={sectionStyle}>
       <h3>{title}</h3>
-      <div>{children}</div>
+      <div css={contentStyle}>{children}</div>
     </section>
   )
 }
