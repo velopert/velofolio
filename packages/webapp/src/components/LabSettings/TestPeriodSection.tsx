@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import useDateRangeHook from '../../hooks/useDateRangeHook'
 import palette from '../../lib/palette'
-import LabSettingsSection from '../LabSettingsSection'
+import LabSettingsSection from './LabSettingsSection'
 import MonthPickerInput from '../MonthPickerInput'
 export type TestPeriodSectionProps = {}
 
