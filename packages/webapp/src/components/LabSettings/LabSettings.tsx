@@ -7,6 +7,7 @@ import MonthPickerInput from '../MonthPickerInput'
 import TestPeriodSection from './TestPeriodSection'
 import InitialAmountSection from './InitialAmountSection'
 import CashflowsSection from './CashflowsSection'
+import PortfoliosSection from './PortfoliosSection'
 
 export type LabSettingsProps = {}
 
@@ -16,6 +17,7 @@ function LabSettings({}: LabSettingsProps) {
       <TestPeriodSection />
       <InitialAmountSection />
       <CashflowsSection />
+      <PortfoliosSection />
     </div>
   )
 }
