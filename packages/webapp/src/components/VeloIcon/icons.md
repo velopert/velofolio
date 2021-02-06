@@ -4,3 +4,4 @@
 - [check](https://iconmonstr.com/check-mark-2-svg/)
 - [arrow_left](https://material.io/resources/icons/?style=baseline)
 - [arrow_right](https://material.io/resources/icons/?style=baseline)
+- [plus](https://feathericons.com/)
