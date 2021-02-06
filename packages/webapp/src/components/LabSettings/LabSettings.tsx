@@ -1,3 +1,4 @@
+import React from 'react'
 import { css } from '@emotion/react'
 import useDateRangeHook from '../../hooks/useDateRangeHook'
 import palette from '../../lib/palette'
@@ -8,16 +9,24 @@ import TestPeriodSection from './TestPeriodSection'
 import InitialAmountSection from './InitialAmountSection'
 import CashflowsSection from './CashflowsSection'
 import PortfoliosSection from './PortfoliosSection'
+import { useRecoilValue } from 'recoil'
+import { useLabSettingView } from '../../atoms/labSettingViewState'
 
 export type LabSettingsProps = {}
 
 function LabSettings({}: LabSettingsProps) {
+  const { mode } = useLabSettingView()
+
   return (
     <div css={blockStyle}>
-      <TestPeriodSection />
-      <InitialAmountSection />
-      <CashflowsSection />
-      <PortfoliosSection />
+      {mode === 'default' && (
+        <>
+          <TestPeriodSection />
+          <InitialAmountSection />
+          <CashflowsSection />
+          <PortfoliosSection />
+        </>
+      )}
     </div>
   )
 }
