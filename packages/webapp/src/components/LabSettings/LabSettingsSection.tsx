@@ -32,7 +32,9 @@ const sectionStyle = css`
     margin-top: 0;
     margin-bottom: 0.75rem;
   }
+  & > div {
+    position: relative;
+  }
 `
-const contentStyle = css``
 
 export default LabSettingsSection
