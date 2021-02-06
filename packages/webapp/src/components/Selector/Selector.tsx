@@ -26,6 +26,7 @@ function Selector({
           value={value}
           onChange={onChange}
           disabled={disabled}
+          tabIndex={0}
         >
           {options.map((option) => (
             <option value={option} key={option}>
@@ -63,12 +64,18 @@ const selector = css`
   -moz-appearance: none;
   border: none;
   color: inherit;
-  outline: none;
+
   z-index: 5;
   padding-left: 1rem;
   &:disabled {
     opacity: 1;
     color: inherit;
+  }
+  &::focus-visible {
+    outline-color: rgb(0, 95, 204);
+    outline-offset: 0px;
+    outline-style: auto;
+    outline-width: 1px;
   }
 `
 

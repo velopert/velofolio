@@ -52,13 +52,21 @@ function MonthPickerInput({
     }
   }, [])
 
+  const handleOpen = () => {
+    setOpen(true)
+  }
+
   return (
     <InputBase css={wrapper} ref={ref} className={className}>
       <div
         css={textStyle}
-        onClick={() => {
-          setOpen(true)
+        onClick={handleOpen}
+        onKeyDown={(e) => {
+          if (['Enter', 'Space'].includes(e.key)) {
+            handleOpen()
+          }
         }}
+        tabIndex={0}
       >
         {formatDate(localValue)}
       </div>
@@ -84,6 +92,9 @@ const textStyle = css`
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  &::focus-visible {
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+  }
 `
 
 export default MonthPickerInput
