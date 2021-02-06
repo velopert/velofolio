@@ -6,20 +6,27 @@ export type InputBaseProps = {
   className?: string
   style?: React.CSSProperties
   children?: React.ReactNode
+  disabled?: boolean
 } & React.HTMLAttributes<HTMLDivElement>
 
 function InputBase(
-  { className, style, children, ...rest }: InputBaseProps,
+  { className, style, children, disabled, ...rest }: InputBaseProps,
   ref: React.Ref<HTMLDivElement>
 ) {
   return (
-    <div css={wrapper} {...rest} style={style} className={className} ref={ref}>
+    <div
+      css={wrapper(disabled)}
+      {...rest}
+      style={style}
+      className={className}
+      ref={ref}
+    >
       {children}
     </div>
   )
 }
 
-const wrapper = css`
+const wrapper = (disabled: boolean = false) => css`
   border: ${palette.blueGrey[50]} 1px solid;
   border-radius: 0.5rem;
   background: white;
@@ -27,6 +34,13 @@ const wrapper = css`
   color: ${palette.blueGrey[700]};
   font-size: 1rem;
   display: flex;
+
+  ${disabled &&
+  css`
+    background: ${palette.blueGrey[50]};
+    cursor: not-allowed;
+    color: ${palette.blueGrey[300]};
+  `}
 `
 
 export default forwardRef<HTMLDivElement, InputBaseProps>(InputBase)

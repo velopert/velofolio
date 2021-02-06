@@ -13,6 +13,7 @@ function Input({ prefix, className, disabled, ...rest }: InputProps) {
       css={wrapper(disabled)}
       onClick={() => ref.current?.focus()}
       className={className}
+      disabled={disabled}
     >
       {prefix !== undefined && <span>{prefix}</span>}
       <input css={style} ref={ref} disabled={disabled} {...rest} />
@@ -34,11 +35,10 @@ const wrapper = (disabled?: boolean) => css`
 
   ${disabled &&
   css`
-    background: ${palette.blueGrey[50]};
-    cursor: not-allowed;
     span {
       color: ${palette.blueGrey[200]};
     }
+    cursor: not-allowed;
   `}
 `
 
@@ -56,7 +56,7 @@ const style = css`
   }
   &:disabled {
     cursor: not-allowed;
-    color: ${palette.blueGrey[300]};
+    color: inherit;
   }
 `
 

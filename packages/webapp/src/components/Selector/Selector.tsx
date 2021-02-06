@@ -1,4 +1,5 @@
 import { css } from '@emotion/react'
+import palette from '../../lib/palette'
 import InputBase from '../InputBase'
 import VeloIcon from '../VeloIcon'
 
@@ -18,7 +19,7 @@ function Selector({
   disabled,
 }: SelectorProps) {
   return (
-    <InputBase className={className}>
+    <InputBase className={className} disabled={disabled}>
       <div css={block}>
         <select
           css={selector}
@@ -65,6 +66,10 @@ const selector = css`
   outline: none;
   z-index: 5;
   padding-left: 1rem;
+  &:disabled {
+    opacity: 1;
+    color: inherit;
+  }
 `
 
 export default Selector
