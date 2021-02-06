@@ -1,3 +1,6 @@
 - [flask](https://iconmonstr.com/flask-7-svg/)
 - [workspace](https://iconmonstr.com/view-20-svg/)
 - [globe](https://iconmonstr.com/globe-5-svg/)
+- [check](https://iconmonstr.com/check-mark-2-svg/)
+- [arrow_left](https://material.io/resources/icons/?style=baseline)
+- [arrow_right](https://material.io/resources/icons/?style=baseline)

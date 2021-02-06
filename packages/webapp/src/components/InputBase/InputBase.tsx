@@ -22,8 +22,8 @@ function InputBase(
 const wrapper = css`
   border: ${palette.blueGrey[50]} 1px solid;
   border-radius: 0.5rem;
-  height: 2.5rem;
   background: white;
+  height: 2.5rem;
   color: ${palette.blueGrey[700]};
   font-size: 1rem;
   display: flex;

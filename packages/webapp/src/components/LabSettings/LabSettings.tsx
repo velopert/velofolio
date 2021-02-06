@@ -5,6 +5,8 @@ import InputBase from '../InputBase'
 import LabSettingsSection from './LabSettingsSection'
 import MonthPickerInput from '../MonthPickerInput'
 import TestPeriodSection from './TestPeriodSection'
+import InitialAmountSection from './InitialAmountSection'
+import CashflowsSection from './CashflowsSection'
 
 export type LabSettingsProps = {}
 
@@ -12,6 +14,8 @@ function LabSettings({}: LabSettingsProps) {
   return (
     <div css={blockStyle}>
       <TestPeriodSection />
+      <InitialAmountSection />
+      <CashflowsSection />
     </div>
   )
 }

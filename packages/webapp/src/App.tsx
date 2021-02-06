@@ -6,10 +6,12 @@ import { Route, Switch } from 'react-router-dom'
 import Lab from './pages/Lab'
 import Workspace from './pages/Workspace'
 import Explore from './pages/Explore'
+import DebugObserver from './components/DebugObserver/DebugObserver'
 
 function App() {
   return (
     <>
+      <DebugObserver />
       <AppLayout>
         <AppLayout.Side>
           <Sidebar />

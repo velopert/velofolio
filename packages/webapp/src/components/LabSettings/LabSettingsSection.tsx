@@ -22,6 +22,9 @@ function LabSettingsSection({
 }
 
 const sectionStyle = css`
+  & + & {
+    margin-top: 1.5rem;
+  }
   h3 {
     color: ${palette.blueGrey[800]};
     font-size: 1rem;
