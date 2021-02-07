@@ -67,16 +67,19 @@ const selector = css`
 
   z-index: 5;
   padding-left: 1rem;
+  &:focus {
+    outline: none;
+  }
   &:disabled {
     opacity: 1;
     color: inherit;
   }
-  &::focus-visible {
+  /* &::focus-visible {
     outline-color: rgb(0, 95, 204);
     outline-offset: 0px;
     outline-style: auto;
     outline-width: 1px;
-  }
+  } */
 `
 
 export default Selector

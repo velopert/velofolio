@@ -8,28 +8,38 @@ import LabSettingsSection from './LabSettingsSection'
 import Input from '../Input'
 import Selector from '../Selector'
 import { periodOptions } from '../../lib/constants'
+import usePortfolioOptionState from '../../hooks/usePortfolioOptionState'
 export type LabSettingsPortfolioProps = {}
 
 function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
   const { closePortfolio } = useLabSettingViewActions()
+  const {
+    name,
+    rebalancing,
+    onChangeName,
+    onChangeRebalancing,
+    rebalancingOptions,
+  } = usePortfolioOptionState()
 
-  const rebalancingOptions = useMemo(
-    () => ['No Rebalancing', ...periodOptions],
-    []
-  )
+  console.log(rebalancing, name)
+
   return (
     <div css={block}>
       <button css={backButton} onClick={closePortfolio}>
         <VeloIcon name="arrow_back" />
       </button>
       <LabSettingsSection title="Portfolio Name">
-        <Input placeholder="Portfolio Name" />
+        <Input
+          placeholder="Portfolio Name"
+          value={name}
+          onChange={onChangeName}
+        />
       </LabSettingsSection>
       <LabSettingsSection title="Rebalancing">
         <Selector
           options={rebalancingOptions}
-          value={'Anually'}
-          onChange={() => {}}
+          value={rebalancing}
+          onChange={onChangeRebalancing}
         />
       </LabSettingsSection>
     </div>
