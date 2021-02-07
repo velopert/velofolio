@@ -11,6 +11,8 @@ import CashflowsSection from './CashflowsSection'
 import PortfoliosSection from './PortfoliosSection'
 import { useRecoilValue } from 'recoil'
 import { useLabSettingView } from '../../atoms/labSettingViewState'
+import LabSettingsDefault from './LabSettingsDefault'
+import LabSettingsPortfolio from './LabSettingsPortfolio'
 
 export type LabSettingsProps = {}
 
@@ -19,14 +21,8 @@ function LabSettings({}: LabSettingsProps) {
 
   return (
     <div css={blockStyle}>
-      {mode === 'default' && (
-        <>
-          <TestPeriodSection />
-          <InitialAmountSection />
-          <CashflowsSection />
-          <PortfoliosSection />
-        </>
-      )}
+      {mode === 'default' && <LabSettingsDefault />}
+      {mode === 'portfolio' && <LabSettingsPortfolio />}
     </div>
   )
 }

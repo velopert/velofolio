@@ -1,23 +1,18 @@
 import { css } from '@emotion/react'
-import { useLabSettingViewUpdate } from '../../atoms/labSettingViewState'
+import {
+  useLabSettingViewActions,
+  useLabSettingViewUpdate,
+} from '../../atoms/labSettingViewState'
 import CircularIconButton from '../CircularIconButton'
 import LabSettingsSection from './LabSettingsSection'
 export type PortfoliosSectionProps = {}
 
 function PortfoliosSection({}: PortfoliosSectionProps) {
-  const update = useLabSettingViewUpdate()
+  const { createPortfolio } = useLabSettingViewActions()
   return (
     <LabSettingsSection title="Portfolios">
       <div css={buttonPositioner}>
-        <CircularIconButton
-          icon="plus"
-          onClick={() =>
-            update({
-              mode: 'portfolio',
-              selectedPortfolio: null,
-            })
-          }
-        />
+        <CircularIconButton icon="plus" onClick={createPortfolio} />
       </div>
     </LabSettingsSection>
   )
