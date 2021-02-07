@@ -2,6 +2,7 @@ import { css } from '@emotion/react'
 import { useState } from 'react'
 import { useCashflows } from '../../hooks/useCashflows'
 import useFormattedNumber from '../../hooks/useFormattedNumber'
+import { periodOptions } from '../../lib/constants'
 import CheckBox from '../CheckBox'
 import Input from '../Input'
 import Selector from '../Selector'
@@ -34,7 +35,7 @@ function CashflowsSection({}: CashflowsSectionProps) {
           />
           <Selector
             css={selector}
-            options={['Monthly', 'Quaterly', 'Semi-anually', 'Anually']}
+            options={periodOptions}
             value={period}
             onChange={onChangePeriod}
             disabled={!enabled}
