@@ -9,6 +9,7 @@ import Input from '../Input'
 import Selector from '../Selector'
 import { periodOptions } from '../../lib/constants'
 import usePortfolioOptionState from '../../hooks/usePortfolioOptionState'
+import AssetsSection from './AssetsSection'
 export type LabSettingsPortfolioProps = {}
 
 function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
@@ -42,6 +43,7 @@ function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
           onChange={onChangeRebalancing}
         />
       </LabSettingsSection>
+      <AssetsSection />
     </div>
   )
 }
