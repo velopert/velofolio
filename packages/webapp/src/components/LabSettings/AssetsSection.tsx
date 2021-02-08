@@ -17,9 +17,18 @@ function AssetsSection({}: AssetsSectionProps) {
       <Input
         placeholder="Ticker Symbol  e.g. AAPL"
         onFocus={onFocus}
-        onBlur={onBlur}
+        onBlur={(e) => {
+          e.persist()
+          const relatedTarget = e.relatedTarget as HTMLElement | null
+          if (relatedTarget && relatedTarget.dataset.type === 'ticker-item') {
+            return
+          }
+          onBlur()
+        }}
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
       />
-      {keyword !== '' && <SymbolAutocomplete visible={open} />}
+      <SymbolAutocomplete visible={open} keyword={keyword} />
     </LabSettingsSection>
   )
 }
