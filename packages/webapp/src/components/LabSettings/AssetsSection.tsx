@@ -19,7 +19,7 @@ function AssetsSection({}: AssetsSectionProps) {
         onFocus={onFocus}
         onBlur={onBlur}
       />
-      <SymbolAutocomplete visible={open} />
+      {keyword !== '' && <SymbolAutocomplete visible={open} />}
     </LabSettingsSection>
   )
 }
