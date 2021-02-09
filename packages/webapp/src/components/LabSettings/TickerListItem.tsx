@@ -18,7 +18,7 @@ function TickerListItem({
   selected,
   index,
 }: TickerListItemProps) {
-  const [_, setSelectedIndex] = useAutocompleteIndex()
+  const [, setSelectedIndex] = useAutocompleteIndex()
   const onMouseEnter = () => {
     setSelectedIndex(index)
   }
