@@ -1,46 +1,40 @@
 import { css } from '@emotion/react'
-import { useEffect, useState } from 'react'
-import useSearchTickersQuery from '../../hooks/query/useSearchTickersQuery'
+import { useRef } from 'react'
+import useOnClickOutside from 'use-onclickoutside'
 import { SearchTickerResult } from '../../lib/api/assets/searchTickers'
 import TickerListItem from './TickerListItem'
 
 export type SymbolAutocompleteProps = {
-  keyword: string
+  results: SearchTickerResult[] | null
   visible: boolean
+  onClose: Parameters<typeof useOnClickOutside>[1]
+  selectedIndex: number
 }
 
-function SymbolAutocomplete({ visible, keyword }: SymbolAutocompleteProps) {
-  const [prevData, setPrevData] = useState<SearchTickerResult[] | null>(null)
-  const { data } = useSearchTickersQuery(keyword, {
-    enabled: keyword !== '',
-  })
+function SymbolAutocomplete({
+  visible,
+  onClose,
+  results,
+  selectedIndex,
+}: SymbolAutocompleteProps) {
+  const ref = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    if (!data) {
-      setPrevData(data || null)
-    }
-  }, [data])
+  useOnClickOutside(ref, onClose)
 
-  useEffect(() => {
-    if (keyword === '') {
-      setPrevData(null)
-    }
-  }, [keyword])
-
-  const dataToShow = data || prevData
-
-  if (!visible || !dataToShow || dataToShow.length === 0) return null
+  if (!visible || !results || results.length === 0) return null
 
   return (
-    <div css={wrapper}>
+    <div css={wrapper} ref={ref}>
       <div css={block}>
-        {dataToShow.map((result) => (
+        {results.map((result, i) => (
           <TickerListItem
             id={result.id}
             image={`https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${result.ticker}.png`}
             name={result.name}
             ticker={result.ticker}
             key={result.id}
+            selected={i === selectedIndex}
+            index={i}
           />
         ))}
       </div>
