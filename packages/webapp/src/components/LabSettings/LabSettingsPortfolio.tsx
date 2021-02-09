@@ -22,8 +22,6 @@ function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
     rebalancingOptions,
   } = usePortfolioOptionState()
 
-  console.log(rebalancing, name)
-
   return (
     <div css={block}>
       <button css={backButton} onClick={closePortfolio}>
