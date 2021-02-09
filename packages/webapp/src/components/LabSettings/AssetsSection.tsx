@@ -5,15 +5,18 @@ import useTickerAutocomplete from '../../hooks/useTickerAutocomplete'
 import Input from '../Input'
 import LabSettingsSection from './LabSettingsSection'
 import SymbolAutocomplete from './SymbolAutocomplete'
+import { useDebounce } from 'use-debounce'
+
 export type AssetsSectionProps = {}
 
 function AssetsSection({}: AssetsSectionProps) {
   const [keyword, setKeyword] = useState('')
+  const [debouncedKeyword] = useDebounce(keyword, 400)
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
   const { results, goUp, goDown, selectedIndex } = useTickerAutocomplete(
-    keyword
+    debouncedKeyword
   )
 
   const onFocus = () => setOpen(true)
