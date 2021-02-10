@@ -55,6 +55,7 @@ const block = css`
   box-shadow: 0rem 0.25rem 0.5rem rgba(0, 0, 0, 0.07);
   border-radius: 0.5rem;
   overflow-y: auto;
+  z-index: 10;
 `
 
 export default SymbolAutocomplete

@@ -1,11 +1,16 @@
 import { css } from '@emotion/react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import useOnClickOutside from 'use-onclickoutside'
 import useTickerAutocomplete from '../../hooks/useTickerAutocomplete'
 import Input from '../Input'
 import LabSettingsSection from './LabSettingsSection'
 import SymbolAutocomplete from './SymbolAutocomplete'
 import { useDebounce } from 'use-debounce'
+import AssetsTable from './AssetsTable'
+import {
+  useAssetsActions,
+  useResetAssetsUnmountEffect,
+} from '../../atoms/assetsState'
 
 export type AssetsSectionProps = {}
 
@@ -14,10 +19,14 @@ function AssetsSection({}: AssetsSectionProps) {
   const [debouncedKeyword] = useDebounce(keyword, 400)
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
-
-  const { results, goUp, goDown, selectedIndex } = useTickerAutocomplete(
+  const { append } = useAssetsActions()
+  const { results, goUp, goDown, selectedIndex, reset } = useTickerAutocomplete(
     debouncedKeyword
   )
+  useResetAssetsUnmountEffect()
+  useEffect(() => {
+    if (!open) reset()
+  }, [open, reset])
 
   const onFocus = () => setOpen(true)
   const onBlur = () => setOpen(false)
@@ -35,8 +44,26 @@ function AssetsSection({}: AssetsSectionProps) {
     } else if (e.key === 'ArrowUp') {
       goUp()
     } else if (e.key === 'Enter') {
-      console.log(results?.[selectedIndex])
+      const selectedTicker = results?.[selectedIndex]
+      if (!selectedTicker) return
+      const { id, image, ticker } = selectedTicker
+      append({
+        id,
+        image,
+        ticker,
+        weight: 0,
+      })
+      setKeyword('')
+      setOpen(false)
+      if (results?.[selectedIndex]) console.log(results?.[selectedIndex])
     }
+  }
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value !== '' && !open) {
+      setOpen(true)
+    }
+    setKeyword(e.target.value)
   }
 
   return (
@@ -54,7 +81,7 @@ function AssetsSection({}: AssetsSectionProps) {
             onBlur()
           }}
           value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
+          onChange={onChange}
           onKeyDown={onKeyDown}
         />
         <SymbolAutocomplete
@@ -64,6 +91,7 @@ function AssetsSection({}: AssetsSectionProps) {
           selectedIndex={selectedIndex}
         />
       </div>
+      <AssetsTable />
     </LabSettingsSection>
   )
 }

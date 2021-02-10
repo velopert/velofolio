@@ -46,7 +46,7 @@ export function useLabSettingViewActions() {
 
   const closePortfolio = useCallback(() => {
     update((prevValue) => ({ ...prevValue, mode: 'default' }))
-  }, [])
+  }, [update])
 
   return {
     createPortfolio,

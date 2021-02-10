@@ -20,17 +20,17 @@ export default function useTickerAutocomplete(keyword: string) {
   }, [reset])
 
   useEffect(() => {
-    if (!data) {
-      setPrevData(data || null)
-      setSelectedIndex(-1)
+    if (data) {
+      setPrevData(data)
     }
-  }, [data, setSelectedIndex])
+  }, [data])
 
   useEffect(() => {
     if (keyword === '') {
       setPrevData(null)
     }
-  }, [keyword])
+    setSelectedIndex(-1)
+  }, [keyword, setSelectedIndex])
 
   const goUp = () => {
     if (!data || data.length === 0) return // cancel
@@ -57,5 +57,6 @@ export default function useTickerAutocomplete(keyword: string) {
     selectedIndex,
     goUp,
     goDown,
+    reset,
   }
 }
