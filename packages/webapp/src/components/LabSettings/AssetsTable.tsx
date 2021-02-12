@@ -1,10 +1,24 @@
 import { css } from '@emotion/react'
-import { useAssetsState } from '../../atoms/assetsState'
+import {
+  useAssetsActions,
+  useAssetsState,
+  useAssetsWeightSum,
+} from '../../atoms/assetsState'
 import palette from '../../lib/palette'
-export type AssetsTableProps = {}
+import VeloIcon from '../VeloIcon'
+export type AssetsTableProps = {
+  focusInput(): void
+}
 
-function AssetsTable({}: AssetsTableProps) {
+function AssetsTable({ focusInput }: AssetsTableProps) {
   const [assets] = useAssetsState()
+  const { updateWeight, remove } = useAssetsActions()
+  const sum = useAssetsWeightSum()
+  const calculatePercent = (value: number) => {
+    if (sum === 0) return '0%'
+    return ((value / sum) * 100).toFixed(2).concat('%')
+  }
+
   return (
     <div css={block}>
       <div css={headerRow}>
@@ -26,11 +40,44 @@ function AssetsTable({}: AssetsTableProps) {
         </div> */}
         {assets.map((asset) => (
           <div key={asset.id} css={row}>
-            <div css={columnTicker}>{asset.ticker}</div>
-            <div css={columnWeight}>{asset.weight}</div>
-            <div css={columnPercent}>0%</div>
+            <div css={[columnTicker, leftAlign]}>
+              <img
+                src={
+                  asset.image
+                    ? `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${asset.ticker}.png`
+                    : ''
+                }
+                alt={`${asset.ticker} logo`}
+              />
+              <span>{asset.ticker}</span>
+              <div className="icon-wrapper" onClick={() => remove(asset.id)}>
+                <VeloIcon name="trash" />
+              </div>
+            </div>
+            <div css={columnWeight}>
+              <input
+                value={asset.weight}
+                type="number"
+                onChange={(e) => {
+                  const value = parseInt(e.target.value)
+                  updateWeight(asset.id, isNaN(value) ? 0 : value)
+                }}
+              />
+            </div>
+            <div css={columnPercent}>{calculatePercent(asset.weight)}</div>
           </div>
         ))}
+        {assets.length < 4 ? (
+          <div css={disabledRows(assets.length > 0)}>
+            {Array.from({ length: 4 - assets.length }).map((_, i) => (
+              <div key={i} css={row} onClick={focusInput}>
+                <div css={columnTicker}></div>
+                <div css={columnWeight}></div>
+                <div css={columnPercent}></div>
+              </div>
+            ))}
+          </div>
+        ) : null}
       </div>
     </div>
   )
@@ -50,6 +97,14 @@ const row = css`
   & + & {
     border-top: 0.0625rem solid ${palette.blueGrey[100]};
   }
+`
+
+const disabledRows = (hasBorderTop: boolean) => css`
+  background: ${palette.blueGrey[50]};
+  ${hasBorderTop &&
+  css`
+    border-top: 0.0625rem solid ${palette.blueGrey[100]};
+  `}
 `
 
 const headerRow = css`
@@ -73,17 +128,81 @@ const column = css`
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 0.875rem;
+  color: ${palette.blueGrey[800]};
 `
 
 const columnTicker = css`
   ${column}
   flex: 2.5;
+  display: flex;
+  align-items: center;
+
+  img {
+    margin-left: 0.5rem;
+    display: block;
+    background: white;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 0.0625rem solid ${palette.blueGrey[100]};
+    border-radius: 0.75rem;
+    margin-right: 0.4375rem;
+  }
+  span {
+    line-height: 1;
+    flex: 1;
+  }
+  .icon-wrapper {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: ${palette.blueGrey[300]};
+    &:hover {
+      color: ${palette.red[500]};
+    }
+
+    svg {
+      width: 1rem;
+      height: 1rem;
+      margin-right: 0.5rem;
+    }
+  }
+`
+
+const leftAlign = css`
+  justify-content: flex-start;
 `
 const columnWeight = css`
   ${column}
   flex: 2;
   border-left: 0.0625rem solid ${palette.blueGrey[100]};
   border-right: 0.0625rem solid ${palette.blueGrey[100]};
+  display: flex;
+  input {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    border: none;
+    flex: 1;
+    padding: 0;
+    text-align: center;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type='number'] {
+    -moz-appearance: textfield;
+  }
 `
 const columnPercent = css`
   ${column}

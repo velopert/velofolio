@@ -43,9 +43,7 @@ const item = (selected: boolean) => css`
   align-items: center;
 
   cursor: pointer;
-  &:hover {
-    background: ${palette.cyan[100]};
-  }
+
   ${selected &&
   css`
     background: ${palette.cyan[100]};

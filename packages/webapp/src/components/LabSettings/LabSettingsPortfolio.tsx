@@ -10,6 +10,7 @@ import Selector from '../Selector'
 import { periodOptions } from '../../lib/constants'
 import usePortfolioOptionState from '../../hooks/usePortfolioOptionState'
 import AssetsSection from './AssetsSection'
+import FooterButton from './FooterButton'
 export type LabSettingsPortfolioProps = {}
 
 function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
@@ -42,12 +43,18 @@ function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
         />
       </LabSettingsSection>
       <AssetsSection />
+      <FooterButton name="OK" />
     </div>
   )
 }
 
-const block = css``
+const block = css`
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`
 const backButton = css`
+  align-self: flex-start;
   ${resetButton}
   color: ${palette.blueGrey[600]};
   cursor: pointer;

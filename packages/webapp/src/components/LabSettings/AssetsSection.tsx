@@ -11,6 +11,10 @@ import {
   useAssetsActions,
   useResetAssetsUnmountEffect,
 } from '../../atoms/assetsState'
+import useAssetQuery, {
+  useAssetQuerySetter,
+} from '../../hooks/query/useAssetQuery'
+import { getAsset } from '../../lib/api/assets/getAsset'
 
 export type AssetsSectionProps = {}
 
@@ -23,6 +27,9 @@ function AssetsSection({}: AssetsSectionProps) {
   const { results, goUp, goDown, selectedIndex, reset } = useTickerAutocomplete(
     debouncedKeyword
   )
+  const set = useAssetQuerySetter()
+  const inputRef = useRef<HTMLInputElement>(null)
+
   useResetAssetsUnmountEffect()
   useEffect(() => {
     if (!open) reset()
@@ -36,6 +43,22 @@ function AssetsSection({}: AssetsSectionProps) {
     }
   }
 
+  const appendWhenTickerExists = async () => {
+    try {
+      setOpen(false)
+      setKeyword('')
+      const asset = await getAsset(keyword)
+      set(keyword, asset)
+      const { id, image, ticker } = asset
+      append({
+        id,
+        image,
+        ticker,
+        weight: 0,
+      })
+    } catch (e) {}
+  }
+
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (!['ArrowDown', 'ArrowUp', 'Enter'].includes(e.key)) return
     e.preventDefault()
@@ -45,6 +68,10 @@ function AssetsSection({}: AssetsSectionProps) {
       goUp()
     } else if (e.key === 'Enter') {
       const selectedTicker = results?.[selectedIndex]
+      if (selectedIndex === -1) {
+        appendWhenTickerExists()
+        return
+      }
       if (!selectedTicker) return
       const { id, image, ticker } = selectedTicker
       append({
@@ -66,6 +93,10 @@ function AssetsSection({}: AssetsSectionProps) {
     setKeyword(e.target.value)
   }
 
+  const focusInput = () => {
+    inputRef.current?.focus()
+  }
+
   return (
     <LabSettingsSection title="Assets">
       <div ref={ref}>
@@ -83,6 +114,7 @@ function AssetsSection({}: AssetsSectionProps) {
           value={keyword}
           onChange={onChange}
           onKeyDown={onKeyDown}
+          ref={inputRef}
         />
         <SymbolAutocomplete
           visible={open}
@@ -91,7 +123,7 @@ function AssetsSection({}: AssetsSectionProps) {
           selectedIndex={selectedIndex}
         />
       </div>
-      <AssetsTable />
+      <AssetsTable focusInput={focusInput} />
     </LabSettingsSection>
   )
 }

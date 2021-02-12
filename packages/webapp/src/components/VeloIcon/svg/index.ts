@@ -7,6 +7,7 @@ import { ReactComponent as arrow_drop_down } from './arrow_drop_down.svg'
 import { ReactComponent as check } from './check.svg'
 import { ReactComponent as plus } from './plus.svg'
 import { ReactComponent as arrow_back } from './arrow_back.svg'
+import { ReactComponent as trash } from './trash.svg'
 
 export {
   flask,
@@ -18,4 +19,5 @@ export {
   arrow_drop_down,
   plus,
   arrow_back,
+  trash,
 }

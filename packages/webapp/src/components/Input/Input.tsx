@@ -1,22 +1,29 @@
 import { css } from '@emotion/react'
-import { useRef } from 'react'
+import { useRef, forwardRef } from 'react'
 import palette from '../../lib/palette'
 import InputBase from '../InputBase'
+import useMergedRef from '@react-hook/merged-ref'
+
 export type InputProps = {
   prefix?: string
 } & React.InputHTMLAttributes<HTMLInputElement>
 
-function Input({ prefix, className, disabled, ...rest }: InputProps) {
-  const ref = useRef<HTMLInputElement>(null)
+function Input(
+  { prefix, className, disabled, ...rest }: InputProps,
+  ref: React.Ref<HTMLDivElement>
+) {
+  const innerRef = useRef<HTMLInputElement>(null)
+  const mergedRef = useMergedRef(innerRef, ref)
+
   return (
     <InputBase
       css={wrapper(disabled)}
-      onClick={() => ref.current?.focus()}
+      onClick={() => innerRef.current?.focus()}
       className={className}
       disabled={disabled}
     >
       {prefix !== undefined && <span>{prefix}</span>}
-      <input css={style} ref={ref} disabled={disabled} {...rest} />
+      <input css={style} ref={mergedRef} disabled={disabled} {...rest} />
     </InputBase>
   )
 }
@@ -60,4 +67,4 @@ const style = css`
   }
 `
 
-export default Input
+export default forwardRef<HTMLInputElement, InputProps>(Input)

@@ -1,6 +1,14 @@
-import { atom, DefaultValue, selector } from 'recoil'
+import {
+  atom,
+  DefaultValue,
+  selector,
+  useRecoilState,
+  useSetRecoilState,
+} from 'recoil'
 import { MonthYearValue } from '../types/MonthYearValue'
 import produce from 'immer'
+import { Asset } from '../lib/api/assets/types'
+import { useCallback } from 'react'
 
 export type LabSettingState = {
   dateRange: {
@@ -13,6 +21,13 @@ export type LabSettingState = {
     amount: number
     period: string
   }
+  portfolios: Portfolio[]
+}
+
+export type Portfolio = {
+  name: string
+  rebalancing: string
+  assets: Asset[]
 }
 
 const initialState: LabSettingState = {
@@ -35,6 +50,7 @@ const initialState: LabSettingState = {
     amount: 1000,
     period: 'Anually',
   },
+  portfolios: [],
   /* ... */
 }
 
@@ -76,6 +92,17 @@ export const cashflowsState = selector<LabSettingState['cashflows']>({
     ),
 })
 
+export const portfoliosState = selector<LabSettingState['portfolios']>({
+  key: 'portfoliosState',
+  get: ({ get }) => get(labSettingState).portfolios,
+  set: ({ set }, newValue) =>
+    set(labSettingState, (prevValue) =>
+      newValue instanceof DefaultValue
+        ? newValue
+        : { ...prevValue, portfolios: newValue }
+    ),
+})
+
 export const updateDateRange = (
   state: LabSettingState,
   key: keyof LabSettingState['dateRange'],
@@ -84,3 +111,20 @@ export const updateDateRange = (
   produce(state, (draft) => {
     draft.dateRange[key] = value
   })
+
+export function usePortfoliosState() {
+  return useRecoilState(portfoliosState)
+}
+
+export function usePortfoliosAction() {
+  const set = useSetRecoilState(portfoliosState)
+
+  const append = useCallback(
+    (portfolio: Portfolio) => {
+      set((prev) => prev.concat(portfolio))
+    },
+    [set]
+  )
+
+  return { append }
+}
