@@ -3,12 +3,15 @@ import palette from '../../lib/palette'
 import { resetButton } from '../../lib/styles/resetButton'
 export type FooterButtonProps = {
   name: string
+  onClick(): void
 }
 
-function FooterButton({ name }: FooterButtonProps) {
+function FooterButton({ name, onClick }: FooterButtonProps) {
   return (
     <div css={block}>
-      <button css={footerButton}>{name}</button>
+      <button css={footerButton} onClick={onClick}>
+        {name}
+      </button>
     </div>
   )
 }

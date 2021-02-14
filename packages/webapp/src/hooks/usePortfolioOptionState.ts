@@ -1,8 +1,14 @@
 import { useMemo, useState } from 'react'
+import { useNextPortfolioIdState } from '../atoms/labSettingState'
+import { useLabSettingView } from '../atoms/labSettingViewState'
 import { periodOptions } from '../lib/constants'
 
 export default function usePortfolioOptionState() {
-  const [name, setValue] = useState('')
+  const [nextId] = useNextPortfolioIdState()
+  const { selectedPortfolio } = useLabSettingView()
+  const [name, setValue] = useState(
+    selectedPortfolio ? '' : `Portfolio ${nextId}`
+  )
   const [rebalancing, setRebalancing] = useState('Anually')
 
   const rebalancingOptions = useMemo(

@@ -3,12 +3,14 @@ import {
   DefaultValue,
   selector,
   useRecoilState,
+  useRecoilValue,
   useSetRecoilState,
 } from 'recoil'
 import { MonthYearValue } from '../types/MonthYearValue'
 import produce from 'immer'
 import { Asset } from '../lib/api/assets/types'
 import { useCallback } from 'react'
+import { AssetWeight } from './assetsState'
 
 export type LabSettingState = {
   dateRange: {
@@ -22,12 +24,14 @@ export type LabSettingState = {
     period: string
   }
   portfolios: Portfolio[]
+  nextPortfolioId: number
 }
 
 export type Portfolio = {
+  id: number
   name: string
   rebalancing: string
-  assets: Asset[]
+  assets: AssetWeight[]
 }
 
 const initialState: LabSettingState = {
@@ -51,6 +55,7 @@ const initialState: LabSettingState = {
     period: 'Anually',
   },
   portfolios: [],
+  nextPortfolioId: 1,
   /* ... */
 }
 
@@ -103,6 +108,17 @@ export const portfoliosState = selector<LabSettingState['portfolios']>({
     ),
 })
 
+export const nextPortfolioIdState = selector<number>({
+  key: 'nextPortfolioIdState',
+  get: ({ get }) => get(labSettingState).nextPortfolioId,
+  set: ({ set }, newValue) =>
+    set(labSettingState, (prevValue) =>
+      newValue instanceof DefaultValue
+        ? newValue
+        : { ...prevValue, nextPortfolioId: newValue }
+    ),
+})
+
 export const updateDateRange = (
   state: LabSettingState,
   key: keyof LabSettingState['dateRange'],
@@ -116,14 +132,20 @@ export function usePortfoliosState() {
   return useRecoilState(portfoliosState)
 }
 
+export function useNextPortfolioIdState() {
+  return useRecoilState(nextPortfolioIdState)
+}
+
 export function usePortfoliosAction() {
   const set = useSetRecoilState(portfoliosState)
+  const [nextId, setNextId] = useNextPortfolioIdState()
 
   const append = useCallback(
-    (portfolio: Portfolio) => {
-      set((prev) => prev.concat(portfolio))
+    (portfolio: Omit<Portfolio, 'id'>) => {
+      set((prev) => prev.concat({ id: nextId, ...portfolio }))
+      setNextId(nextId + 1)
     },
-    [set]
+    [set, nextId, setNextId]
   )
 
   return { append }

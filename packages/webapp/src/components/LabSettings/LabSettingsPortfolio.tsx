@@ -11,6 +11,8 @@ import { periodOptions } from '../../lib/constants'
 import usePortfolioOptionState from '../../hooks/usePortfolioOptionState'
 import AssetsSection from './AssetsSection'
 import FooterButton from './FooterButton'
+import { useAssetsState } from '../../atoms/assetsState'
+import { usePortfoliosAction } from '../../atoms/labSettingState'
 export type LabSettingsPortfolioProps = {}
 
 function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
@@ -22,6 +24,24 @@ function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
     onChangeRebalancing,
     rebalancingOptions,
   } = usePortfolioOptionState()
+  const { append } = usePortfoliosAction()
+  const [assets] = useAssetsState()
+  const onSubmit = () => {
+    if (assets.length === 0) {
+      // TODO: empty assets
+      return
+    }
+    if (name === '') {
+      // TODO: empty name
+      return
+    }
+    append({
+      name,
+      rebalancing,
+      assets,
+    })
+    closePortfolio()
+  }
 
   return (
     <div css={block}>
@@ -43,7 +63,7 @@ function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
         />
       </LabSettingsSection>
       <AssetsSection />
-      <FooterButton name="OK" />
+      <FooterButton name="OK" onClick={onSubmit} />
     </div>
   )
 }

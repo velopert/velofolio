@@ -14,7 +14,7 @@ function LabSettingsDefault({}: LabSettingsDefaultProps) {
       <InitialAmountSection />
       <CashflowsSection />
       <PortfoliosSection />
-      <FooterButton name="SAVE TO WORKSPACE" />
+      <FooterButton name="SAVE TO WORKSPACE" onClick={() => {}} />
     </div>
   )
 }

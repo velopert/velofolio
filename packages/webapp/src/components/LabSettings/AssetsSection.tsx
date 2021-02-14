@@ -54,7 +54,7 @@ function AssetsSection({}: AssetsSectionProps) {
         id,
         image,
         ticker,
-        weight: 0,
+        weight: 1,
       })
     } catch (e) {}
   }
