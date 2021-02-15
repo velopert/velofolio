@@ -3,7 +3,10 @@ import { css } from '@emotion/react'
 import VeloIcon from '../VeloIcon'
 import { resetButton } from '../../lib/styles/resetButton'
 import palette from '../../lib/palette'
-import { useLabSettingViewActions } from '../../atoms/labSettingViewState'
+import {
+  useLabSettingView,
+  useLabSettingViewActions,
+} from '../../atoms/labSettingViewState'
 import LabSettingsSection from './LabSettingsSection'
 import Input from '../Input'
 import Selector from '../Selector'
@@ -12,11 +15,15 @@ import usePortfolioOptionState from '../../hooks/usePortfolioOptionState'
 import AssetsSection from './AssetsSection'
 import FooterButton from './FooterButton'
 import { useAssetsState } from '../../atoms/assetsState'
-import { usePortfoliosAction } from '../../atoms/labSettingState'
+import {
+  usePortfoliosAction,
+  usePortfoliosState,
+} from '../../atoms/labSettingState'
 export type LabSettingsPortfolioProps = {}
 
 function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
   const { closePortfolio } = useLabSettingViewActions()
+  const { selectedPortfolioId } = useLabSettingView()
   const {
     name,
     rebalancing,
@@ -26,6 +33,7 @@ function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
   } = usePortfolioOptionState()
   const { append } = usePortfoliosAction()
   const [assets] = useAssetsState()
+
   const onSubmit = () => {
     if (assets.length === 0) {
       // TODO: empty assets
@@ -35,11 +43,14 @@ function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
       // TODO: empty name
       return
     }
-    append({
-      name,
-      rebalancing,
-      assets,
-    })
+
+    if (!selectedPortfolioId) {
+      append({
+        name,
+        rebalancing,
+        assets,
+      })
+    }
     closePortfolio()
   }
 

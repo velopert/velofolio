@@ -119,6 +119,15 @@ export const nextPortfolioIdState = selector<number>({
     ),
 })
 
+export const uniqueTickersState = selector<string[]>({
+  key: 'uniqueTickersState',
+  get: ({ get }) => {
+    const portfolios = get(labSettingState).portfolios
+    const tickers = portfolios.flatMap((p) => p.assets.map((a) => a.ticker))
+    return Array.from(new Set(tickers))
+  },
+})
+
 export const updateDateRange = (
   state: LabSettingState,
   key: keyof LabSettingState['dateRange'],
@@ -148,5 +157,22 @@ export function usePortfoliosAction() {
     [set, nextId, setNextId]
   )
 
-  return { append }
+  const updateById = useCallback(
+    (id: number, assets: AssetWeight[]) => {
+      set((prev) =>
+        produce(prev, (draft) => {
+          const selected = draft.find((p) => p.id === id)
+          if (!selected) return
+          selected.assets = assets
+        })
+      )
+    },
+    [set]
+  )
+
+  return { append, updateById }
+}
+
+export function useUniqueTickers() {
+  return useRecoilValue(uniqueTickersState)
 }

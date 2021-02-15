@@ -64,6 +64,7 @@ export function useAssetsActions() {
   )
 
   return {
+    set,
     reset,
     append,
     updateWeight,

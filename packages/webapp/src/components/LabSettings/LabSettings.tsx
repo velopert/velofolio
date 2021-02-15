@@ -6,11 +6,15 @@ import palette from '../../lib/palette'
 import { useLabSettingView } from '../../atoms/labSettingViewState'
 import LabSettingsDefault from './LabSettingsDefault'
 import LabSettingsPortfolio from './LabSettingsPortfolio'
+import { useUniqueTickers } from '../../atoms/labSettingState'
 
 export type LabSettingsProps = {}
 
 function LabSettings({}: LabSettingsProps) {
   const { mode } = useLabSettingView()
+  const uniqueTickers = useUniqueTickers()
+
+  console.log(uniqueTickers)
 
   return (
     <div css={blockStyle}>

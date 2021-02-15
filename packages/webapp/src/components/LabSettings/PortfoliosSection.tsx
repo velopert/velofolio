@@ -4,6 +4,7 @@ import {
   useLabSettingViewActions,
   useLabSettingViewUpdate,
 } from '../../atoms/labSettingViewState'
+import useOpenPortfolio from '../../hooks/useOpenPortfolio'
 import palette from '../../lib/palette'
 import CircularIconButton from '../CircularIconButton'
 import LabSettingsSection from './LabSettingsSection'
@@ -12,6 +13,7 @@ export type PortfoliosSectionProps = {}
 
 function PortfoliosSection({}: PortfoliosSectionProps) {
   const { createPortfolio } = useLabSettingViewActions()
+  const open = useOpenPortfolio()
   const [portfolios] = usePortfoliosState()
   return (
     <LabSettingsSection title="Portfolios">
@@ -20,7 +22,13 @@ function PortfoliosSection({}: PortfoliosSectionProps) {
       </div>
       <div css={grid}>
         {portfolios.map((p) => (
-          <PortfolioItem key={p.id} assets={p.assets} name={p.name} id={p.id} />
+          <PortfolioItem
+            key={p.id}
+            assets={p.assets}
+            name={p.name}
+            id={p.id}
+            onOpen={open}
+          />
         ))}
       </div>
     </LabSettingsSection>

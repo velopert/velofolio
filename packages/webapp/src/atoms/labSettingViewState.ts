@@ -1,16 +1,17 @@
 import { useCallback } from 'react'
 import { atom, useRecoilValue, useSetRecoilState } from 'recoil'
+import { useAssetsActions } from './assetsState'
 
 export type LabSettingViewType = {
   mode: 'default' | 'portfolio'
-  selectedPortfolio: number | null
+  selectedPortfolioId: number | null
 }
 
 export const labSettingViewState = atom<LabSettingViewType>({
   key: 'labSettingModeState',
   default: {
     mode: 'default',
-    selectedPortfolio: null,
+    selectedPortfolioId: null,
   },
 })
 
@@ -29,7 +30,7 @@ export function useLabSettingViewActions() {
     update((prevValue) => ({
       ...prevValue,
       mode: 'portfolio',
-      selectedPortfolio: null,
+      selectedPortfolioId: null,
     }))
   }, [update])
 
@@ -38,7 +39,7 @@ export function useLabSettingViewActions() {
       update((prevValue) => ({
         ...prevValue,
         mode: 'portfolio',
-        selectedPortfolio: portfolioId,
+        selectedPortfolioId: portfolioId,
       }))
     },
     [update]

@@ -1,9 +1,12 @@
 import { css } from '@emotion/react'
+import { useEffect } from 'react'
 import {
   useAssetsActions,
   useAssetsState,
   useAssetsWeightSum,
 } from '../../atoms/assetsState'
+import { usePortfoliosAction } from '../../atoms/labSettingState'
+import { useLabSettingView } from '../../atoms/labSettingViewState'
 import palette from '../../lib/palette'
 import VeloIcon from '../VeloIcon'
 export type AssetsTableProps = {
@@ -11,6 +14,9 @@ export type AssetsTableProps = {
 }
 
 function AssetsTable({ focusInput }: AssetsTableProps) {
+  const { updateById } = usePortfoliosAction()
+  const { selectedPortfolioId } = useLabSettingView()
+
   const [assets] = useAssetsState()
   const { updateWeight, remove } = useAssetsActions()
   const sum = useAssetsWeightSum()
@@ -18,6 +24,11 @@ function AssetsTable({ focusInput }: AssetsTableProps) {
     if (sum === 0) return '0%'
     return ((value / sum) * 100).toFixed(2).concat('%')
   }
+
+  useEffect(() => {
+    if (!selectedPortfolioId) return
+    updateById(selectedPortfolioId, assets)
+  }, [selectedPortfolioId, assets, updateById])
 
   return (
     <div css={block}>

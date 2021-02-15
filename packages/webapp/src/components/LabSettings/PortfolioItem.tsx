@@ -9,9 +9,10 @@ export type PortfolioItemProps = {
   id: number
   assets: AssetWeight[]
   name: string
+  onOpen(id: number): void
 }
 
-function PortfolioItem({ id, assets, name }: PortfolioItemProps) {
+function PortfolioItem({ id, assets, name, onOpen }: PortfolioItemProps) {
   const ref = useRef<HTMLCanvasElement>(null)
   const chartRef = useRef<Chart | null>(null)
 
@@ -36,6 +37,9 @@ function PortfolioItem({ id, assets, name }: PortfolioItemProps) {
           legend: {
             display: false,
           },
+          animation: {
+            duration: 0,
+          },
         },
       })
       chartRef.current = chart
@@ -47,7 +51,7 @@ function PortfolioItem({ id, assets, name }: PortfolioItemProps) {
   }, [assets])
 
   return (
-    <div css={gridItem}>
+    <div css={gridItem} onClick={() => onOpen(id)}>
       <div css={pieBox}>
         <canvas ref={ref} />
       </div>
