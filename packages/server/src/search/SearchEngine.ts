@@ -29,6 +29,9 @@ class SearchEngine {
     })
   }
 
+  // TODO:
+  reloadFuse() {}
+
   constructor() {}
 
   search(keyword: string) {

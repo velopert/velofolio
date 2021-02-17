@@ -26,3 +26,20 @@ export type SectorWeighting = {
   sector: string
   percentage: number
 }
+
+export type RawHistoricalPrice = [
+  string,
+  number,
+  number,
+  number,
+  number,
+  number
+]
+export type HistoricalPrice = {
+  date: string
+  high: number
+  low: number
+  open: number
+  close: number
+  adjustedClose: number
+}

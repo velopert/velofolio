@@ -1570,6 +1570,18 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
+"@supercharge/goodies@~1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@supercharge/goodies/-/goodies-1.5.1.tgz#7ec3327419fd700074770b9363eafd6053e6a3e6"
+  integrity sha512-LrbIgboxJ9labELaN6JUcZEWAdKveohRI3u11ILb/rqrKbeXkN8/ezoLvWJ0oo9s/HeBf0REFTD3XpVEio053g==
+
+"@supercharge/promise-pool@^1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@supercharge/promise-pool/-/promise-pool-1.6.0.tgz#033aa064a4fdbe316f57d0ae1072d4ba05b02973"
+  integrity sha512-/zQnPJ2CMfGdVI1OlWn7fUfYSyLjTUHWxQ3svvrCwNznrpxZsa+nMC1QDkJ5LCiVzYrfQx7sK5pYcSSaQpmE+w==
+  dependencies:
+    "@supercharge/goodies" "~1.5.1"
+
 "@surma/rollup-plugin-off-main-thread@^1.1.1":
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/@surma/rollup-plugin-off-main-thread/-/rollup-plugin-off-main-thread-1.4.2.tgz#e6786b6af5799f82f7ab3a82e53f6182d2b91a58"

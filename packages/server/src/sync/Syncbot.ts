@@ -15,7 +15,7 @@ import { HistoricalPrice } from '../entity/HistoricalPrice'
 import cliProgress from 'cli-progress'
 
 const tickersDir = path.resolve(__dirname, 'tickers')
-const LIMIT = 5
+const LIMIT = 8
 
 const sleep = (duration: number) =>
   new Promise((resolve) => setTimeout(resolve, duration))
@@ -195,6 +195,7 @@ class Syncbot {
       const ticker = tickers.pop()
       this.syncStock(ticker!)
         .catch((e) => {
+          console.log(e)
           failedTickers.push(ticker!)
           fs.appendFile(errorsDir, `${ticker}\n`, 'utf8')
         })

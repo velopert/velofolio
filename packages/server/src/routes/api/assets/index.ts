@@ -108,7 +108,7 @@ const assetsRoute: FastifyPluginCallback = (fastify, opts, done) => {
         order: { date: 'ASC' },
       })
 
-      // [date, high, lkow, open, close, adjusted_close]
+      // [date, high, low, open, close, adjusted_close]
       const transformed = historicalPrices.map(
         ({ date, high, low, open, close, adjusted_close }) => [
           date,
