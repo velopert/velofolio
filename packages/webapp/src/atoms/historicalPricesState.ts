@@ -97,7 +97,6 @@ export function useFetchHistoricalPrices() {
     async (tickers: string[]) => {
       startLoading()
       const multiHistoricalPrices = await getMultiHistoricalPrices(tickers)
-      console.log(multiHistoricalPrices)
       const pricesByTicker = multiHistoricalPrices.reduce((acc, current, i) => {
         const key = tickers[i]
         acc[key] = current

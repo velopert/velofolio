@@ -137,6 +137,10 @@ export const updateDateRange = (
     draft.dateRange[key] = value
   })
 
+export function useInitialAmountState() {
+  return useRecoilState(initialAmountState)
+}
+
 export function usePortfoliosState() {
   return useRecoilState(portfoliosState)
 }

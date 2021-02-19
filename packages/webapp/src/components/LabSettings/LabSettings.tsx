@@ -8,12 +8,14 @@ import LabSettingsDefault from './LabSettingsDefault'
 import LabSettingsPortfolio from './LabSettingsPortfolio'
 import { useUniqueTickers } from '../../atoms/labSettingState'
 import useTickerSync from '../../hooks/useTickerSync'
+import useGenerateReportEffect from '../../hooks/useGenerateReportEffect'
 
 export type LabSettingsProps = {}
 
 function LabSettings({}: LabSettingsProps) {
   const { mode } = useLabSettingView()
   useTickerSync()
+  useGenerateReportEffect()
 
   return (
     <div css={blockStyle}>
