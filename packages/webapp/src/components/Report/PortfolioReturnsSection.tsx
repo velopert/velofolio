@@ -14,7 +14,14 @@ function PortfolioReturnsSection({}: PortfolioReturnsSectionProps) {
   const [portfolioReturns] = usePortfolioReturnsState()
 
   useEffect(() => {
-    if (!portfolioReturns) return
+    if (!portfolioReturns || portfolioReturns.length === 0) {
+      if (chartRef.current) {
+        chartRef.current.destroy()
+        chartRef.current = null
+      }
+      return
+    }
+
     const ctx = canvasRef.current?.getContext('2d')
     if (!ctx) return
     if (!chartRef.current) {
@@ -36,6 +43,28 @@ function PortfolioReturnsSection({}: PortfolioReturnsSectionProps) {
                 },
               },
             ],
+            yAxes: [
+              {
+                ticks: {
+                  beginAtZero: true,
+                  callback: function (value, index, values) {
+                    return '$' + value.toLocaleString()
+                  },
+                },
+              },
+            ],
+          },
+          tooltips: {
+            callbacks: {
+              label: (tooltipItem, data) => {
+                const label =
+                  data.datasets![tooltipItem.datasetIndex!].label ?? ''
+                const value = Math.round(
+                  tooltipItem.yLabel as number
+                ).toLocaleString()
+                return `${label} - $${value}`
+              },
+            },
           },
         },
       })

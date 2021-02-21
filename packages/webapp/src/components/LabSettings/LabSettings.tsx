@@ -6,7 +6,7 @@ import palette from '../../lib/palette'
 import { useLabSettingView } from '../../atoms/labSettingViewState'
 import LabSettingsDefault from './LabSettingsDefault'
 import LabSettingsPortfolio from './LabSettingsPortfolio'
-import { useUniqueTickers } from '../../atoms/labSettingState'
+import { useUniqueTickersValue } from '../../atoms/labSettingState'
 import useTickerSync from '../../hooks/useTickerSync'
 import useGenerateReportEffect from '../../hooks/useGenerateReportEffect'
 

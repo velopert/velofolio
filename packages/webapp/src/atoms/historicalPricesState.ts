@@ -36,7 +36,6 @@ export const firstHistoricalDate = selector({
   get: ({ get }) => {
     const info = Object.entries(get(pricesByTicker))
       .map(([ticker, prices]) => {
-        console.log(ticker, prices)
         return {
           ticker,
           date: new Date(prices[0].date).getTime(),

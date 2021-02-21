@@ -26,13 +26,16 @@ export function useLabSettingViewUpdate() {
 export function useLabSettingViewActions() {
   const update = useLabSettingViewUpdate()
 
-  const createPortfolio = useCallback(() => {
-    update((prevValue) => ({
-      ...prevValue,
-      mode: 'portfolio',
-      selectedPortfolioId: null,
-    }))
-  }, [update])
+  const createPortfolio = useCallback(
+    (portfoliodId: number) => {
+      update((prevValue) => ({
+        ...prevValue,
+        mode: 'portfolio',
+        selectedPortfolioId: portfoliodId,
+      }))
+    },
+    [update]
+  )
 
   const openPortfolio = useCallback(
     (portfolioId: number) => {

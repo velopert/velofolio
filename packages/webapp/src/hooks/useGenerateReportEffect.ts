@@ -1,8 +1,5 @@
 import { useEffect, useMemo } from 'react'
-import {
-  useFirstHistoricalDate,
-  useHistoricalPricesState,
-} from '../atoms/historicalPricesState'
+import { useHistoricalPricesState } from '../atoms/historicalPricesState'
 import {
   Portfolio,
   useInitialAmountState,
@@ -13,6 +10,7 @@ import { HistoricalPrice } from '../lib/api/assets/types'
 import chartColors from '../lib/chartColors'
 import useUnfetchedTickers from './useUnfetchedTickers'
 import { transparentize } from 'polished'
+import useFirstHistoricalDate from './useFirstHistoricalDate'
 
 type GenerateReportDataParams = {
   initialAmount: number
@@ -102,12 +100,16 @@ export default function useGenerateReportEffect() {
   const [initialAmount] = useInitialAmountState()
   const [{ pricesByTicker }] = useHistoricalPricesState()
   const firstHistoricalDate = useFirstHistoricalDate()
+
   const [portfolios] = usePortfoliosState()
   const unfetchedTickers = useUnfetchedTickers()
   const setPortfolioReturns = useSetPortfolioReturns()
 
   useEffect(() => {
-    if (unfetchedTickers.length > 0 || !firstHistoricalDate) return
+    if (unfetchedTickers.length > 0 || !firstHistoricalDate) {
+      setPortfolioReturns(null)
+      return
+    }
     const { portfolioReturns } = generateReportData({
       initialAmount,
       portfolios,

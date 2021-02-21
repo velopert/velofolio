@@ -1,5 +1,8 @@
 import { css } from '@emotion/react'
-import { usePortfoliosState } from '../../atoms/labSettingState'
+import {
+  usePortfoliosAction,
+  usePortfoliosState,
+} from '../../atoms/labSettingState'
 import {
   useLabSettingViewActions,
   useLabSettingViewUpdate,
@@ -15,10 +18,17 @@ function PortfoliosSection({}: PortfoliosSectionProps) {
   const { createPortfolio } = useLabSettingViewActions()
   const open = useOpenPortfolio()
   const [portfolios] = usePortfoliosState()
+  const { append } = usePortfoliosAction()
+
+  const onClick = () => {
+    const portfolio = append()
+    createPortfolio(portfolio.id)
+  }
+
   return (
     <LabSettingsSection title="Portfolios">
       <div css={buttonPositioner}>
-        <CircularIconButton icon="plus" onClick={createPortfolio} />
+        <CircularIconButton icon="plus" onClick={onClick} />
       </div>
       <div css={grid}>
         {portfolios.map((p) => (

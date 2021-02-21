@@ -23,7 +23,6 @@ export type LabSettingsPortfolioProps = {}
 
 function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
   const { closePortfolio } = useLabSettingViewActions()
-  const { selectedPortfolioId } = useLabSettingView()
   const {
     name,
     rebalancing,
@@ -31,7 +30,8 @@ function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
     onChangeRebalancing,
     rebalancingOptions,
   } = usePortfolioOptionState()
-  const { append } = usePortfoliosAction()
+  const { cancelPortfolioCreate } = usePortfoliosAction()
+
   const [assets] = useAssetsState()
 
   const onSubmit = () => {
@@ -44,19 +44,17 @@ function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
       return
     }
 
-    if (!selectedPortfolioId) {
-      append({
-        name,
-        rebalancing,
-        assets,
-      })
-    }
+    closePortfolio()
+  }
+
+  const onCancel = () => {
+    cancelPortfolioCreate()
     closePortfolio()
   }
 
   return (
     <div css={block}>
-      <button css={backButton} onClick={closePortfolio}>
+      <button css={backButton} onClick={onCancel}>
         <VeloIcon name="arrow_back" />
       </button>
       <LabSettingsSection title="Portfolio Name">

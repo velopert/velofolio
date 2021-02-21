@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 import { useHistoricalPricesState } from '../atoms/historicalPricesState'
-import { useUniqueTickers } from '../atoms/labSettingState'
+import { useUniqueTickersValue } from '../atoms/labSettingState'
 
 export default function useUnfetchedTickers() {
-  const uniqueTickers = useUniqueTickers()
+  const uniqueTickers = useUniqueTickersValue()
   const [{ pricesByTicker }] = useHistoricalPricesState()
 
   const unfetchedTickers = useMemo(

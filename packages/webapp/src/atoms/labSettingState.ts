@@ -153,13 +153,17 @@ export function usePortfoliosAction() {
   const set = useSetRecoilState(portfoliosState)
   const [nextId, setNextId] = useNextPortfolioIdState()
 
-  const append = useCallback(
-    (portfolio: Omit<Portfolio, 'id'>) => {
-      set((prev) => prev.concat({ id: nextId, ...portfolio }))
-      setNextId(nextId + 1)
-    },
-    [set, nextId, setNextId]
-  )
+  const append = useCallback(() => {
+    const processedPortfolio: Portfolio = {
+      id: nextId,
+      name: `Portfolio ${nextId}`,
+      assets: [],
+      rebalancing: 'Anually',
+    }
+    set((prev) => prev.concat(processedPortfolio))
+    setNextId(nextId + 1)
+    return processedPortfolio
+  }, [set, nextId, setNextId])
 
   const updateById = useCallback(
     (id: number, assets: AssetWeight[]) => {
@@ -174,9 +178,14 @@ export function usePortfoliosAction() {
     [set]
   )
 
-  return { append, updateById }
+  const cancelPortfolioCreate = useCallback(() => {
+    set((prev) => prev.slice(0, prev.length - 1))
+    setNextId((prevId) => prevId - 1)
+  }, [set, setNextId])
+
+  return { append, updateById, cancelPortfolioCreate }
 }
 
-export function useUniqueTickers() {
+export function useUniqueTickersValue() {
   return useRecoilValue(uniqueTickersState)
 }
