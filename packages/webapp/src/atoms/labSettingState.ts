@@ -18,13 +18,15 @@ export type LabSettingState = {
     endDate: MonthYearValue
   }
   initialAmount: number
-  cashflows: {
-    enabled: boolean
-    amount: number
-    period: string
-  }
+  cashflows: Cashflows
   portfolios: Portfolio[]
   nextPortfolioId: number
+}
+
+export type Cashflows = {
+  enabled: boolean
+  amount: number
+  period: string
 }
 
 export type Portfolio = {
@@ -136,6 +138,10 @@ export const updateDateRange = (
   produce(state, (draft) => {
     draft.dateRange[key] = value
   })
+
+export function useCashflowState() {
+  return useRecoilState(cashflowsState)
+}
 
 export function useInitialAmountState() {
   return useRecoilState(initialAmountState)
