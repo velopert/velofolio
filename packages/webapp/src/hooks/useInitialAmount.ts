@@ -4,8 +4,8 @@ import { initialAmountState } from '../atoms/labSettingState'
 import useFormattedNumber from './useFormattedNumber'
 
 export default function useInitialAmount() {
-  const [value, onChange, setValue] = useFormattedNumber(10000)
   const [initialAmount, setInitialAmount] = useRecoilState(initialAmountState)
+  const [value, onChange, setValue] = useFormattedNumber(initialAmount)
 
   useEffect(() => {
     setInitialAmount(parseInt(value.replace(/[^\d]+/g, ''), 10))
