@@ -1,7 +1,9 @@
 import { useEffect, useMemo } from 'react'
 import { useHistoricalPricesState } from '../atoms/historicalPricesState'
 import {
+  Cashflows,
   Portfolio,
+  useCashflowState,
   useInitialAmountState,
   usePortfoliosState,
 } from '../atoms/labSettingState'
@@ -11,12 +13,14 @@ import chartColors from '../lib/chartColors'
 import useUnfetchedTickers from './useUnfetchedTickers'
 import { transparentize } from 'polished'
 import useFirstHistoricalDate from './useFirstHistoricalDate'
+import { periodToMonthsMap } from '../lib/constants'
 
 type GenerateReportDataParams = {
   initialAmount: number
   portfolios: Portfolio[]
   pricesByTicker: Record<string, HistoricalPrice[]>
   startDate: Date
+  cashflows: Cashflows
 }
 
 function generateReportData({
@@ -24,6 +28,7 @@ function generateReportData({
   portfolios,
   pricesByTicker,
   startDate,
+  cashflows,
 }: GenerateReportDataParams) {
   // 1. filter prices that contains date bigger than given start date
   const startTime = new Date(startDate).getTime()
@@ -67,10 +72,37 @@ function generateReportData({
         tickerValueMap.set(asset.ticker, priceNext)
       })
 
-      const totalAmount = Array.from(tickerValueMap.values()).reduce(
+      if (cashflows.enabled) {
+        const months = periodToMonthsMap[cashflows.period] ?? null
+        if (months && i % months === 0) {
+          portfolio.assets.forEach((asset) => {
+            const currentValue = tickerValueMap.get(asset.ticker)!
+            tickerValueMap.set(
+              asset.ticker,
+              currentValue + (cashflows.amount * asset.weight) / weightSum
+            )
+          })
+        }
+      }
+
+      let totalAmount = Array.from(tickerValueMap.values()).reduce(
         (acc, current) => acc + current,
         0
       )
+
+      if (portfolio.rebalancing !== 'No Rebalancing') {
+        const months = periodToMonthsMap[portfolio.rebalancing] ?? null
+        if (months && i % months === 0) {
+          console.log('baam')
+          portfolio.assets.forEach((asset) => {
+            tickerValueMap.set(
+              asset.ticker,
+              (totalAmount * asset.weight) / weightSum
+            )
+          })
+        }
+      }
+
       dataset.push(totalAmount)
     }
     return {
@@ -100,6 +132,7 @@ export default function useGenerateReportEffect() {
   const [initialAmount] = useInitialAmountState()
   const [{ pricesByTicker }] = useHistoricalPricesState()
   const firstHistoricalDate = useFirstHistoricalDate()
+  const [cashflows, setCashflows] = useCashflowState()
 
   const [portfolios] = usePortfoliosState()
   const unfetchedTickers = useUnfetchedTickers()
@@ -115,6 +148,7 @@ export default function useGenerateReportEffect() {
       portfolios,
       pricesByTicker,
       startDate: firstHistoricalDate?.date,
+      cashflows,
     })
     setPortfolioReturns(portfolioReturns)
   }, [
@@ -124,6 +158,7 @@ export default function useGenerateReportEffect() {
     portfolios,
     unfetchedTickers,
     setPortfolioReturns,
+    cashflows,
   ])
   // check unfetchedTickers is empty before fetch
 }
