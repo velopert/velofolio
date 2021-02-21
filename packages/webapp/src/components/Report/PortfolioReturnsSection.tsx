@@ -31,6 +31,7 @@ function PortfolioReturnsSection({}: PortfolioReturnsSectionProps) {
           datasets: portfolioReturns,
         },
         options: {
+          maintainAspectRatio: false,
           animation: {
             duration: 0,
           },
