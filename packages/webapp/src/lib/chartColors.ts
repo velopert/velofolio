@@ -1,7 +1,7 @@
 const chartColors = [
   '#ef5350',
   '#ffa726',
-  '#ffee58',
+  '#ffeb3b',
   '#66bb6a',
   '#42a5f5',
   '#5c6bc0',
@@ -13,7 +13,6 @@ const chartColors = [
   '#ec407a',
   '#f44336',
   '#ff9800',
-  '#ffeb3b',
   '#4caf50',
   '#2196f3',
   '#3f51b5',
