@@ -3,12 +3,8 @@ import {
   usePortfoliosAction,
   usePortfoliosState,
 } from '../../atoms/labSettingState'
-import {
-  useLabSettingViewActions,
-  useLabSettingViewUpdate,
-} from '../../atoms/labSettingViewState'
+import { useLabSettingViewActions } from '../../atoms/labSettingViewState'
 import useOpenPortfolio from '../../hooks/useOpenPortfolio'
-import palette from '../../lib/palette'
 import CircularIconButton from '../CircularIconButton'
 import LabSettingsSection from './LabSettingsSection'
 import PortfolioItem from './PortfolioItem'

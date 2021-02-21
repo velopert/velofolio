@@ -5,6 +5,7 @@ import { useAssetsActions } from './assetsState'
 export type LabSettingViewType = {
   mode: 'default' | 'portfolio'
   selectedPortfolioId: number | null
+  isCreating: boolean
 }
 
 export const labSettingViewState = atom<LabSettingViewType>({
@@ -12,6 +13,7 @@ export const labSettingViewState = atom<LabSettingViewType>({
   default: {
     mode: 'default',
     selectedPortfolioId: null,
+    isCreating: false,
   },
 })
 
@@ -32,6 +34,7 @@ export function useLabSettingViewActions() {
         ...prevValue,
         mode: 'portfolio',
         selectedPortfolioId: portfoliodId,
+        isCreating: true,
       }))
     },
     [update]
@@ -43,6 +46,7 @@ export function useLabSettingViewActions() {
         ...prevValue,
         mode: 'portfolio',
         selectedPortfolioId: portfolioId,
+        isCreating: false,
       }))
     },
     [update]

@@ -23,6 +23,7 @@ export type LabSettingsPortfolioProps = {}
 
 function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
   const { closePortfolio } = useLabSettingViewActions()
+  const { isCreating } = useLabSettingView()
   const {
     name,
     rebalancing,
@@ -48,7 +49,9 @@ function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
   }
 
   const onCancel = () => {
-    cancelPortfolioCreate()
+    if (isCreating) {
+      cancelPortfolioCreate()
+    }
     closePortfolio()
   }
 
