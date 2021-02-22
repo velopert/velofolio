@@ -2,6 +2,7 @@ import {
   atom,
   DefaultValue,
   selector,
+  selectorFamily,
   useRecoilState,
   useRecoilValue,
   useSetRecoilState,
@@ -130,6 +131,41 @@ export const uniqueTickersState = selector<string[]>({
   },
 })
 
+export const portfolioState = selectorFamily<Portfolio | undefined, number>({
+  key: 'portfolioState',
+  get: (portfolioId) => ({ get }) => {
+    const portfolios = get(portfoliosState)
+    return portfolios.find((p) => p.id === portfolioId)
+  },
+  set: (portfolioId) => ({ set }, newValue) => {
+    set(portfoliosState, (prevValue) => {
+      if (newValue instanceof DefaultValue) return newValue
+      return produce(prevValue, (draft) => {
+        const portfolioIndex = draft.findIndex((p) => p.id === portfolioId)
+        if (!newValue) return
+        draft[portfolioIndex] = newValue
+      })
+    })
+  },
+})
+
+export const rebalancingState = selectorFamily<string, number>({
+  key: 'rebalancingState',
+  get: (portfolioId: number) => ({ get }) => {
+    return get(portfolioState(portfolioId))?.rebalancing ?? 'Anually'
+  },
+  set: (portfolioId) => ({ set }, newValue) => {
+    set(portfolioState(portfolioId), (prevValue) => {
+      if (newValue instanceof DefaultValue) return newValue
+      if (!prevValue) return
+      return {
+        ...prevValue,
+        rebalancing: newValue,
+      }
+    })
+  },
+})
+
 export const updateDateRange = (
   state: LabSettingState,
   key: keyof LabSettingState['dateRange'],
@@ -194,4 +230,8 @@ export function usePortfoliosAction() {
 
 export function useUniqueTickersValue() {
   return useRecoilValue(uniqueTickersState)
+}
+
+export function useRebalancingState(portfolioId: number) {
+  return useRecoilState(rebalancingState(portfolioId))
 }

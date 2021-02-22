@@ -93,13 +93,14 @@ function generateReportData({
       if (portfolio.rebalancing !== 'No Rebalancing') {
         const months = periodToMonthsMap[portfolio.rebalancing] ?? null
         if (months && i % months === 0) {
-          console.log('baam')
+          console.log('Before', tickerValueMap)
           portfolio.assets.forEach((asset) => {
             tickerValueMap.set(
               asset.ticker,
-              (totalAmount * asset.weight) / weightSum
+              totalAmount * (asset.weight / weightSum)
             )
           })
+          console.log('After', tickerValueMap)
         }
       }
 
