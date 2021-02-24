@@ -235,3 +235,7 @@ export function useUniqueTickersValue() {
 export function useRebalancingState(portfolioId: number) {
   return useRecoilState(rebalancingState(portfolioId))
 }
+
+export function useDateRangeValue() {
+  return useRecoilValue(dateRangeState)
+}
