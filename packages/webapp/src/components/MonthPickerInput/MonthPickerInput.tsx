@@ -41,8 +41,8 @@ function MonthPickerInput({
   }
 
   useEffect(() => {
-    onChange(value)
-  }, [value])
+    onChange(localValue)
+  }, [localValue, onChange])
 
   const today = useMemo(() => {
     const d = new Date()
