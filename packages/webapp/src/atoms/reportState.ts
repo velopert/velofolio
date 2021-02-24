@@ -16,12 +16,35 @@ const portfolioReturnsState = atom<PortfolioReturns | null>({
   dangerouslyAllowMutability: true,
 })
 
+export interface Indicator {
+  finalBalance: number
+  cagr: number
+  stdev: number
+  mdd: number
+  sharpeRatio: number
+  sortinoRatio: number
+}
+export type IndicatorRecord = Record<number, Indicator>
+
+const indicatorByIdState = atom<IndicatorRecord>({
+  key: 'indicatorByIdState',
+  default: {},
+})
+
 export function usePortfolioReturnsState() {
   return useRecoilState(portfolioReturnsState)
 }
 
 export function useSetPortfolioReturns() {
   return useSetRecoilState(portfolioReturnsState)
+}
+
+export function useIndicatorByIdState() {
+  return useRecoilState(indicatorByIdState)
+}
+
+export function useSetIndicatorById() {
+  return useSetRecoilState(indicatorByIdState)
 }
 
 export function useReportValue() {
