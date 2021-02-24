@@ -1,6 +1,7 @@
 import { css } from '@emotion/react'
 import { useReportValue } from '../../atoms/reportState'
 import palette from '../../lib/palette'
+import IndicatorsSection from './IndicatorsSection'
 import PortfolioReturnsSection from './PortfolioReturnsSection'
 
 export type ReportProps = {}
@@ -9,6 +10,7 @@ function Report({}: ReportProps) {
   return (
     <div css={block}>
       <h1>Report</h1>
+      <IndicatorsSection />
       <PortfolioReturnsSection />
     </div>
   )
