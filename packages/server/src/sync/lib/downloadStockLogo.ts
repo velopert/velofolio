@@ -20,31 +20,35 @@ function createHashFromStream(readStream: fs.ReadStream) {
 
 export function downloadStockLogo(symbol: string, dir: string) {
   return new Promise(async (resolve, reject) => {
-    const response = await axios.get(
-      `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${symbol}.png`,
-      {
-        responseType: 'stream',
+    try {
+      const response = await axios.get(
+        `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${symbol}.png`,
+        {
+          responseType: 'stream',
+        }
+      )
+
+      const hashStream = response.data.pipe(new stream.PassThrough())
+      const fileStream = response.data.pipe(new stream.PassThrough())
+
+      const hash = await createHashFromStream(hashStream)
+      if (hash === DEFAULT_IMAGE_HASH) {
+        const error = new Error('Logo image does not exist')
+        error.name = 'LogoImageNotFoundError'
+        reject(error)
+        return
       }
-    )
 
-    const hashStream = response.data.pipe(new stream.PassThrough())
-    const fileStream = response.data.pipe(new stream.PassThrough())
-
-    const hash = await createHashFromStream(hashStream)
-    if (hash === DEFAULT_IMAGE_HASH) {
-      const error = new Error('Logo image does not exist')
-      error.name = 'LogoImageNotFoundError'
-      reject(error)
-      return
+      const file = fs.createWriteStream(dir)
+      fileStream.pipe(file)
+      file.on('error', (error) => {
+        reject(error)
+      })
+      file.on('close', () => {
+        resolve(true)
+      })
+    } catch (e) {
+      reject(e)
     }
-
-    const file = fs.createWriteStream(dir)
-    fileStream.pipe(file)
-    file.on('error', (error) => {
-      reject(error)
-    })
-    file.on('close', () => {
-      resolve(true)
-    })
   })
 }
