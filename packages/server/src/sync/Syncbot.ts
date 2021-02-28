@@ -13,9 +13,10 @@ import { AssetMeta } from '../entity/AssetMeta'
 import { SectorWeighting } from '../entity/SectorWeighting'
 import { HistoricalPrice } from '../entity/HistoricalPrice'
 import cliProgress from 'cli-progress'
+import getThreeMonthsTreasuryRate from './lib/getThreeMonthsTreasuryRate'
 
 const tickersDir = path.resolve(__dirname, 'tickers')
-const LIMIT = 8
+const LIMIT = 5
 
 const sleep = (duration: number) =>
   new Promise((resolve) => setTimeout(resolve, duration))
@@ -58,10 +59,9 @@ class Syncbot {
       },
     })
 
-    const [profile, rawHistoricalPrices] = await Promise.all([
-      getStockProfile(ticker),
-      getHistoricalPrice(ticker),
-    ])
+    const profile = await getStockProfile(ticker)
+
+    const rawHistoricalPrices = await getHistoricalPrice(ticker)
 
     const sectorWeightingsData =
       profile.sector === '' ? await getSectorWeightings(ticker) : null
@@ -205,6 +205,43 @@ class Syncbot {
         })
     }
     bar.stop()
+  }
+
+  async syncTreasuryRate() {
+    const data = await getThreeMonthsTreasuryRate()
+    const exists = await getRepository(Asset).findOne({ ticker: 'DTB3' })
+    if (exists) {
+      // TODO: only update
+      return
+    }
+
+    const assetType = await getRepository(AssetType).findOne({
+      type: 'U.S. Interest Rate',
+    })
+    const asset = new Asset()
+    asset.asset_type = assetType!
+    asset.name = '3-Month Treasury Bill'
+    asset.ticker = 'DTB3'
+    asset.description = ''
+    asset.is_etf = false
+    asset.sector = ''
+
+    const historicalPrices = data.map(({ date, value }) => {
+      const historicalPrice = new HistoricalPrice()
+      historicalPrice.asset = asset
+      historicalPrice.volume = 0
+      historicalPrice.close = value
+      historicalPrice.date = new Date(date)
+      historicalPrice.high = value
+      historicalPrice.low = value
+      historicalPrice.type = 'monthly'
+      historicalPrice.open = value
+      historicalPrice.adjusted_close = value
+      return historicalPrice
+    })
+
+    await getRepository(Asset).save(asset)
+    await getRepository(HistoricalPrice).save(historicalPrices)
   }
 }
 

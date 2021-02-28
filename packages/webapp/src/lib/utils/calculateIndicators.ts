@@ -23,3 +23,20 @@ export const stdev = (array: number[]) => {
       (array.length - 1)
   )
 }
+
+/**
+ * https://www.investopedia.com/terms/m/maximum-drawdown-mdd.asp
+ * https://blogs.cfainstitute.org/investor/2013/02/12/sculpting-investment-portfolios-maximum-drawdown-and-optimal-portfolio-strategy/
+ * https://support.heybit.io/ko/articles/2388132-mdd%EB%8A%94-%EB%AC%B4%EC%97%87%EC%9D%B8%EA%B0%80%EC%9A%94
+ */
+export const maxDrawdown = (array: number[]) => {
+  let currentMaxDrawdown = 0
+  let maxValue = array[0]
+  for (let i = 1; i < array.length; i++) {
+    const current = array[i]
+    const drawdown = (-1 * (maxValue - current)) / maxValue
+    currentMaxDrawdown = Math.min(drawdown, currentMaxDrawdown)
+    maxValue = Math.max(maxValue, current)
+  }
+  return currentMaxDrawdown
+}
