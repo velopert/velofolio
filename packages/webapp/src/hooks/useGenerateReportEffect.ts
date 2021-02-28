@@ -80,10 +80,15 @@ function generateReportData({
   const months = Object.values(filteredPricesByTicker)[0].map((hp) => hp.date)
   const portfolioChartData = portfolios.map((portfolio) => {
     const yearlyBalance: { date: Date; balance: number }[] = []
+    const yearlyBalanceWOC: { date: Date; balance: number }[] = []
+    const yearlyBalances = [yearlyBalance, yearlyBalanceWOC]
     const indicator: Indicator = { ...initialIndicator }
     indicatorById[portfolio.id] = indicator
     const dataset: number[] = [initialAmount]
+    const datasetWOC: number[] = [initialAmount]
     const tickerValueMap = new Map<string, number>()
+    const tickerValueMapWOC = new Map<string, number>() // without cashflow
+    const tickerValueMaps = [tickerValueMap, tickerValueMapWOC]
     const weightSum = portfolio.assets.reduce(
       (acc, current) => acc + current.weight,
       0
@@ -91,15 +96,16 @@ function generateReportData({
 
     // set initial amount for each tickers
     portfolio.assets.forEach((asset) => {
-      tickerValueMap.set(
-        asset.ticker,
-        (initialAmount * asset.weight) / weightSum
-      )
+      tickerValueMaps.forEach((tvm) => {
+        tvm.set(asset.ticker, (initialAmount * asset.weight) / weightSum)
+      })
     })
 
-    yearlyBalance.push({
-      date: startDate,
-      balance: initialAmount,
+    yearlyBalances.forEach((yb) => {
+      yb.push({
+        date: startDate,
+        balance: initialAmount,
+      })
     })
 
     for (let i = 1; i < monthsCount; i += 1) {
@@ -108,10 +114,12 @@ function generateReportData({
         const pricePrev = prices[i - 1].close
         const priceCurrent = prices[i].close
         // const diffRatio = (priceCurrent - pricePrev) / pricePrev
-        const currentAmount = tickerValueMap.get(asset.ticker)!
-        const priceNext = (priceCurrent / pricePrev) * currentAmount
-
-        tickerValueMap.set(asset.ticker, priceNext)
+        const ratio = priceCurrent / pricePrev
+        tickerValueMaps.forEach((tvm) => {
+          const currentAmount = tvm.get(asset.ticker)!
+          const priceNext = ratio * currentAmount
+          tvm.set(asset.ticker, priceNext)
+        })
       })
 
       if (cashflows.enabled) {
@@ -127,9 +135,11 @@ function generateReportData({
         }
       }
 
-      let totalAmount = Array.from(tickerValueMap.values()).reduce(
-        (acc, current) => acc + current,
-        0
+      let [totalAmount, totalAmountWOC] = tickerValueMaps.map((tvm) =>
+        Array.from(tvm.values()).reduce(
+          (acc: number, current: number) => acc + current,
+          0
+        )
       )
 
       if (portfolio.rebalancing !== 'No Rebalancing') {
@@ -140,6 +150,10 @@ function generateReportData({
               asset.ticker,
               totalAmount * (asset.weight / weightSum)
             )
+            tickerValueMapWOC.set(
+              asset.ticker,
+              totalAmountWOC * (asset.weight / weightSum)
+            )
           })
         }
       }
@@ -149,9 +163,14 @@ function generateReportData({
           date: new Date(months[i]),
           balance: totalAmount,
         })
+        yearlyBalanceWOC.push({
+          date: new Date(months[i]),
+          balance: totalAmountWOC,
+        })
       }
 
       dataset.push(totalAmount)
+      datasetWOC.push(totalAmountWOC)
     }
 
     const yearlyProfitRate = yearlyBalance.reduce<number[]>(
@@ -166,15 +185,26 @@ function generateReportData({
       []
     )
 
-    console.log(yearlyBalance, yearlyProfitRate)
+    const yearlyProfitRateWOC = yearlyBalanceWOC.reduce<number[]>(
+      (acc, current, i, array) => {
+        if (i === 0) return acc
+        const prev = array[i - 1]
+        const diff = current.balance - prev.balance
+        const rate = diff / prev.balance
+        acc.push(rate)
+        return acc
+      },
+      []
+    )
+
     indicator.finalBalance = dataset[dataset.length - 1]
     indicator.cagr = cagr({
       beginningValue: initialAmount,
-      endingValue: indicator.finalBalance,
+      endingValue: datasetWOC[datasetWOC.length - 1],
       yearsCount: monthsCount / 12,
     })
-    indicator.mdd = maxDrawdown(dataset)
-    indicator.stdev = stdev(yearlyProfitRate)
+    indicator.mdd = maxDrawdown(datasetWOC)
+    indicator.stdev = stdev(yearlyProfitRateWOC)
 
     return {
       dataset,
