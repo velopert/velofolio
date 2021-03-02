@@ -9,12 +9,14 @@ import LabSettingsPortfolio from './LabSettingsPortfolio'
 import { useUniqueTickersValue } from '../../atoms/labSettingState'
 import useTickerSync from '../../hooks/useTickerSync'
 import useGenerateReportEffect from '../../hooks/useGenerateReportEffect'
+import useTB3HistoricalPricesSync from '../../hooks/useTB3HistoricalPricesSync'
 
 export type LabSettingsProps = {}
 
 function LabSettings({}: LabSettingsProps) {
   const { mode } = useLabSettingView()
   useTickerSync()
+  useTB3HistoricalPricesSync()
   useGenerateReportEffect()
 
   return (

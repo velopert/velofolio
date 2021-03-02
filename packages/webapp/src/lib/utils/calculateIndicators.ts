@@ -40,3 +40,15 @@ export const maxDrawdown = (array: number[]) => {
   }
   return currentMaxDrawdown
 }
+
+export const sharpeRatio = (
+  monthlyRates: number[],
+  monthlyRiskFreeRates: number[]
+) => {
+  console.log(monthlyRates, monthlyRiskFreeRates)
+  const rateDiffs = monthlyRates.map(
+    (rate, index) => rate - monthlyRiskFreeRates[index]
+  )
+  const monthlySharpeRatio = mean(rateDiffs) / stdev(rateDiffs)
+  return monthlySharpeRatio * Math.sqrt(12)
+}

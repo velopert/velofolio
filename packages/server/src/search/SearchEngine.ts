@@ -1,3 +1,4 @@
+import { AssetType } from 'entity/AssetType'
 import Fuse from 'fuse.js'
 import { getRepository } from 'typeorm'
 import { Asset } from '../entity/Asset'
@@ -7,7 +8,14 @@ class SearchEngine {
 
   async initialize() {
     const repo = getRepository(Asset)
-    const assets = await repo.find()
+    const usStocks = await getRepository(AssetType).findOne({
+      type: 'U.S. Stock',
+    })
+    const assets = await repo.find({
+      where: {
+        asset_type: usStocks,
+      },
+    })
     this.fuse = new Fuse(assets, {
       useExtendedSearch: true,
       includeScore: true,

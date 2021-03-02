@@ -1,5 +1,8 @@
 import { useEffect, useMemo } from 'react'
-import { useHistoricalPricesState } from '../atoms/historicalPricesState'
+import {
+  useHistoricalPricesState,
+  useTB3HistoricalPricesState,
+} from '../atoms/historicalPricesState'
 import {
   Cashflows,
   Portfolio,
@@ -18,7 +21,12 @@ import useUnfetchedTickers from './useUnfetchedTickers'
 import { transparentize } from 'polished'
 import useFirstHistoricalDate from './useFirstHistoricalDate'
 import { periodToMonthsMap } from '../lib/constants'
-import { cagr, maxDrawdown, stdev } from '../lib/utils/calculateIndicators'
+import {
+  cagr,
+  maxDrawdown,
+  sharpeRatio,
+  stdev,
+} from '../lib/utils/calculateIndicators'
 
 type GenerateReportDataParams = {
   initialAmount: number
@@ -27,6 +35,7 @@ type GenerateReportDataParams = {
   startDate: Date
   lastDate: Date
   cashflows: Cashflows
+  tb3HistoricalPrices: HistoricalPrice[]
 }
 
 interface Indicator {
@@ -56,6 +65,7 @@ function generateReportData({
   startDate,
   lastDate,
   cashflows,
+  tb3HistoricalPrices,
 }: GenerateReportDataParams) {
   const indicatorById: IndicatorRecord = {}
 
@@ -64,15 +74,36 @@ function generateReportData({
   const startTime = new Date(startDate).getTime()
   const lastTime = lastDate.getTime()
 
+  const filterByTime = (hp: HistoricalPrice) => {
+    const d = new Date(hp.date)
+    return d.getTime() >= startTime && d.getTime() < lastTime
+  }
+
   const filteredPricesByTicker = Object.entries(pricesByTicker).reduce(
     (acc, [ticker, prices]) => {
-      acc[ticker] = prices.filter((price) => {
-        const d = new Date(price.date)
-        return d.getTime() >= startTime && d.getTime() < lastTime
-      })
+      acc[ticker] = prices.filter(filterByTime)
       return acc
     },
     {} as typeof pricesByTicker
+  )
+  /* day - 1 since each historical price is the rate of the first day of the month
+        2020-01-01 -> 2019-12-31
+     filter startDate
+  */
+  const processedTB3HistoricalPrices = tb3HistoricalPrices
+    .map((hp) => {
+      const d = new Date(hp.date)
+      d.setDate(0)
+      return {
+        ...hp,
+        date: d.toISOString(),
+      }
+    })
+    .filter(filterByTime)
+
+  // 1.5. calculate risk free rate
+  const riskFreeRates = processedTB3HistoricalPrices.map(
+    (hp) => hp.close / 3 / 100
   )
 
   // 2. generate report data based on portfolios
@@ -173,12 +204,26 @@ function generateReportData({
       datasetWOC.push(totalAmountWOC)
     }
 
+    /*
     const yearlyProfitRate = yearlyBalance.reduce<number[]>(
       (acc, current, i, array) => {
         if (i === 0) return acc
         const prev = array[i - 1]
         const diff = current.balance - prev.balance
         const rate = diff / prev.balance
+        acc.push(rate)
+        return acc
+      },
+      []
+    )
+    */
+
+    const monthlyRateWOC = datasetWOC.reduce<number[]>(
+      (acc, current, i, arr) => {
+        if (i === 0) return acc
+        const prev = arr[i - 1]
+        const diff = current - prev
+        const rate = diff / prev
         acc.push(rate)
         return acc
       },
@@ -205,6 +250,7 @@ function generateReportData({
     })
     indicator.mdd = maxDrawdown(datasetWOC)
     indicator.stdev = stdev(yearlyProfitRateWOC)
+    indicator.sharpeRatio = sharpeRatio(monthlyRateWOC, riskFreeRates)
 
     return {
       dataset,
@@ -240,6 +286,7 @@ export default function useGenerateReportEffect() {
   const unfetchedTickers = useUnfetchedTickers()
   const setPortfolioReturns = useSetPortfolioReturns()
   const setIndicatorById = useSetIndicatorById()
+  const [{ prices: tb3HistoricalPrices }] = useTB3HistoricalPricesState()
 
   const startDate = useMemo(() => {
     const { year, month } = dateRange.startDate
@@ -256,6 +303,8 @@ export default function useGenerateReportEffect() {
       setPortfolioReturns(null)
       return
     }
+    if (!tb3HistoricalPrices) return
+
     const { portfolioReturns, indicatorById } = generateReportData({
       initialAmount,
       portfolios,
@@ -263,6 +312,7 @@ export default function useGenerateReportEffect() {
       startDate,
       cashflows,
       lastDate: new Date(dateRange.endDate.year, dateRange.endDate.month), // + 1month,
+      tb3HistoricalPrices,
     })
     setPortfolioReturns(portfolioReturns)
     setIndicatorById(indicatorById)
@@ -276,6 +326,7 @@ export default function useGenerateReportEffect() {
     cashflows,
     setIndicatorById,
     dateRange,
+    tb3HistoricalPrices,
   ])
   // check unfetchedTickers is empty before fetch
 }

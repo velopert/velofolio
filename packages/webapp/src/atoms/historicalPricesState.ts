@@ -1,4 +1,4 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import {
   atom,
   selector,
@@ -6,6 +6,7 @@ import {
   useRecoilValue,
   useSetRecoilState,
 } from 'recoil'
+import { getHistoricalPrices } from '../lib/api/assets/getHistoricalPrices'
 import getMultiHistoricalPrices from '../lib/api/assets/getMultiHistoricalPrices'
 import { HistoricalPrice } from '../lib/api/assets/types'
 
@@ -24,6 +25,19 @@ const initialState: HistoricalPricesState = {
 export const historicalPricesState = atom({
   key: 'historicalPricesState',
   default: initialState,
+})
+
+export type TB3PricesState = {
+  prices: HistoricalPrice[] | null
+  loading: boolean
+}
+
+export const tb3PricesState = atom<TB3PricesState>({
+  key: 'tb3PricesState',
+  default: {
+    loading: false,
+    prices: null,
+  },
 })
 
 export const pricesByTicker = selector({
@@ -50,6 +64,10 @@ export const firstHistoricalDate = selector({
     }
   },
 })
+
+export function usePricesByTickerValue() {
+  return useRecoilValue(pricesByTicker)
+}
 
 export function useHistoricalPricesState() {
   return useRecoilState(historicalPricesState)
@@ -113,4 +131,39 @@ export function useFetchHistoricalPrices() {
 
 export function useFirstHistoricalDate() {
   return useRecoilValue(firstHistoricalDate)
+}
+
+export function useTB3HistoricalPricesState() {
+  return useRecoilState(tb3PricesState)
+}
+
+export function useTB3HistoricalPricesActions() {
+  const set = useSetRecoilState(tb3PricesState)
+  return useMemo(
+    () => ({
+      startLoading() {
+        set((prev) => ({ ...prev, loading: true }))
+      },
+      success(prices: HistoricalPrice[]) {
+        set((prev) => ({ loading: true, prices: prices }))
+      },
+      error() {
+        set((prev) => ({ ...prev, loading: false }))
+      },
+    }),
+    [set]
+  )
+}
+
+export function useFetchTB3HistoricalPrices() {
+  const { startLoading, success, error } = useTB3HistoricalPricesActions()
+  return useCallback(async () => {
+    startLoading()
+    try {
+      const historicalPrices = await getHistoricalPrices('DTB3')
+      success(historicalPrices)
+    } catch (e) {
+      error()
+    }
+  }, [startLoading, success, error])
 }
