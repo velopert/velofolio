@@ -22,7 +22,7 @@ export interface Indicator {
   stdev: number
   mdd: number
   sharpeRatio: number
-  sortinoRatio: number
+  sortinoRatio: number | null
 }
 export type IndicatorRecord = Record<number, Indicator>
 

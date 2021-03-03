@@ -45,10 +45,22 @@ export const sharpeRatio = (
   monthlyRates: number[],
   monthlyRiskFreeRates: number[]
 ) => {
-  console.log(monthlyRates, monthlyRiskFreeRates)
   const rateDiffs = monthlyRates.map(
     (rate, index) => rate - monthlyRiskFreeRates[index]
   )
   const monthlySharpeRatio = mean(rateDiffs) / stdev(rateDiffs)
   return monthlySharpeRatio * Math.sqrt(12)
+}
+
+export const sortinoRatio = (
+  monthlyRates: number[],
+  monthlyRiskFreeRates: number[]
+) => {
+  const rateDiffs = monthlyRates.map(
+    (rate, index) => rate - monthlyRiskFreeRates[index]
+  )
+  const rateDiffsMean = mean(rateDiffs)
+  const negativeMonthlyRates = monthlyRates.filter((r) => r < 0)
+  if (negativeMonthlyRates.length === 0) return null
+  return (rateDiffsMean / stdev(negativeMonthlyRates)) * Math.sqrt(12)
 }

@@ -12,6 +12,7 @@ import {
   usePortfoliosState,
 } from '../atoms/labSettingState'
 import {
+  Indicator,
   useSetIndicatorById,
   useSetPortfolioReturns,
 } from '../atoms/reportState'
@@ -25,6 +26,7 @@ import {
   cagr,
   maxDrawdown,
   sharpeRatio,
+  sortinoRatio,
   stdev,
 } from '../lib/utils/calculateIndicators'
 
@@ -38,22 +40,13 @@ type GenerateReportDataParams = {
   tb3HistoricalPrices: HistoricalPrice[]
 }
 
-interface Indicator {
-  finalBalance: number
-  cagr: number
-  stdev: number
-  mdd: number
-  sharpeRatio: number
-  sortinoRatio: number
-}
-
 const initialIndicator: Indicator = {
   finalBalance: 0,
   cagr: 0,
   stdev: 0,
   mdd: 0,
   sharpeRatio: 0,
-  sortinoRatio: 9,
+  sortinoRatio: null,
 }
 
 type IndicatorRecord = Record<number, Indicator>
@@ -109,6 +102,9 @@ function generateReportData({
   // 2. generate report data based on portfolios
   const monthsCount = Object.values(filteredPricesByTicker)[0].length
   const months = Object.values(filteredPricesByTicker)[0].map((hp) => hp.date)
+  if (riskFreeRates.length < months.length - 1) {
+    riskFreeRates.push(riskFreeRates[riskFreeRates.length - 1])
+  }
   const portfolioChartData = portfolios.map((portfolio) => {
     const yearlyBalance: { date: Date; balance: number }[] = []
     const yearlyBalanceWOC: { date: Date; balance: number }[] = []
@@ -251,6 +247,8 @@ function generateReportData({
     indicator.mdd = maxDrawdown(datasetWOC)
     indicator.stdev = stdev(yearlyProfitRateWOC)
     indicator.sharpeRatio = sharpeRatio(monthlyRateWOC, riskFreeRates)
+    indicator.sortinoRatio = sortinoRatio(monthlyRateWOC, riskFreeRates)
+    // indicator.sortinoRatio = sortinoRatio(monthlyRateWOC, riskFreeRates)
 
     return {
       dataset,
