@@ -1,5 +1,11 @@
 import { useMemo } from 'react'
-import { atom, useRecoilState, useSetRecoilState } from 'recoil'
+import {
+  atom,
+  selector,
+  useRecoilState,
+  useRecoilValue,
+  useSetRecoilState,
+} from 'recoil'
 
 type PortfolioReturns = {
   label: string
@@ -24,11 +30,16 @@ export interface Indicator {
   sharpeRatio: number
   sortinoRatio: number | null
 }
-export type IndicatorRecord = Record<number, Indicator>
+export type IndicatorRecord = Record<number, Indicator | undefined>
 
 const indicatorByIdState = atom<IndicatorRecord>({
   key: 'indicatorByIdState',
   default: {},
+})
+
+const monthsCount = selector({
+  key: 'monthsCount',
+  get: ({ get }) => get(portfolioReturnsState)?.[0]?.data.length,
 })
 
 export function usePortfolioReturnsState() {
@@ -52,6 +63,10 @@ export function useReportValue() {
   return useMemo(() => {
     return portfolioReturns
   }, [portfolioReturns])
+}
+
+export function useMonthsCountValue() {
+  return useRecoilValue(monthsCount)
 }
 
 // type ReportState = {

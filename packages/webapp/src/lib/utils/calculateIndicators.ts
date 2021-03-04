@@ -64,3 +64,6 @@ export const sortinoRatio = (
   if (negativeMonthlyRates.length === 0) return null
   return (rateDiffsMean / stdev(negativeMonthlyRates)) * Math.sqrt(12)
 }
+
+export const returnRate = (base: number, current: number) =>
+  (current - base) / base
