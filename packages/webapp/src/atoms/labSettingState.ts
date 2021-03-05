@@ -53,7 +53,7 @@ const initialState: LabSettingState = {
   },
   initialAmount: 10000,
   cashflows: {
-    enabled: true,
+    enabled: false,
     amount: 1000,
     period: 'Anually',
   },

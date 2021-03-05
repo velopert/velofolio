@@ -6,6 +6,7 @@ import {
   useRecoilValue,
   useSetRecoilState,
 } from 'recoil'
+import PortfolioItem from '../components/LabSettings/PortfolioItem'
 
 type PortfolioReturns = {
   label: string
@@ -22,6 +23,11 @@ const portfolioReturnsState = atom<PortfolioReturns | null>({
   dangerouslyAllowMutability: true,
 })
 
+interface YearMonthRate {
+  year: number
+  month: number
+}
+
 export interface Indicator {
   finalBalance: number
   cagr: number
@@ -29,7 +35,10 @@ export interface Indicator {
   mdd: number
   sharpeRatio: number
   sortinoRatio: number | null
+  best: YearMonthRate
+  worst: YearMonthRate
 }
+
 export type IndicatorRecord = Record<number, Indicator | undefined>
 
 const indicatorByIdState = atom<IndicatorRecord>({

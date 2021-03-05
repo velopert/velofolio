@@ -47,6 +47,8 @@ const initialIndicator: Indicator = {
   mdd: 0,
   sharpeRatio: 0,
   sortinoRatio: null,
+  best: { year: 0, month: 0 },
+  worst: { year: 0, month: 0 },
 }
 
 type IndicatorRecord = Record<number, Indicator>
@@ -226,7 +228,7 @@ function generateReportData({
       []
     )
 
-    const yearlyProfitRateWOC = yearlyBalanceWOC.reduce<number[]>(
+    const yearlyRateWOC = yearlyBalanceWOC.reduce<number[]>(
       (acc, current, i, array) => {
         if (i === 0) return acc
         const prev = array[i - 1]
@@ -238,6 +240,15 @@ function generateReportData({
       []
     )
 
+    const best = {
+      year: Math.max(...yearlyRateWOC),
+      month: Math.max(...monthlyRateWOC),
+    }
+    const worst = {
+      year: Math.min(...yearlyRateWOC),
+      month: Math.min(...monthlyRateWOC),
+    }
+
     indicator.finalBalance = dataset[dataset.length - 1]
     indicator.cagr = cagr({
       beginningValue: initialAmount,
@@ -245,9 +256,11 @@ function generateReportData({
       yearsCount: monthsCount / 12,
     })
     indicator.mdd = maxDrawdown(datasetWOC)
-    indicator.stdev = stdev(yearlyProfitRateWOC)
+    indicator.stdev = stdev(monthlyRateWOC) * Math.sqrt(12) // Annualized
     indicator.sharpeRatio = sharpeRatio(monthlyRateWOC, riskFreeRates)
     indicator.sortinoRatio = sortinoRatio(monthlyRateWOC, riskFreeRates)
+    indicator.best = best
+    indicator.worst = worst
     // indicator.sortinoRatio = sortinoRatio(monthlyRateWOC, riskFreeRates)
 
     return {

@@ -26,6 +26,10 @@ function IndicatorsSection({}: IndicatorsSectionProps) {
     monthsCount,
   ])
 
+  const moreThanTwoYears = useMemo(() => monthsCount && monthsCount >= 24, [
+    monthsCount,
+  ])
+
   const portfolioIndicators = useMemo(() => {
     const results = portfolios.map((portfolio) => ({
       id: portfolio.id,
@@ -52,8 +56,8 @@ function IndicatorsSection({}: IndicatorsSectionProps) {
             {moreThanOneYear && <th>CAGR</th>}
             <th>Stdev</th>
             <th>Max Drawdown</th>
-            <th>Best Year</th>
-            <th>Worst Year</th>
+            <th>Best {moreThanTwoYears ? 'Year' : 'Month'}</th>
+            <th>Worst {moreThanTwoYears ? 'Year' : 'Month'}</th>
             <th>Sharpe Ratio</th>
             <th>Sortino Ratio</th>
           </tr>
@@ -69,6 +73,8 @@ function IndicatorsSection({}: IndicatorsSectionProps) {
                 mdd,
                 sharpeRatio,
                 sortinoRatio,
+                best,
+                worst,
               },
               name,
             }) => (
@@ -82,8 +88,16 @@ function IndicatorsSection({}: IndicatorsSectionProps) {
                 {moreThanOneYear && <td>{convertToPercentage(cagr)}</td>}
                 <td>{convertToPercentage(stdev)}</td>
                 <td>{convertToPercentage(mdd)}</td>
-                <td>TODO</td>
-                <td>TODO</td>
+                <td>
+                  {convertToPercentage(
+                    moreThanTwoYears ? best.year : best.month
+                  )}
+                </td>
+                <td>
+                  {convertToPercentage(
+                    moreThanTwoYears ? worst.year : worst.month
+                  )}
+                </td>
                 <td>{sharpeRatio.toFixed(2)}</td>
                 <td>{sortinoRatio ? sortinoRatio.toFixed(2) : 'N/A'}</td>
               </tr>
