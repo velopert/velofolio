@@ -27,19 +27,6 @@ export interface PortfolioResult {
   indicator: Indicator
 }
 
-const portfolioResultsState = atom<PortfolioResult[]>({
-  key: 'portfolioResultsState',
-  default: [],
-})
-
-export function usePortfolioResultsValue() {
-  return useRecoilValue(portfolioResultsState)
-}
-
-export function useSetPortfolioResults() {
-  return useSetRecoilState(portfolioResultsState)
-}
-
 interface YearMonthRate {
   year: number
   month: number
@@ -56,9 +43,24 @@ export interface Indicator {
   worst: YearMonthRate
 }
 
+type Report = PortfolioResult[]
+
+const reportState = atom<Report>({
+  key: 'reportState',
+  default: [],
+})
+
+export function useReportValue() {
+  return useRecoilValue(reportState)
+}
+
+export function useSetReport() {
+  return useSetRecoilState(reportState)
+}
+
 const monthsCount = selector({
   key: 'monthsCount',
-  get: ({ get }) => get(portfolioResultsState)?.[0]?.returns.length,
+  get: ({ get }) => get(reportState)?.[0]?.returns.length,
 })
 
 export function useMonthsCountValue() {

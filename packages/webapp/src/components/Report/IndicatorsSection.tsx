@@ -1,10 +1,7 @@
 import { css } from '@emotion/react'
 import { useEffect, useMemo } from 'react'
 import { useInitialAmountState } from '../../atoms/labSettingState'
-import {
-  useMonthsCountValue,
-  usePortfolioResultsValue,
-} from '../../atoms/reportState'
+import { useMonthsCountValue, useReportValue } from '../../atoms/reportState'
 import palette from '../../lib/palette'
 import { returnRate } from '../../lib/utils/calculateIndicators'
 import ReportSection from './ReportSection'
@@ -16,7 +13,7 @@ const convertToPercentage = (value: number, decimal: number = 2) =>
 function IndicatorsSection({}: IndicatorsSectionProps) {
   const [initialAmount] = useInitialAmountState()
   const monthsCount = useMonthsCountValue()
-  const portfolioResults = usePortfolioResultsValue()
+  const report = useReportValue()
 
   const moreThanOneYear = useMemo(() => monthsCount && monthsCount >= 12, [
     monthsCount,
@@ -26,7 +23,7 @@ function IndicatorsSection({}: IndicatorsSectionProps) {
     monthsCount,
   ])
 
-  if (portfolioResults.length === 0) return null
+  if (report.length === 0) return null
 
   return (
     <ReportSection title="Indicators">
@@ -45,7 +42,7 @@ function IndicatorsSection({}: IndicatorsSectionProps) {
           </tr>
         </thead>
         <tbody>
-          {portfolioResults.map(
+          {report.map(
             ({
               id,
               indicator: {

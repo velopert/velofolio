@@ -1,6 +1,6 @@
 import { css } from '@emotion/react'
 import { useEffect, useRef } from 'react'
-import { usePortfolioResultsValue } from '../../atoms/reportState'
+import { useReportValue } from '../../atoms/reportState'
 import ReportSection from './ReportSection'
 import Chart from 'chart.js'
 import chartColors from '../../lib/chartColors'
@@ -13,10 +13,10 @@ export type PortfolioReturnsSectionProps = {}
 function PortfolioReturnsSection({}: PortfolioReturnsSectionProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const chartRef = useRef<Chart | null>(null)
-  const portfolioResults = usePortfolioResultsValue()
+  const report = useReportValue()
 
   useEffect(() => {
-    if (portfolioResults.length === 0) {
+    if (report.length === 0) {
       if (chartRef.current) {
         chartRef.current.destroy()
         chartRef.current = null
@@ -30,7 +30,7 @@ function PortfolioReturnsSection({}: PortfolioReturnsSectionProps) {
       const chart = new Chart(ctx, {
         type: 'line',
         data: {
-          datasets: portfolioResults.map((p, i) => ({
+          datasets: report.map((p, i) => ({
             label: p.name,
             lineTension: 0,
             data: p.returns,
@@ -81,7 +81,7 @@ function PortfolioReturnsSection({}: PortfolioReturnsSectionProps) {
     } else {
       const chart = chartRef.current
       chart.data = {
-        datasets: portfolioResults.map((p, i) => ({
+        datasets: report.map((p, i) => ({
           label: p.name,
           lineTension: 0,
           data: p.returns,
@@ -91,7 +91,7 @@ function PortfolioReturnsSection({}: PortfolioReturnsSectionProps) {
       }
       chart.update()
     }
-  }, [portfolioResults])
+  }, [report])
 
   return (
     <ReportSection title="Portfolio Returns">

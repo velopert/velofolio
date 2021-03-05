@@ -11,11 +11,7 @@ import {
   useInitialAmountState,
   usePortfoliosState,
 } from '../atoms/labSettingState'
-import {
-  Indicator,
-  PortfolioResult,
-  useSetPortfolioResults,
-} from '../atoms/reportState'
+import { Indicator, PortfolioResult, useSetReport } from '../atoms/reportState'
 import { HistoricalPrice } from '../lib/api/assets/types'
 import useUnfetchedTickers from './useUnfetchedTickers'
 import useFirstHistoricalDate from './useFirstHistoricalDate'
@@ -291,7 +287,7 @@ export default function useGenerateReportEffect() {
   const [portfolios] = usePortfoliosState()
   const unfetchedTickers = useUnfetchedTickers()
   const [{ prices: tb3HistoricalPrices }] = useTB3HistoricalPricesState()
-  const setPortfolioResults = useSetPortfolioResults()
+  const setReport = useSetReport()
 
   const startDate = useMemo(() => {
     const { year, month } = dateRange.startDate
@@ -309,7 +305,7 @@ export default function useGenerateReportEffect() {
     }
     if (!tb3HistoricalPrices) return
 
-    const portfolioResults = generateReportData({
+    const report = generateReportData({
       initialAmount,
       portfolios,
       pricesByTicker,
@@ -318,7 +314,7 @@ export default function useGenerateReportEffect() {
       lastDate: new Date(dateRange.endDate.year, dateRange.endDate.month), // + 1month,
       tb3HistoricalPrices,
     })
-    setPortfolioResults(portfolioResults)
+    setReport(report)
   }, [
     initialAmount,
     pricesByTicker,
@@ -328,7 +324,7 @@ export default function useGenerateReportEffect() {
     cashflows,
     dateRange,
     tb3HistoricalPrices,
-    setPortfolioResults,
+    setReport,
   ])
   // check unfetchedTickers is empty before fetch
 }
