@@ -1,5 +1,4 @@
 import { css } from '@emotion/react'
-import { useReportValue } from '../../atoms/reportState'
 import palette from '../../lib/palette'
 import IndicatorsSection from './IndicatorsSection'
 import PortfolioReturnsSection from './PortfolioReturnsSection'

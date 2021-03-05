@@ -1,12 +1,9 @@
 import { css } from '@emotion/react'
 import { useEffect, useMemo } from 'react'
+import { useInitialAmountState } from '../../atoms/labSettingState'
 import {
-  useInitialAmountState,
-  usePortfoliosState,
-} from '../../atoms/labSettingState'
-import {
-  useIndicatorByIdState,
   useMonthsCountValue,
+  usePortfolioResultsValue,
 } from '../../atoms/reportState'
 import palette from '../../lib/palette'
 import { returnRate } from '../../lib/utils/calculateIndicators'
@@ -17,10 +14,9 @@ const convertToPercentage = (value: number, decimal: number = 2) =>
   `${(Math.round(value * Math.pow(10, decimal + 2)) / 100).toLocaleString()}%`
 
 function IndicatorsSection({}: IndicatorsSectionProps) {
-  const [indicatorById] = useIndicatorByIdState()
   const [initialAmount] = useInitialAmountState()
-  const [portfolios] = usePortfoliosState()
   const monthsCount = useMonthsCountValue()
+  const portfolioResults = usePortfolioResultsValue()
 
   const moreThanOneYear = useMemo(() => monthsCount && monthsCount >= 12, [
     monthsCount,
@@ -30,21 +26,7 @@ function IndicatorsSection({}: IndicatorsSectionProps) {
     monthsCount,
   ])
 
-  const portfolioIndicators = useMemo(() => {
-    const results = portfolios.map((portfolio) => ({
-      id: portfolio.id,
-      name: portfolio.name,
-      indicators: indicatorById[portfolio.id]!,
-    }))
-
-    if (results.find((result) => result.indicators === undefined)) {
-      return null
-    }
-
-    return results
-  }, [portfolios, indicatorById])
-
-  if (!portfolioIndicators || portfolios.length === 0) return null
+  if (portfolioResults.length === 0) return null
 
   return (
     <ReportSection title="Indicators">
@@ -63,10 +45,10 @@ function IndicatorsSection({}: IndicatorsSectionProps) {
           </tr>
         </thead>
         <tbody>
-          {portfolioIndicators.map(
+          {portfolioResults.map(
             ({
               id,
-              indicators: {
+              indicator: {
                 finalBalance,
                 cagr,
                 stdev,

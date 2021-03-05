@@ -7,21 +7,38 @@ import {
   useSetRecoilState,
 } from 'recoil'
 import PortfolioItem from '../components/LabSettings/PortfolioItem'
+import { Portfolio } from './labSettingState'
 
-type PortfolioReturns = {
-  label: string
-  lineTension: number
-  data: {
+export interface PortfolioResult {
+  id: number
+  name: string
+  returns: {
     x: Date
     y: number
   }[]
-}[]
+  monthlyRate: {
+    x: Date
+    y: number
+  }[]
+  yearlyRate: {
+    x: number
+    y: number
+  }[]
+  indicator: Indicator
+}
 
-const portfolioReturnsState = atom<PortfolioReturns | null>({
-  key: 'portfolioReturnsState',
-  default: null,
-  dangerouslyAllowMutability: true,
+const portfolioResultsState = atom<PortfolioResult[]>({
+  key: 'portfolioResultsState',
+  default: [],
 })
+
+export function usePortfolioResultsValue() {
+  return useRecoilValue(portfolioResultsState)
+}
+
+export function useSetPortfolioResults() {
+  return useSetRecoilState(portfolioResultsState)
+}
 
 interface YearMonthRate {
   year: number
@@ -39,40 +56,10 @@ export interface Indicator {
   worst: YearMonthRate
 }
 
-export type IndicatorRecord = Record<number, Indicator | undefined>
-
-const indicatorByIdState = atom<IndicatorRecord>({
-  key: 'indicatorByIdState',
-  default: {},
-})
-
 const monthsCount = selector({
   key: 'monthsCount',
-  get: ({ get }) => get(portfolioReturnsState)?.[0]?.data.length,
+  get: ({ get }) => get(portfolioResultsState)?.[0]?.returns.length,
 })
-
-export function usePortfolioReturnsState() {
-  return useRecoilState(portfolioReturnsState)
-}
-
-export function useSetPortfolioReturns() {
-  return useSetRecoilState(portfolioReturnsState)
-}
-
-export function useIndicatorByIdState() {
-  return useRecoilState(indicatorByIdState)
-}
-
-export function useSetIndicatorById() {
-  return useSetRecoilState(indicatorByIdState)
-}
-
-export function useReportValue() {
-  const [portfolioReturns] = usePortfolioReturnsState()
-  return useMemo(() => {
-    return portfolioReturns
-  }, [portfolioReturns])
-}
 
 export function useMonthsCountValue() {
   return useRecoilValue(monthsCount)

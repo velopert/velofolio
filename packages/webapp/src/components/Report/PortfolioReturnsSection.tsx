@@ -1,8 +1,10 @@
 import { css } from '@emotion/react'
 import { useEffect, useRef } from 'react'
-import { usePortfolioReturnsState } from '../../atoms/reportState'
+import { usePortfolioResultsValue } from '../../atoms/reportState'
 import ReportSection from './ReportSection'
 import Chart from 'chart.js'
+import chartColors from '../../lib/chartColors'
+import { transparentize } from 'polished'
 // import 'chartjs-adapter-date-fns'
 // import { enUS } from 'date-fns/locale'
 
@@ -11,10 +13,10 @@ export type PortfolioReturnsSectionProps = {}
 function PortfolioReturnsSection({}: PortfolioReturnsSectionProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const chartRef = useRef<Chart | null>(null)
-  const [portfolioReturns] = usePortfolioReturnsState()
+  const portfolioResults = usePortfolioResultsValue()
 
   useEffect(() => {
-    if (!portfolioReturns || portfolioReturns.length === 0) {
+    if (portfolioResults.length === 0) {
       if (chartRef.current) {
         chartRef.current.destroy()
         chartRef.current = null
@@ -28,7 +30,13 @@ function PortfolioReturnsSection({}: PortfolioReturnsSectionProps) {
       const chart = new Chart(ctx, {
         type: 'line',
         data: {
-          datasets: portfolioReturns,
+          datasets: portfolioResults.map((p, i) => ({
+            label: p.name,
+            lineTension: 0,
+            data: p.returns,
+            borderColor: chartColors[i],
+            backgroundColor: transparentize(0.9, chartColors[i]),
+          })),
         },
         options: {
           maintainAspectRatio: false,
@@ -73,11 +81,17 @@ function PortfolioReturnsSection({}: PortfolioReturnsSectionProps) {
     } else {
       const chart = chartRef.current
       chart.data = {
-        datasets: portfolioReturns,
+        datasets: portfolioResults.map((p, i) => ({
+          label: p.name,
+          lineTension: 0,
+          data: p.returns,
+          borderColor: chartColors[i],
+          backgroundColor: transparentize(0.9, chartColors[i]),
+        })),
       }
       chart.update()
     }
-  }, [portfolioReturns])
+  }, [portfolioResults])
 
   return (
     <ReportSection title="Portfolio Returns">
