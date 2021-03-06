@@ -104,6 +104,7 @@ function generateReportData({
     const yearlyBalance: { date: Date; balance: number }[] = []
     const yearlyBalanceWOC: { date: Date; balance: number }[] = []
     const yearlyBalances = [yearlyBalance, yearlyBalanceWOC]
+    const fixedYearlyBalance: { date: Date; balance: number }[] = []
     const indicator: Indicator = { ...initialIndicator }
 
     const dataset: number[] = [initialAmount]
@@ -130,6 +131,11 @@ function generateReportData({
       })
     })
 
+    fixedYearlyBalance.push({
+      date: new Date(months[0]),
+      balance: initialAmount,
+    })
+
     for (let i = 1; i < monthsCount; i += 1) {
       portfolio.assets.forEach((asset) => {
         const prices = filteredPricesByTicker[asset.ticker]
@@ -145,8 +151,8 @@ function generateReportData({
       })
 
       if (cashflows.enabled) {
-        const months = periodToMonthsMap[cashflows.period] ?? null
-        if (months && i % months === 0) {
+        const monthsPeriod = periodToMonthsMap[cashflows.period] ?? null
+        if (monthsPeriod && i % monthsPeriod === 0) {
           portfolio.assets.forEach((asset) => {
             const currentValue = tickerValueMap.get(asset.ticker)!
             tickerValueMap.set(
@@ -165,8 +171,8 @@ function generateReportData({
       )
 
       if (portfolio.rebalancing !== 'No Rebalancing') {
-        const months = periodToMonthsMap[portfolio.rebalancing] ?? null
-        if (months && i % months === 0) {
+        const monthsPeriod = periodToMonthsMap[portfolio.rebalancing] ?? null
+        if (monthsPeriod && i % monthsPeriod === 0) {
           portfolio.assets.forEach((asset) => {
             tickerValueMap.set(
               asset.ticker,
@@ -180,13 +186,21 @@ function generateReportData({
         }
       }
 
+      const d = new Date(months[i])
+      if (d.getMonth() === 11 || i === monthsCount - 1) {
+        fixedYearlyBalance.push({
+          date: d,
+          balance: totalAmountWOC,
+        })
+      }
+
       if (i % 12 === 0) {
         yearlyBalance.push({
-          date: new Date(months[i]),
+          date: d,
           balance: totalAmount,
         })
         yearlyBalanceWOC.push({
-          date: new Date(months[i]),
+          date: d,
           balance: totalAmountWOC,
         })
       }
@@ -233,6 +247,22 @@ function generateReportData({
       []
     )
 
+    const fixedYearlyRate = fixedYearlyBalance.reduce<
+      {
+        year: number
+        rate: number
+      }[]
+    >((acc, current, i, array) => {
+      if (i === 0) return acc
+      const prev = array[i - 1]
+      const rate = current.balance / prev.balance - 1
+      acc.push({
+        year: new Date(current.date).getFullYear(),
+        rate,
+      })
+      return acc
+    }, [])
+
     const best = {
       year: Math.max(...yearlyRateWOC),
       month: Math.max(...monthlyRateWOC),
@@ -267,10 +297,9 @@ function generateReportData({
         x: new Date(months[i]),
         y: rate,
       })),
-      yearlyRate: yearlyRateWOC.map((rate, i) => ({
-        // TODO: needs fix
-        x: new Date(months[i * 12]).getFullYear(),
-        y: rate,
+      yearlyRate: fixedYearlyRate.map((rate, i) => ({
+        x: rate.year,
+        y: rate.rate,
       })),
       indicator,
     }

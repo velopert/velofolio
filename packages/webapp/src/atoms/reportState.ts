@@ -9,7 +9,7 @@ import {
 import PortfolioItem from '../components/LabSettings/PortfolioItem'
 import { Portfolio } from './labSettingState'
 
-export interface PortfolioResult {
+export type PortfolioResult = {
   id: number
   name: string
   returns: {
@@ -27,12 +27,12 @@ export interface PortfolioResult {
   indicator: Indicator
 }
 
-interface YearMonthRate {
+type YearMonthRate = {
   year: number
   month: number
 }
 
-export interface Indicator {
+export type Indicator = {
   finalBalance: number
   cagr: number
   stdev: number
