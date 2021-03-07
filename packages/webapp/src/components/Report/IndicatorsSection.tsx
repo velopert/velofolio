@@ -15,6 +15,8 @@ function IndicatorsSection({}: IndicatorsSectionProps) {
   const monthsCount = useMonthsCountValue()
   const report = useReportValue()
 
+  console.log(report)
+
   const moreThanOneYear = useMemo(() => monthsCount && monthsCount >= 12, [
     monthsCount,
   ])

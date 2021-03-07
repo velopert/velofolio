@@ -1,6 +1,9 @@
 import { css } from '@emotion/react'
 import palette from '../../lib/palette'
+import AnnualReturnsSection from './AnnualReturnsSection'
+import DoubleSections from './DoubleSections'
 import IndicatorsSection from './IndicatorsSection'
+import MonthlyReturnsSection from './MonthlyReturnsSection'
 import PortfolioReturnsSection from './PortfolioReturnsSection'
 
 export type ReportProps = {}
@@ -11,6 +14,10 @@ function Report({}: ReportProps) {
       <h1>Report</h1>
       <IndicatorsSection />
       <PortfolioReturnsSection />
+      <DoubleSections>
+        <AnnualReturnsSection />
+        <MonthlyReturnsSection />
+      </DoubleSections>
     </div>
   )
 }
