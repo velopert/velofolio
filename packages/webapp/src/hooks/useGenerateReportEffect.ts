@@ -334,9 +334,11 @@ export default function useGenerateReportEffect() {
     }
     if (!tb3HistoricalPrices) return
 
+    const validPortfolios = portfolios.filter((p) => p.assets.length !== 0)
+
     const report = generateReportData({
       initialAmount,
-      portfolios,
+      portfolios: validPortfolios,
       pricesByTicker,
       startDate,
       cashflows,
