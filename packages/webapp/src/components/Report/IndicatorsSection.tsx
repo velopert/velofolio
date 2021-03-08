@@ -3,19 +3,17 @@ import { useEffect, useMemo } from 'react'
 import { useInitialAmountState } from '../../atoms/labSettingState'
 import { useMonthsCountValue, useReportValue } from '../../atoms/reportState'
 import palette from '../../lib/palette'
-import { returnRate } from '../../lib/utils/calculateIndicators'
+import {
+  convertToPercentage,
+  returnRate,
+} from '../../lib/utils/calculateIndicators'
 import ReportSection from './ReportSection'
 export interface IndicatorsSectionProps {}
-
-const convertToPercentage = (value: number, decimal: number = 2) =>
-  `${(Math.round(value * Math.pow(10, decimal + 2)) / 100).toLocaleString()}%`
 
 function IndicatorsSection({}: IndicatorsSectionProps) {
   const [initialAmount] = useInitialAmountState()
   const monthsCount = useMonthsCountValue()
   const report = useReportValue()
-
-  console.log(report)
 
   const moreThanOneYear = useMemo(() => monthsCount && monthsCount >= 12, [
     monthsCount,

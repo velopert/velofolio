@@ -104,7 +104,7 @@ function PortfolioReturnsSection({}: PortfolioReturnsSectionProps) {
 
 const chartWrapper = css`
   width: 100%;
-  height: 25rem;
+  height: 20rem;
   position: relative;
   canvas {
     width: 100%;

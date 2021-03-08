@@ -67,3 +67,6 @@ export const sortinoRatio = (
 
 export const returnRate = (base: number, current: number) =>
   (current - base) / base
+
+export const convertToPercentage = (value: number, decimal: number = 2) =>
+  `${(Math.round(value * Math.pow(10, decimal + 2)) / 100).toLocaleString()}%`
