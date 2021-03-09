@@ -71,18 +71,13 @@ function AnnualReturnsSection({}: AnnualReturnsSectionProps) {
           ? [
               {
                 type: 'inside',
-                start: 0,
-                end: 20,
               },
-              {
-                start: 0,
-                end: 20,
-              },
+              {},
             ]
           : undefined,
       color: chartColors,
       grid: {
-        left: 32,
+        left: 64,
         top: 32,
         right: 32,
         bottom: 32,
@@ -98,7 +93,6 @@ function AnnualReturnsSection({}: AnnualReturnsSectionProps) {
     const element = divRef.current
     if (!element || !chartOptions) return
 
-    console.log(echarts)
     const chart = echarts.init(element)
     chart.setOption(chartOptions)
   }, [chartOptions])

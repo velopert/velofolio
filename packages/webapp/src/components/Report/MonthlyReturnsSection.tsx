@@ -5,8 +5,7 @@ import ReportSection from './ReportSection'
 import { ECBasicOption } from 'echarts/types/dist/shared'
 import { convertToPercentage } from '../../lib/utils/calculateIndicators'
 import chartColors from '../../lib/chartColors'
-// import echarts from '../../lib/echarts'
-import * as echarts from 'echarts'
+import echarts from '../../lib/echarts'
 export type MonthlyReturnsSectionProps = {}
 
 function MonthlyReturnsSection({}: MonthlyReturnsSectionProps) {
@@ -71,13 +70,8 @@ function MonthlyReturnsSection({}: MonthlyReturnsSectionProps) {
           ? [
               {
                 type: 'inside',
-                start: 0,
-                end: 20,
               },
-              {
-                start: 0,
-                end: 20,
-              },
+              {},
             ]
           : undefined,
       color: chartColors,
@@ -89,8 +83,6 @@ function MonthlyReturnsSection({}: MonthlyReturnsSectionProps) {
       },
     }
 
-    console.log(JSON.stringify(options))
-
     return options
   }, [categoryData, seriesData])
 
@@ -100,9 +92,8 @@ function MonthlyReturnsSection({}: MonthlyReturnsSectionProps) {
     const element = divRef.current
     if (!element || !chartOptions) return
 
-    console.log(echarts)
     const chart = echarts.init(element)
-    chart.setOption(chartOptions as any)
+    chart.setOption(chartOptions)
   }, [chartOptions])
 
   return (

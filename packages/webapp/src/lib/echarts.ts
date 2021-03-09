@@ -1,5 +1,5 @@
 import * as echarts from 'echarts/core'
-import { BarChart } from 'echarts/charts'
+import { BarChart, LineChart, LinesChart } from 'echarts/charts'
 import {
   TitleComponent,
   TooltipComponent,
@@ -15,6 +15,8 @@ echarts.use([
   TooltipComponent,
   GridComponent,
   BarChart,
+  LineChart,
+  LinesChart,
   CanvasRenderer,
   DataZoomComponent,
   DataZoomInsideComponent,

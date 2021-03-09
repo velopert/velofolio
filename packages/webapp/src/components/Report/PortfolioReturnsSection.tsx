@@ -1,115 +1,120 @@
 import { css } from '@emotion/react'
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useReportValue } from '../../atoms/reportState'
 import ReportSection from './ReportSection'
-import Chart from 'chart.js'
 import chartColors from '../../lib/chartColors'
-import { transparentize } from 'polished'
-// import 'chartjs-adapter-date-fns'
-// import { enUS } from 'date-fns/locale'
+import { ECBasicOption } from 'echarts/types/dist/shared'
+import echarts from '../../lib/echarts'
 
 export type PortfolioReturnsSectionProps = {}
 
 function PortfolioReturnsSection({}: PortfolioReturnsSectionProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const chartRef = useRef<Chart | null>(null)
   const report = useReportValue()
 
-  useEffect(() => {
-    if (report.length === 0) {
-      if (chartRef.current) {
-        chartRef.current.destroy()
-        chartRef.current = null
-      }
-      return
+  // x-axis
+  const categoryData = useMemo(() => {
+    if (report.length === 0 || report[0].returns.length === 0) return null
+    return report[0].returns.map((r) => r.x.toISOString().split('T')[0])
+  }, [report])
+
+  // y-axis
+  const seriesData = useMemo(() => {
+    if (report.length === 0 || report[0].returns.length === 0) return null
+    return report.map((result) => ({
+      name: result.name,
+      type: 'line',
+      data: result.returns.map((yr) => yr.y),
+    }))
+  }, [report])
+
+  console.log({ seriesData, categoryData })
+
+  const chartOptions = useMemo(() => {
+    if (!categoryData || !seriesData) return null
+    const options: ECBasicOption = {
+      tooltip: {
+        trigger: 'axis',
+
+        formatter: (params: any) => {
+          const data = params
+            .map(
+              (param: any) => `
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+              <div style="display: flex; align-items: center;">
+                  <div style="border-radius: 6px; width: 12px; height: 12px; margin-right: 8px; background-color: ${
+                    param.color
+                  }"></div>
+                  <b style="margin-right: 48px;">${param.seriesName}</b>
+              </div>
+              ${'$' + Math.round(param.data).toLocaleString()}
+          </div>
+      `
+            )
+            .join('')
+          return `<div>${params[0].axisValueLabel}</div>`.concat(data)
+        },
+      },
+      xAxis: {
+        type: 'category',
+        data: categoryData,
+        boundaryGap: false,
+      },
+      yAxis: {
+        type: 'log',
+        min: Math.max(
+          0,
+          Math.min(...seriesData.flatMap((value) => value.data)) - 2000
+        ),
+        max: Math.max(...seriesData.flatMap((value) => value.data)),
+        // type: 'value',
+        axisLabel: {
+          formatter: (value: number) => {
+            return '$' + Math.round(value).toLocaleString()
+          },
+        },
+      },
+      series: seriesData,
+      dataZoom:
+        categoryData.length > 20
+          ? [
+              {
+                type: 'inside',
+              },
+              {},
+            ]
+          : undefined,
+      color: chartColors,
+      grid: {
+        left: 64,
+        top: 32,
+        right: 32,
+        bottom: 32,
+      },
     }
 
-    const ctx = canvasRef.current?.getContext('2d')
-    if (!ctx) return
-    if (!chartRef.current) {
-      const chart = new Chart(ctx, {
-        type: 'line',
-        data: {
-          datasets: report.map((p, i) => ({
-            label: p.name,
-            lineTension: 0,
-            data: p.returns,
-            borderColor: chartColors[i],
-            backgroundColor: transparentize(0.9, chartColors[i]),
-          })),
-        },
-        options: {
-          maintainAspectRatio: false,
-          animation: {
-            duration: 0,
-          },
-          scales: {
-            xAxes: [
-              {
-                type: 'time',
-                time: {
-                  unit: 'month',
-                },
-              },
-            ],
-            yAxes: [
-              {
-                ticks: {
-                  beginAtZero: true,
-                  callback: function (value, index, values) {
-                    return '$' + value.toLocaleString()
-                  },
-                },
-              },
-            ],
-          },
-          tooltips: {
-            callbacks: {
-              label: (tooltipItem, data) => {
-                const label =
-                  data.datasets![tooltipItem.datasetIndex!].label ?? ''
-                const value = Math.round(
-                  tooltipItem.yLabel as number
-                ).toLocaleString()
-                return `${label} - $${value}`
-              },
-            },
-          },
-        },
-      })
-      chartRef.current = chart
-    } else {
-      const chart = chartRef.current
-      chart.data = {
-        datasets: report.map((p, i) => ({
-          label: p.name,
-          lineTension: 0,
-          data: p.returns,
-          borderColor: chartColors[i],
-          backgroundColor: transparentize(0.9, chartColors[i]),
-        })),
-      }
-      chart.update()
-    }
-  }, [report])
+    return options
+  }, [categoryData, seriesData])
+
+  const divRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const element = divRef.current
+    if (!element || !chartOptions) return
+
+    const chart = echarts.init(element)
+    chart.setOption(chartOptions as any)
+  }, [chartOptions])
 
   return (
     <ReportSection title="Portfolio Returns">
-      <div css={chartWrapper}>
-        <canvas ref={canvasRef}></canvas>
-      </div>
+      <div ref={divRef} css={chartStyle}></div>
     </ReportSection>
   )
 }
 
-const chartWrapper = css`
-  width: 100%;
+const chartStyle = css`
   height: 20rem;
-  position: relative;
-  canvas {
-    width: 100%;
-    height: 100%;
-  }
+  width: 100%;
 `
 
 export default PortfolioReturnsSection
