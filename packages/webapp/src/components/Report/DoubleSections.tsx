@@ -8,7 +8,8 @@ function DoubleSections({ children }: DoubleSectionsProps) {
 }
 
 const style = css`
-  section + & {
+  section + &,
+  & + section {
     margin-top: 2rem;
   }
   display: flex;
