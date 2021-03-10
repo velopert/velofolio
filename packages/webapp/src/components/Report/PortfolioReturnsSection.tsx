@@ -27,8 +27,6 @@ function PortfolioReturnsSection({}: PortfolioReturnsSectionProps) {
     }))
   }, [report])
 
-  console.log({ seriesData, categoryData })
-
   const chartOptions = useMemo(() => {
     if (!categoryData || !seriesData) return null
     const options: ECBasicOption = {
@@ -103,6 +101,13 @@ function PortfolioReturnsSection({}: PortfolioReturnsSectionProps) {
 
     const chart = echarts.init(element)
     chart.setOption(chartOptions as any)
+    const handleResize = () => {
+      chart.resize()
+    }
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
   }, [chartOptions])
 
   return (

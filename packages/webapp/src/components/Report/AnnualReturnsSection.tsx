@@ -95,6 +95,14 @@ function AnnualReturnsSection({}: AnnualReturnsSectionProps) {
 
     const chart = echarts.init(element)
     chart.setOption(chartOptions)
+
+    const handleResize = () => {
+      chart.resize()
+    }
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
   }, [chartOptions])
 
   return (
