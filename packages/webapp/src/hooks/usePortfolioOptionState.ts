@@ -1,23 +1,14 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo } from 'react'
 import {
-  useNextPortfolioIdState,
-  usePortfoliosState,
+  usePortfolioNameState,
   useRebalancingState,
 } from '../atoms/labSettingState'
 import { useLabSettingView } from '../atoms/labSettingViewState'
 import { periodOptions } from '../lib/constants'
 
 export default function usePortfolioOptionState() {
-  const [nextId] = useNextPortfolioIdState()
-  const [portfolios] = usePortfoliosState()
   const { selectedPortfolioId } = useLabSettingView()
-  const selectedPortfolio = useMemo(() => {
-    return portfolios.find((p) => p.id === selectedPortfolioId)
-  }, [portfolios, selectedPortfolioId])
-
-  const [name, setValue] = useState(
-    selectedPortfolio?.name ?? `Portfolio ${nextId}`
-  )
+  const [name, setValue] = usePortfolioNameState(selectedPortfolioId!)
 
   const [rebalancing, setRebalancing] = useRebalancingState(
     selectedPortfolioId!
@@ -35,6 +26,8 @@ export default function usePortfolioOptionState() {
   const onChangeRebalancing = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setRebalancing(e.target.value)
   }
+
+  useEffect(() => {}, [name])
 
   return {
     name,
