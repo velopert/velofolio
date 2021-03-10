@@ -1,7 +1,6 @@
 import {
   atom,
   DefaultValue,
-  RecoilState,
   selector,
   selectorFamily,
   useRecoilState,
@@ -10,7 +9,6 @@ import {
 } from 'recoil'
 import { MonthYearValue } from '../types/MonthYearValue'
 import produce from 'immer'
-import { Asset } from '../lib/api/assets/types'
 import { useCallback } from 'react'
 import { AssetWeight } from './assetsState'
 

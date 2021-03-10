@@ -4,6 +4,7 @@ import AnnualReturnsSection from './AnnualReturnsSection'
 import DoubleSections from './DoubleSections'
 import IndicatorsSection from './IndicatorsSection'
 import MonthlyReturnsSection from './MonthlyReturnsSection'
+import PortfolioAllocationsSection from './PortfolioAllocationsSection'
 import PortfolioReturnsSection from './PortfolioReturnsSection'
 
 export type ReportProps = {}
@@ -18,6 +19,7 @@ function Report({}: ReportProps) {
         <AnnualReturnsSection />
         <MonthlyReturnsSection />
       </DoubleSections>
+      <PortfolioAllocationsSection />
     </div>
   )
 }

@@ -89,7 +89,6 @@ function IndicatorsSection({}: IndicatorsSectionProps) {
 }
 
 const tableStyle = css`
-  border-radius: 4px;
   width: 100%;
   border-collapse: collapse;
   font-size: 0.875rem;
