@@ -1,6 +1,7 @@
 import {
   atom,
   DefaultValue,
+  RecoilState,
   selector,
   selectorFamily,
   useRecoilState,
@@ -149,6 +150,23 @@ export const portfolioState = selectorFamily<Portfolio | undefined, number>({
   },
 })
 
+export const portfolioNameState = selectorFamily<string, number>({
+  key: 'portfolioNameState',
+  get: (portfolioId: number) => ({ get }) => {
+    return get(portfolioState(portfolioId))?.name ?? ''
+  },
+  set: (portfolioId) => ({ set }, newValue) => {
+    set(portfolioState(portfolioId), (prevValue) => {
+      if (newValue instanceof DefaultValue) return newValue
+      if (!prevValue) return
+      return {
+        ...prevValue,
+        name: newValue,
+      }
+    })
+  },
+})
+
 export const rebalancingState = selectorFamily<string, number>({
   key: 'rebalancingState',
   get: (portfolioId: number) => ({ get }) => {
@@ -234,6 +252,10 @@ export function useUniqueTickersValue() {
 
 export function useRebalancingState(portfolioId: number) {
   return useRecoilState(rebalancingState(portfolioId))
+}
+
+export function usePortfolioNameState(portfolioId: number) {
+  return useRecoilState(portfolioNameState(portfolioId))
 }
 
 export function useDateRangeValue() {
