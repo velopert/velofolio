@@ -1,5 +1,5 @@
 import * as echarts from 'echarts/core'
-import { BarChart, LineChart, LinesChart } from 'echarts/charts'
+import { BarChart, LineChart, LinesChart, PieChart } from 'echarts/charts'
 import {
   TitleComponent,
   TooltipComponent,
@@ -7,10 +7,12 @@ import {
   DataZoomInsideComponent,
   DataZoomSliderComponent,
   DataZoomComponent,
+  LegendComponent,
 } from 'echarts/components'
 import { CanvasRenderer } from 'echarts/renderers'
 
 echarts.use([
+  PieChart,
   TitleComponent,
   TooltipComponent,
   GridComponent,
@@ -21,6 +23,7 @@ echarts.use([
   DataZoomComponent,
   DataZoomInsideComponent,
   DataZoomSliderComponent,
+  LegendComponent,
 ])
 
 export default echarts

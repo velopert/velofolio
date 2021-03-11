@@ -15,6 +15,7 @@ import useAssetQuery, {
   useAssetQuerySetter,
 } from '../../hooks/query/useAssetQuery'
 import { getAsset } from '../../lib/api/assets/getAsset'
+import { useAssetDetailsActions } from '../../atoms/assetDetailsState'
 
 export type AssetsSectionProps = {}
 
@@ -29,6 +30,7 @@ function AssetsSection({}: AssetsSectionProps) {
   )
   const set = useAssetQuerySetter()
   const inputRef = useRef<HTMLInputElement>(null)
+  const { loadTicker } = useAssetDetailsActions()
 
   useResetAssetsUnmountEffect()
   useEffect(() => {
@@ -47,7 +49,7 @@ function AssetsSection({}: AssetsSectionProps) {
     try {
       setOpen(false)
       setKeyword('')
-      const asset = await getAsset(keyword)
+      const asset = await loadTicker(keyword.toLocaleUpperCase())
       set(keyword, asset)
       const { id, image, ticker } = asset
       append({
@@ -74,11 +76,12 @@ function AssetsSection({}: AssetsSectionProps) {
       }
       if (!selectedTicker) return
       const { id, image, ticker } = selectedTicker
+      loadTicker(ticker)
       append({
         id,
         image,
         ticker,
-        weight: 0,
+        weight: 1,
       })
       setKeyword('')
       setOpen(false)

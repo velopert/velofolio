@@ -59,6 +59,7 @@ function PortfolioReturnsSection({}: PortfolioReturnsSectionProps) {
       },
       yAxis: {
         type: 'log',
+        // interval: 1000,
         min: Math.max(
           0,
           Math.min(...seriesData.flatMap((value) => value.data)) - 2000
@@ -70,6 +71,7 @@ function PortfolioReturnsSection({}: PortfolioReturnsSectionProps) {
             return '$' + Math.round(value).toLocaleString()
           },
         },
+        logBase: 2.71828,
       },
       series: seriesData,
       dataZoom:
@@ -118,7 +120,7 @@ function PortfolioReturnsSection({}: PortfolioReturnsSectionProps) {
 }
 
 const chartStyle = css`
-  height: 20rem;
+  height: 25rem;
   width: 100%;
 `
 
