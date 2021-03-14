@@ -4,12 +4,14 @@ import {
   Column,
   OneToOne,
   JoinColumn,
+  Index,
 } from 'typeorm'
 import { User } from './User'
 
 @Entity({
   name: 'social_accounts',
 })
+@Index(['provider', 'social_id'])
 export class SocialAccount {
   @PrimaryGeneratedColumn()
   id!: number

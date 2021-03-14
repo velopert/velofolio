@@ -1,5 +1,6 @@
 import { css } from '@emotion/react'
 import palette from '../../lib/palette'
+import GoogleLoginButton from '../GoogleLoginButton/GoogleLoginButton'
 import SidebarItem from '../SidebarItem'
 import VeloIcon from '../VeloIcon/VeloIcon'
 
@@ -14,12 +15,15 @@ function Sidebar({}: SidebarProps) {
         <SidebarItem icon="workspace" text="Workspace" to="/workspace" />
         <SidebarItem icon="globe" text="Explore" to="/explore" />
       </ul>
+      <GoogleLoginButton />
     </div>
   )
 }
 
 const sidebarStyle = css`
   flex: 1;
+  display: flex;
+  flex-direction: column;
   .logo {
     font-weight: bold;
     font-size: 1.5rem;
@@ -32,6 +36,7 @@ const menuStyle = css`
   padding: 0;
   margin-top: 5.625rem;
   margin-left: -1rem;
+  flex: 1;
 `
 
 export default Sidebar
