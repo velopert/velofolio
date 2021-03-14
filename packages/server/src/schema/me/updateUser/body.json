@@ -1,0 +1,9 @@
+{
+  "title": "Update User Body",
+  "type": "object",
+  "properties": {
+    "username": {
+      "type": "string"
+    }
+  }
+}

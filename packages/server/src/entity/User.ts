@@ -1,3 +1,4 @@
+import { generateToken } from '../lib/token/jwt'
 import {
   Entity,
   PrimaryGeneratedColumn,
@@ -13,9 +14,11 @@ export class User {
   @PrimaryGeneratedColumn()
   id!: number
 
+  @Index()
   @Column()
   email!: string
 
+  @Index()
   @Column({ length: 16, nullable: true })
   username?: string
 
@@ -32,4 +35,16 @@ export class User {
   @Index()
   @Column()
   is_certified!: boolean
+
+  async generateToken() {
+    return generateToken(
+      {
+        subject: 'accessToken',
+        userId: this.id,
+      },
+      {
+        expiresIn: '15d', // TODO: Set this to 3days later on
+      }
+    )
+  }
 }

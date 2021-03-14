@@ -55,16 +55,39 @@ const authRoute: FastifyPluginCallback = (fastify, opts, done) => {
 
         const socialAccountRepo = getRepository(SocialAccount)
         // find social account
-        const exists = await socialAccountRepo.findOne({
-          provider: 'google',
-          social_id: profile.socialId,
-        })
+        const exists = await socialAccountRepo.findOne(
+          {
+            provider: 'google',
+            social_id: profile.socialId,
+          },
+          {
+            relations: ['user'],
+          }
+        )
 
         if (exists) {
+          const user = await getRepository(User).findOne({
+            id: exists.user.id,
+          })
+          if (!user) {
+            reply.status(500)
+            reply.send({
+              code: 500,
+              error: 'UserNotFoundError',
+              message: 'Google login succeed but user not found',
+            })
+            return
+          }
+          const accessToken = await user.generateToken()
+          reply.setCookie('access_token', accessToken, {
+            path: '/',
+            httpOnly: true,
+            maxAge: 60 * 60 * 24 * 15,
+          })
           // TODO: generate accessToken
           reply.send({
-            user: null,
-            access_token: '',
+            user: user,
+            access_token: accessToken,
           })
         } else {
           const manager = getManager()
@@ -79,10 +102,11 @@ const authRoute: FastifyPluginCallback = (fastify, opts, done) => {
           socialAccount.user = user
           socialAccount.social_id = profile.socialId
           await manager.save(socialAccount)
+          const accessToken = await user.generateToken()
           // await socialAccountRepo.save(socialAccount)
           reply.send({
             user: user,
-            access_token: '',
+            access_token: accessToken,
           })
         }
       } catch (e) {

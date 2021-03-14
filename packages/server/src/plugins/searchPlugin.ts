@@ -1,6 +1,6 @@
 import fp from 'fastify-plugin'
 import { FastifyPluginAsync, FastifyPluginCallback } from 'fastify'
-import SearchEngine from './SearchEngine'
+import SearchEngine from '../search/SearchEngine'
 
 const callback: FastifyPluginCallback = async (fastify, opts, done) => {
   fastify.decorate('something', () => {})
