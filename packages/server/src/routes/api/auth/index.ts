@@ -7,7 +7,10 @@ import { getManager, getRepository } from 'typeorm'
 import { GoogleAccessTokenBody } from 'types/auth/googleAccessToken/body'
 
 const authRoute: FastifyPluginCallback = (fastify, opts, done) => {
-  // google check user registered
+  /**
+   * POST /api/auth/google/check
+   * Check whether user already has registered
+   */
   fastify.post<{ Body: GoogleAccessTokenBody }>(
     '/google/check',
     {
@@ -40,7 +43,10 @@ const authRoute: FastifyPluginCallback = (fastify, opts, done) => {
     }
   )
 
-  // google login
+  /**
+   * POST /api/auth/google/signin
+   * Google Signin
+   */
   fastify.post<{ Body: GoogleAccessTokenBody }>(
     '/google/signin',
     {

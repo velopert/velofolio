@@ -7,35 +7,51 @@ import Lab from './pages/Lab'
 import Workspace from './pages/Workspace'
 import Explore from './pages/Explore'
 import DebugObserver from './components/DebugObserver/DebugObserver'
+import Register from './pages/Register'
 
 function App() {
   return (
     <>
       <DebugObserver />
-      <AppLayout>
-        <AppLayout.Side>
-          <Sidebar />
-        </AppLayout.Side>
-        <AppLayout.Main>
-          <Switch>
-            <Route path={['/', '/lab']} exact>
-              <Lab />
-            </Route>
-            <Route path="/workspace">
-              <Workspace />
-            </Route>
-            <Route path="/explore">
-              <Explore />
-            </Route>
-          </Switch>
-        </AppLayout.Main>
-      </AppLayout>
+      <Switch>
+        <Route
+          path={['/', '/lab', '/workspace', '/explore', '/workspace']}
+          exact
+        >
+          <AppLayout>
+            <AppLayout.Side>
+              <Sidebar />
+            </AppLayout.Side>
+            <AppLayout.Main>
+              <Switch>
+                <Route path={['/', '/lab']} exact>
+                  <Lab />
+                </Route>
+                <Route path="/workspace">
+                  <Workspace />
+                </Route>
+                <Route path="/explore">
+                  <Explore />
+                </Route>
+              </Switch>
+            </AppLayout.Main>
+          </AppLayout>
+        </Route>
+        <Route path="/register">
+          <Register />
+        </Route>
+      </Switch>
       <Global styles={globalStyle} />
     </>
   )
 }
 
 const globalStyle = css`
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
   html {
     box-sizing: border-box;
 
