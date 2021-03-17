@@ -1,7 +1,7 @@
 import { User } from 'entity/User'
 import { FastifyPluginAsync } from 'fastify'
 import userPlugin from 'plugins/userPlugin'
-import { UpdateUserBodySchema } from 'schema/me'
+import UpdateUserBodySchema from 'schema/me/updateUser/body.json'
 import { getRepository } from 'typeorm'
 import { UpdateUserBody } from 'types/me/updateUser/body'
 
