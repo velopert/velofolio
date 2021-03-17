@@ -3,7 +3,7 @@
 export type User = {
   id: number
   email: string
-  username: string | null
+  username: string
   display_name: string
   photo_url: string | null
   created_at: string

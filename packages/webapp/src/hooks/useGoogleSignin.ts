@@ -1,24 +1,22 @@
 import { useCallback } from 'react'
 import { useHistory } from 'react-router-dom'
-import { useHasCreatedAccountState } from '../atoms/authState'
+import { useGoogleTokenState } from '../atoms/authState'
 import { checkGoogleRegistered } from '../lib/api/auth/checkGoogleRegistered'
 import { googleSignin } from '../lib/api/auth/googleSignin'
 
 export default function useGoogleSignin() {
-  const [, setHasCreatedAccount] = useHasCreatedAccountState()
+  const [, setGoogleToken] = useGoogleTokenState()
 
   const history = useHistory()
   const signin = useCallback(
     async (accessToken: string) => {
+      setGoogleToken(accessToken)
       // TODO: implement fullscreen loader
       try {
         const exists = await checkGoogleRegistered(accessToken)
         if (exists) {
           const { user } = await googleSignin(accessToken)
-          if (!user.username) {
-            setHasCreatedAccount(true)
-            history.push('/register?registered=true')
-          }
+          // TODO: manage user state
         } else {
           history.push('/register')
         }
@@ -26,7 +24,7 @@ export default function useGoogleSignin() {
         // TODO: Error Dialog
       }
     },
-    [history, setHasCreatedAccount]
+    [history, setGoogleToken]
   )
 
   return signin

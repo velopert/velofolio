@@ -15,7 +15,9 @@ function Sidebar({}: SidebarProps) {
         <SidebarItem icon="workspace" text="Workspace" to="/workspace" />
         <SidebarItem icon="globe" text="Explore" to="/explore" />
       </ul>
-      <GoogleLoginButton />
+      <div>
+        <GoogleLoginButton />
+      </div>
     </div>
   )
 }

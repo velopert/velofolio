@@ -46,6 +46,7 @@ const whiteBox = css`
     font-weight: 500;
     margin-top: 0;
     margin-bottom: 0.5rem;
+    line-height: 1.5;
     /* font-weight: normal; */
   }
   & > img {

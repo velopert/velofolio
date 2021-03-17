@@ -1,28 +1,40 @@
-import { css } from '@emotion/react'
-import { useHasCreatedAccountState } from '../../atoms/authState'
+import { css, keyframes } from '@emotion/react'
+import { useState } from 'react'
+import useGoogleSignup from '../../hooks/useGoogleSignup'
 import palette from '../../lib/palette'
 import { resetButton } from '../../lib/styles/resetButton'
 import Input from '../Input/Input'
+import VeloIcon from '../VeloIcon'
 export type RegisterFormProps = {}
 
 function RegisterForm({}: RegisterFormProps) {
-  const [hasCreatedAccount, setHasCreatedAccount] = useHasCreatedAccountState()
+  const [username, setUsername] = useState('')
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setUsername(e.target.value)
+  const { signup, loading } = useGoogleSignup()
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!hasCreatedAccount) {
-      // TODO: register
-      // TODO: username duplicate
-      // setHasCreatedAccount(true)
+    try {
+      signup(username)
+    } catch (e) {
+      setUsername('')
     }
   }
   return (
     <form onSubmit={onSubmit}>
-      <Input placeholder="Username" css={inputStyle} />
+      <Input
+        placeholder="Username"
+        css={inputStyle}
+        value={username}
+        onChange={onChange}
+      />
       <div css={description(true)}>
         Username should be 4 ~ 16 alphanumeric letters without space
       </div>
-      <button css={buttonStyle}>REGISTER</button>
+      <button css={buttonStyle} disabled={loading}>
+        {loading ? <VeloIcon name="spinner" /> : 'REGISTER'}
+      </button>
       <div css={description(false)}>
         By signing up, I accept to Terms of Use. I have read and understood the
         Privacy Policy and Cookies Policy
@@ -50,6 +62,15 @@ const description = (alignRight?: boolean) => css`
   `}
 `
 
+const rotateAnimation = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+}
+`
+
 const buttonStyle = css`
   ${resetButton}
   height: 3rem;
@@ -62,7 +83,7 @@ const buttonStyle = css`
   color: white;
   background: ${palette.blueGrey[800]};
   cursor: pointer;
-  &:hover {
+  &:hover:enabled {
     background: ${palette.blueGrey[700]};
   }
   font-weight: bold;
@@ -70,6 +91,15 @@ const buttonStyle = css`
   margin-bottom: 1rem;
   border-radius: 0.5rem;
   letter-spacing: 0.0625em;
+  &:disabled {
+    cursor: default;
+    background: ${palette.blueGrey[600]};
+    color: ${palette.grey[100]};
+  }
+
+  svg {
+    animation: ${rotateAnimation} 1.25s ease-in-out infinite;
+  }
 `
 
 export default RegisterForm

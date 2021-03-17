@@ -8,6 +8,8 @@ import { ReactComponent as check } from './check.svg'
 import { ReactComponent as plus } from './plus.svg'
 import { ReactComponent as arrow_back } from './arrow_back.svg'
 import { ReactComponent as trash } from './trash.svg'
+import { ReactComponent as spinner } from './spinner.svg'
+import { ReactComponent as google } from './google.svg'
 
 export {
   flask,
@@ -20,4 +22,6 @@ export {
   plus,
   arrow_back,
   trash,
+  spinner,
+  google,
 }

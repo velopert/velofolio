@@ -1,10 +1,10 @@
 import { atom, useRecoilState } from 'recoil'
 
-const hasCreatedAccount = atom<boolean>({
-  key: 'hasCreatedAccount',
-  default: false,
+const googleTokenState = atom<string | null>({
+  key: 'googleTokenState',
+  default: null,
 })
 
-export function useHasCreatedAccountState() {
-  return useRecoilState(hasCreatedAccount)
+export function useGoogleTokenState() {
+  return useRecoilState(googleTokenState)
 }
