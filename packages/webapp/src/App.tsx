@@ -8,8 +8,11 @@ import Workspace from './pages/Workspace'
 import Explore from './pages/Explore'
 import DebugObserver from './components/DebugObserver/DebugObserver'
 import Register from './pages/Register'
+import useCheckUserEffect from './hooks/useCheckUserEffect'
 
 function App() {
+  useCheckUserEffect()
+
   return (
     <>
       <DebugObserver />

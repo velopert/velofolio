@@ -190,6 +190,7 @@ const authRoute: FastifyPluginCallback = (fastify, opts, done) => {
               error: 'Username Duplicate Error',
               message: 'Username already exists',
             })
+            return
           }
 
           const manager = getManager()
@@ -206,6 +207,13 @@ const authRoute: FastifyPluginCallback = (fastify, opts, done) => {
           socialAccount.social_id = profile.socialId
           await manager.save(socialAccount)
           const accessToken = await user.generateToken()
+
+          reply.setCookie('access_token', accessToken, {
+            path: '/',
+            httpOnly: true,
+            maxAge: 60 * 60 * 24 * 15,
+          })
+
           // await socialAccountRepo.save(socialAccount)
           reply.send({
             user: user,

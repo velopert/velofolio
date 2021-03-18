@@ -1,12 +1,15 @@
 import { css } from '@emotion/react'
+import { useUserState } from '../../atoms/authState'
 import palette from '../../lib/palette'
+import CurrentUserInfo from '../CurrentUserInfo'
 import GoogleLoginButton from '../GoogleLoginButton/GoogleLoginButton'
 import SidebarItem from '../SidebarItem'
-import VeloIcon from '../VeloIcon/VeloIcon'
 
 export type SidebarProps = {}
 
 function Sidebar({}: SidebarProps) {
+  const [user] = useUserState()
+
   return (
     <div css={sidebarStyle}>
       <div className="logo">velofolio</div>
@@ -15,9 +18,7 @@ function Sidebar({}: SidebarProps) {
         <SidebarItem icon="workspace" text="Workspace" to="/workspace" />
         <SidebarItem icon="globe" text="Explore" to="/explore" />
       </ul>
-      <div>
-        <GoogleLoginButton />
-      </div>
+      {user ? <CurrentUserInfo /> : <GoogleLoginButton />}
     </div>
   )
 }

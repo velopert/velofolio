@@ -3,9 +3,11 @@ import { useHistory } from 'react-router-dom'
 import { useGoogleTokenState } from '../atoms/authState'
 import { checkGoogleRegistered } from '../lib/api/auth/checkGoogleRegistered'
 import { googleSignin } from '../lib/api/auth/googleSignin'
+import useAuth from './useAuth'
 
 export default function useGoogleSignin() {
   const [, setGoogleToken] = useGoogleTokenState()
+  const { authorize } = useAuth()
 
   const history = useHistory()
   const signin = useCallback(
@@ -16,7 +18,7 @@ export default function useGoogleSignin() {
         const exists = await checkGoogleRegistered(accessToken)
         if (exists) {
           const { user } = await googleSignin(accessToken)
-          // TODO: manage user state
+          authorize(user)
         } else {
           history.push('/register')
         }
@@ -24,7 +26,7 @@ export default function useGoogleSignin() {
         // TODO: Error Dialog
       }
     },
-    [history, setGoogleToken]
+    [history, setGoogleToken, authorize]
   )
 
   return signin

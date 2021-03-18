@@ -11,12 +11,12 @@ function RegisterForm({}: RegisterFormProps) {
   const [username, setUsername] = useState('')
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setUsername(e.target.value)
-  const { signup, loading } = useGoogleSignup()
+  const { signup, loading, error } = useGoogleSignup()
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      signup(username)
+      await signup(username)
     } catch (e) {
       setUsername('')
     }
@@ -32,6 +32,7 @@ function RegisterForm({}: RegisterFormProps) {
       <div css={description(true)}>
         Username should be 4 ~ 16 alphanumeric letters without space
       </div>
+      {error && <div css={description(true, true)}>{error}</div>}
       <button css={buttonStyle} disabled={loading}>
         {loading ? <VeloIcon name="spinner" /> : 'REGISTER'}
       </button>
@@ -51,7 +52,7 @@ const inputStyle = css`
   }
 `
 
-const description = (alignRight?: boolean) => css`
+const description = (alignRight?: boolean, error?: boolean) => css`
   color: ${palette.blueGrey[500]};
   font-size: 0.75rem;
   margin-top: 0.5rem;
@@ -59,6 +60,12 @@ const description = (alignRight?: boolean) => css`
   ${alignRight &&
   css`
     text-align: right;
+  `}
+
+  ${error &&
+  css`
+    margin-top: 0;
+    color: ${palette.red[500]};
   `}
 `
 
