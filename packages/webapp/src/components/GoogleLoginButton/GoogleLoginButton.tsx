@@ -20,14 +20,6 @@ function GoogleLoginButton({}: GoogleLoginButtonProps) {
 
   const onFailure = useCallback((e: any) => {}, [])
   useEffect(() => {
-    // window.gapi?.signin2.render('google-login-button', {
-    //   scope: 'profile email',
-    //   // width: 212,
-    //   // height: 48,
-    //   longtitle: true,
-    //   onsuccess: onSuccess,
-    //   onfailure: onFailure,
-    // })
     window.gapi.load('auth2', function () {
       // Retrieve the singleton for the GoogleAuth library and set up the client.
       const auth2 = window.gapi.auth2.init({
@@ -60,15 +52,18 @@ function GoogleLoginButton({}: GoogleLoginButtonProps) {
 
 const buttonStyle = css`
   ${resetButton}
+  width: 100%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: 1px solid ${palette.blueGrey[500]};
   background: white;
+  height: 3.375rem;
   padding: 0.75rem 1rem;
-  font-size: 0.875rrem;
-  color: ${palette.blueGrey[700]};
+  font-size: 1rem;
+  color: ${palette.blueGrey[800]};
   border-radius: 0.5rem;
+
   cursor: pointer;
   svg {
     margin-right: 0.5rem;
