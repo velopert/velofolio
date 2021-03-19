@@ -154,7 +154,7 @@ const tableStyle = css`
   }
 
   tr td:first-child {
-    width: 20rem;
+    width: 5rem;
   }
 
   thead th {
@@ -163,7 +163,7 @@ const tableStyle = css`
 `
 
 const chartStyle = css`
-  width: 100%auto;
+  width: 100%;
   height: 20rem;
 `
 
