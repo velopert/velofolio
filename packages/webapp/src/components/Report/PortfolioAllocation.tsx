@@ -172,6 +172,7 @@ function PortfolioAllocation({ portfolio }: PortfolioAllocationProps) {
     return options
   }, [sectorWeightingsEntries])
 
+  // TODO: check associated asset details ready only
   useEffect(() => {
     const pieElement = divRef.current
     if (!pieElement || !pieChartOptions) return
@@ -186,30 +187,29 @@ function PortfolioAllocation({ portfolio }: PortfolioAllocationProps) {
     return () => {
       window.removeEventListener('resize', handleResize)
     }
-  }, [pieChartOptions])
+  }, [pieChartOptions, portfolio.name, assetDetailsReady])
 
   useEffect(() => {
     const sectorChartElement = sectorChartDivRef.current
-    if (!sectorChartElement || !barChartOptions) return
+    if (!sectorChartElement || !barChartOptions || !sectorWeightingsEntries)
+      return
 
-    const fnWrapper = { handleResize: () => {} }
+    if (sectorWeightingsEntries.length === 0) {
+      return
+    }
+    const barChart = echarts.init(sectorChartElement)
+    barChart.setOption(barChartOptions)
+    barChart.resize()
 
-    setTimeout(() => {
-      const barChart = echarts.init(sectorChartElement)
-      barChart.setOption(barChartOptions)
-
-      fnWrapper.handleResize = () => {
-        barChart.resize()
-      }
-    }, 100)
-
-    const fn = () => fnWrapper.handleResize()
+    const fn = () => {
+      barChart.resize()
+    }
 
     window.addEventListener('resize', () => fn)
     return () => {
       window.removeEventListener('resize', fn)
     }
-  }, [barChartOptions])
+  }, [barChartOptions, sectorWeightingsEntries, assetDetailsReady])
 
   if (!assetDetailsReady || !sectorWeightingsEntries) return null
 
@@ -289,7 +289,7 @@ const tableStyle = css`
     border: 1px solid ${palette.blueGrey[200]};
   }
 
-  td:nth-child(3) {
+  td:nth-of-type(3) {
     width: 6rem;
   }
 
@@ -297,7 +297,7 @@ const tableStyle = css`
     background: ${palette.grey[100]};
   }
 
-  tr td:first-child {
+  tr td:first-of-type {
     width: 5rem;
   }
 
@@ -313,7 +313,8 @@ const pieChartStyle = css`
 
 const sectorChartStyle = (sectorCount: number) => css`
   width: 100%;
-  height: ${Math.max(sectorCount * 2.5, 15)}rem;
+  height: auto;
+  height: ${Math.max(sectorCount * 2.5, 5)}rem;
 `
 
 export default PortfolioAllocation

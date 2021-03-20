@@ -101,6 +101,9 @@ class Syncbot {
         sectorWeighting.asset = asset
         sectorWeighting.percentage = parseFloat(sw.weightPercentage)
         sectorWeighting.sector = sw.sector
+        if (sw.sector === 'Consumer Cyclicals') {
+          sectorWeighting.sector = 'Consumer Cyclical'
+        }
         return sectorWeighting
       })
       await getRepository(SectorWeighting).save(sectorWeightings)

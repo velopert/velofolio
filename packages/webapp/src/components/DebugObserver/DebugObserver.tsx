@@ -8,7 +8,7 @@ export default function DebugObserver() {
     for (const node of (snapshot as any).getNodes_UNSTABLE({
       isModified: true,
     })) {
-      console.debug(node.key, snapshot.getLoadable(node))
+      // console.debug(node.key, snapshot.getLoadable(node))
     }
   }, [snapshot])
 
