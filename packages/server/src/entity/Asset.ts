@@ -49,7 +49,7 @@ export class Asset {
   @Column({
     nullable: true,
   })
-  image!: string // /logos/us_stock/TSLA.png
+  image?: string // /logos/us_stock/TSLA.png
 
   @Column()
   is_etf!: boolean

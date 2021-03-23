@@ -14,7 +14,7 @@ export class SectorWeighting {
   @PrimaryGeneratedColumn()
   id!: number
 
-  @ManyToOne((type) => Asset, { onDelete: 'CASCADE' })
+  @ManyToOne((type) => Asset, { onDelete: 'CASCADE', cascade: true })
   @JoinColumn({
     name: 'asset_id',
   })

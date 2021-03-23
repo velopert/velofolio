@@ -61,9 +61,15 @@ const initialState: LabSettingState = {
   /* ... */
 }
 
+// TODO: separate into multiple atoms
 export const labSettingState = atom({
   key: 'labSettingState',
   default: initialState,
+})
+
+export const projectTitleState = atom({
+  key: 'projectTitleState',
+  default: 'My Project',
 })
 
 export const dateRangeState = selector<LabSettingState['dateRange']>({
@@ -258,4 +264,18 @@ export function usePortfolioNameState(portfolioId: number) {
 
 export function useDateRangeValue() {
   return useRecoilValue(dateRangeState)
+}
+
+export function useProjectTitleState() {
+  return useRecoilState(projectTitleState)
+}
+
+export function useLabDataValue() {
+  const { nextPortfolioId, ...rest } = useRecoilValue(labSettingState)
+  const projectTitle = useRecoilValue(projectTitleState)
+
+  return {
+    title: projectTitle,
+    data: rest,
+  }
 }

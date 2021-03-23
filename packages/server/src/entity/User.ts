@@ -47,4 +47,9 @@ export class User {
       }
     )
   }
+
+  serialize() {
+    const { is_certified, created_at, email, ...rest } = this
+    return rest
+  }
 }

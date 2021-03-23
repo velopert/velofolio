@@ -9,3 +9,5 @@ export type User = {
   created_at: string
   is_certified: boolean
 }
+
+export type UserSerialized = Omit<User, 'email' | 'created_at' | 'is_certified'>

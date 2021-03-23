@@ -1,0 +1,73 @@
+{
+  "title": "Backtest Data Body",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object",
+      "properties": {
+        "dateRange": {
+          "type": "object",
+          "properties": {
+            "startDate": {
+              "type": "object",
+              "properties": {
+                "year": { "type": "number" },
+                "month": { "type": "number" }
+              },
+              "required": ["year", "month"]
+            },
+            "endDate": {
+              "type": "object",
+              "properties": {
+                "year": { "type": "number" },
+                "month": { "type": "number" }
+              },
+              "required": ["year", "month"]
+            }
+          },
+          "required": ["startDate", "endDate"]
+        },
+        "initialAmount": { "type": "number" },
+        "cashflows": {
+          "type": "object",
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "amount": { "type": "number" },
+            "period": { "type": "string" }
+          },
+          "required": ["enabled", "amount", "period"]
+        },
+        "portfolios": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": { "type": "number" },
+              "name": { "type": "string" },
+              "rebalancing": { "type": "string" },
+              "assets": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "number" },
+                    "image": { "type": "string" },
+                    "ticker": { "type": "string" },
+                    "weight": { "type": "number" }
+                  },
+                  "required": ["id", "ticker", "weight"]
+                }
+              }
+            },
+            "required": ["id", "name", "rebalancing", "assets"]
+          }
+        }
+      },
+      "required": ["dateRange", "initialAmount", "cashflows", "portfolios"]
+    }
+  },
+  "required": ["title", "data"]
+}
