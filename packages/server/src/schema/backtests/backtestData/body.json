@@ -67,7 +67,33 @@
         }
       },
       "required": ["dateRange", "initialAmount", "cashflows", "portfolios"]
+    },
+    "returns": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "x": { "type": "string" },
+            "y": { "type": "number" }
+          },
+          "required": ["x", "y"]
+        }
+      }
+    },
+    "indicators": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "number" },
+          "cagr": { "type": ["number", "null"] },
+          "sharpe": { "type": ["number", "null"] }
+        },
+        "required": ["id", "cagr", "sharpe"]
+      }
     }
   },
-  "required": ["title", "data"]
+  "required": ["title", "data", "returns", "indicators"]
 }

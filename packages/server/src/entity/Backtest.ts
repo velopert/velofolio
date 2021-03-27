@@ -27,6 +27,9 @@ export class Backtest {
   @Column({ type: 'text', nullable: true })
   body!: string
 
+  @Column({ length: 255 })
+  thumbnail!: string
+
   @Column({ type: 'timestamp' })
   start_date!: Date
 

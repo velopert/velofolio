@@ -44,6 +44,12 @@ export class Portfolio {
   })
   rebalancing?: number
 
+  @Column({ type: 'double', nullable: true })
+  cagr?: number
+
+  @Column({ type: 'double', nullable: true })
+  sharpe?: number
+
   @OneToMany(() => PortfolioAssetWeight, (assetWeight) => assetWeight.portfolio)
   asset_weights!: PortfolioAssetWeight[]
 

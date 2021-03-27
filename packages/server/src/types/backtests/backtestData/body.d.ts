@@ -6,42 +6,53 @@
  */
 
 export interface BacktestDataBody {
-  title: string
+  title: string;
   data: {
     dateRange: {
       startDate: {
-        year: number
-        month: number
-        [k: string]: unknown
-      }
+        year: number;
+        month: number;
+        [k: string]: unknown;
+      };
       endDate: {
-        year: number
-        month: number
-        [k: string]: unknown
-      }
-      [k: string]: unknown
-    }
-    initialAmount: number
+        year: number;
+        month: number;
+        [k: string]: unknown;
+      };
+      [k: string]: unknown;
+    };
+    initialAmount: number;
     cashflows: {
-      enabled: boolean
-      amount: number
-      period: string
-      [k: string]: unknown
-    }
+      enabled: boolean;
+      amount: number;
+      period: string;
+      [k: string]: unknown;
+    };
     portfolios: {
-      id: number
-      name: string
-      rebalancing: string
+      id: number;
+      name: string;
+      rebalancing: string;
       assets: {
-        id: number
-        image?: string
-        ticker: string
-        weight: number
-        [k: string]: unknown
-      }[]
-      [k: string]: unknown
-    }[]
-    [k: string]: unknown
-  }
-  [k: string]: unknown
+        id: number;
+        image?: string;
+        ticker: string;
+        weight: number;
+        [k: string]: unknown;
+      }[];
+      [k: string]: unknown;
+    }[];
+    [k: string]: unknown;
+  };
+  returns: {
+    x: string;
+    y: number;
+    [k: string]: unknown;
+  }[][];
+  indicators: {
+    id: number;
+    cagr: number | null;
+    sharpe: number | null;
+    [k: string]: unknown;
+  }[];
+  [k: string]: unknown;
 }

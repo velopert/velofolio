@@ -11,6 +11,7 @@ import { MonthYearValue } from '../types/MonthYearValue'
 import produce from 'immer'
 import { useCallback } from 'react'
 import { AssetWeight } from './assetsState'
+import { useReportValue } from './reportState'
 
 export type LabSettingState = {
   dateRange: {

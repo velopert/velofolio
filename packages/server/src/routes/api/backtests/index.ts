@@ -3,6 +3,8 @@ import { Backtest } from 'entity/Backtest'
 import { Portfolio } from 'entity/Portfolio'
 import { PortfolioAssetWeight } from 'entity/PortfolioAssetWeight'
 import { FastifyPluginAsync } from 'fastify'
+import upload from 'lib/aws/upload'
+import { generateBacktestChart } from 'lib/chart/generateBacktestChart'
 import { convertPeriodToMonth } from 'lib/utils'
 import userPlugin from 'plugins/userPlugin'
 import ProjectDataBodySchema from 'schema/backtests/backtestData/body.json'
@@ -20,17 +22,25 @@ const backtestsRoute: FastifyPluginAsync = async (fastify, opts) => {
     { schema: { body: ProjectDataBodySchema } },
     async (request, reply) => {
       const { body, userData } = request
+      const { indicators } = body
+      const { cashflows } = body.data
       const backtest = new Backtest()
       backtest.user = userData!
       backtest.title = body.title
       backtest.body = ''
       backtest.is_private = false
       backtest.initial_amount = body.data.initialAmount
+      backtest.thumbnail = ''
       const { startDate, endDate } = body.data.dateRange
 
       backtest.start_date = new Date(startDate.year, startDate.month - 1)
       backtest.end_date = new Date(endDate.year, endDate.month - 1)
 
+      if (cashflows.enabled) {
+        backtest.cashflow_interval =
+          convertPeriodToMonth(cashflows.period) ?? undefined
+        backtest.cashflow_value = cashflows.amount
+      }
       /*
         TODO: 
          1. Create Portfolios
@@ -42,12 +52,14 @@ const backtestsRoute: FastifyPluginAsync = async (fastify, opts) => {
 
       const manager = getManager()
 
-      const portfoliosPromise = body.data.portfolios.map(async (p) => {
+      const portfoliosPromise = body.data.portfolios.map(async (p, i) => {
         const portfolio = new Portfolio()
         portfolio.backtest = backtest
         portfolio.name = p.name
         portfolio.user = userData!
         portfolio.rebalancing = convertPeriodToMonth(p.rebalancing) ?? undefined
+        portfolio.sharpe = indicators[i].sharpe ?? undefined
+        portfolio.cagr = indicators[i].cagr ?? undefined
         portfolio.asset_weights = p.assets.map((a) => {
           const assetWeight = new PortfolioAssetWeight()
           assetWeight.asset = new Asset()
@@ -65,6 +77,10 @@ const backtestsRoute: FastifyPluginAsync = async (fastify, opts) => {
       await manager.save(portfolios)
 
       backtest.portfolios = portfolios
+
+      const fileDir = await generateBacktestChart(body.returns)
+      const result = await upload(fileDir, `backtest_chart/${backtest.id}.png`)
+      backtest.thumbnail = `backtest_chart/${backtest.id}.png`
       await manager.save(backtest)
 
       return backtest.serialize()

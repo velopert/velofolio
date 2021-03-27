@@ -3,7 +3,8 @@
       "strict": true,
       "lib": [
          "es5",
-         "es6"
+         "es6",
+         "esnext"
       ],
       "target": "es5",
       "module": "commonjs",
