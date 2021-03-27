@@ -8,12 +8,33 @@ import { generateBacktestChart } from 'lib/chart/generateBacktestChart'
 import { convertPeriodToMonth } from 'lib/utils'
 import userPlugin from 'plugins/userPlugin'
 import ProjectDataBodySchema from 'schema/backtests/backtestData/body.json'
-import { getManager, getRepository } from 'typeorm'
+import GetBacktestsQuerystringSchema from 'schema/backtests/getBacktests/querystring.json'
+import { getManager, getRepository, LessThan, MoreThan } from 'typeorm'
 import { BacktestDataBody } from 'types/backtests/backtestData/body'
+import { GetBacktestsQuerystring } from 'types/backtests/getBacktests/querystring'
+import { backtestService } from './backtestService'
 
 const backtestsRoute: FastifyPluginAsync = async (fastify, opts) => {
-  fastify.register(userPlugin, { fetchUser: true })
+  /**
+   * GET /api/backtests
+   */
+  fastify.get<{ Querystring: GetBacktestsQuerystring }>(
+    '/',
+    { schema: { querystring: GetBacktestsQuerystringSchema } },
+    async (request, reply) => {
+      const { cursor, user_id } = request.query
+      return backtestService.getBacktests({
+        userId: user_id,
+        cursor,
+      })
+    }
+  )
 
+  fastify.register(protectedRoute, { prefix: '' })
+}
+
+const protectedRoute: FastifyPluginAsync = async (fastify) => {
+  fastify.register(userPlugin, { fetchUser: true })
   /**
    * POST /api/backtests
    */

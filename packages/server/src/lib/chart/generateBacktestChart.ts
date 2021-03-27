@@ -15,6 +15,7 @@ export async function generateBacktestChart(
       ChartJS.plugins.register({
         beforeInit: (chart, options) => {
           const ctx = chart.ctx
+          if (!ctx) return
           ctx.fillStyle = 'white'
           ctx.fillRect(0, 0, 600, 300)
         },

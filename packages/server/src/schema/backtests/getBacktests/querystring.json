@@ -1,0 +1,10 @@
+{
+  "title": "Get Backtests Querystring",
+  "type": "object",
+  "properties": {
+    "cursor": { "type": "number" },
+    "user_id": {
+      "type": "number"
+    }
+  }
+}

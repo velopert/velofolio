@@ -4,7 +4,8 @@
       "lib": [
          "es5",
          "es6",
-         "esnext"
+         "esnext",
+         "DOM"
       ],
       "target": "es5",
       "module": "commonjs",
