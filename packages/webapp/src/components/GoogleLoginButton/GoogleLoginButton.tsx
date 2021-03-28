@@ -7,7 +7,6 @@ import VeloIcon from '../VeloIcon'
 export type GoogleLoginButtonProps = {}
 
 function GoogleLoginButton({}: GoogleLoginButtonProps) {
-  const clickedRef = useRef(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
   const signin = useGoogleSignin()
 
@@ -28,16 +27,13 @@ function GoogleLoginButton({}: GoogleLoginButtonProps) {
         cookiepolicy: 'single_host_origin',
       })
 
-      console.log(buttonRef.current)
-
       auth2.attachClickHandler(buttonRef.current, {}, (googleUser: any) => {
-        console.log(googleUser)
         onSuccess(googleUser)
       })
     })
   }, [onSuccess, onFailure])
   return (
-    <button css={buttonStyle} ref={buttonRef}>
+    <button css={buttonStyle} ref={buttonRef} id="google-login-button">
       <VeloIcon name="google" />
       Sign in with Google
     </button>

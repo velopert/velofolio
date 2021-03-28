@@ -1,7 +1,9 @@
+import BacktestsGrid from '../../components/BacktestsGrid/BacktestsGrid'
+
 export type ExploreProps = {}
 
 function Explore({}: ExploreProps) {
-  return <div>Explore</div>
+  return <BacktestsGrid />
 }
 
 export default Explore
