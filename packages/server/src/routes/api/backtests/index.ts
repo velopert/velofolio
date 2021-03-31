@@ -52,6 +52,11 @@ const protectedRoute: FastifyPluginAsync = async (fastify) => {
       backtest.is_private = false
       backtest.initial_amount = body.data.initialAmount
       backtest.thumbnail = ''
+
+      const fileDir = await generateBacktestChart(body.returns)
+      await upload(fileDir, `backtest_chart/${backtest.id}.png`)
+      backtest.thumbnail = `backtest_chart/${backtest.id}.png`
+
       const { startDate, endDate } = body.data.dateRange
 
       backtest.start_date = new Date(startDate.year, startDate.month - 1)
@@ -62,14 +67,6 @@ const protectedRoute: FastifyPluginAsync = async (fastify) => {
           convertPeriodToMonth(cashflows.period) ?? undefined
         backtest.cashflow_value = cashflows.amount
       }
-      /*
-        TODO: 
-         1. Create Portfolios
-         2. Create PortfolioAssetWeight
-         3. Link PortfolioAssetWeight -> Portfolio
-         4. Link Portfolio -> Backtest
-         5. Save Backtest
-      */
 
       const manager = getManager()
 
@@ -99,9 +96,6 @@ const protectedRoute: FastifyPluginAsync = async (fastify) => {
 
       backtest.portfolios = portfolios
 
-      const fileDir = await generateBacktestChart(body.returns)
-      const result = await upload(fileDir, `backtest_chart/${backtest.id}.png`)
-      backtest.thumbnail = `backtest_chart/${backtest.id}.png`
       await manager.save(backtest)
 
       return backtest.serialize()

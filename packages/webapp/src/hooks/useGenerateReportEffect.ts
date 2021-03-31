@@ -23,6 +23,7 @@ import {
   sortinoRatio,
   stdev,
 } from '../lib/utils/calculateIndicators'
+import useDateRangeHook from './useDateRangeHook'
 
 type GenerateReportDataParams = {
   initialAmount: number
@@ -318,6 +319,8 @@ export default function useGenerateReportEffect() {
   const [{ prices: tb3HistoricalPrices }] = useTB3HistoricalPricesState()
   const setReport = useSetReport()
 
+  const { setStartDate } = useDateRangeHook()
+
   const startDate = useMemo(() => {
     const { year, month } = dateRange.startDate
     if (!firstHistoricalDate) return null
@@ -327,6 +330,27 @@ export default function useGenerateReportEffect() {
       ? firstHistoricalDate.date
       : configuredStartDate
   }, [firstHistoricalDate, dateRange])
+
+  useEffect(() => {
+    if (!startDate) return
+    const date = new Date(startDate.getFullYear(), startDate.getMonth() + 2)
+    const startDateInfo = {
+      year: date.getFullYear(),
+      month: date.getMonth(),
+    }
+
+    // configured
+    const { year: cYear, month: cMonth } = dateRange.startDate
+    // managed
+    const { year: mYear, month: mMonth } = startDateInfo
+
+    if (cYear !== mYear || cMonth !== mMonth) {
+      setStartDate({
+        month: mMonth,
+        year: mYear,
+      })
+    }
+  }, [startDate, dateRange.startDate, setStartDate])
 
   useEffect(() => {
     if (unfetchedTickers.length > 0 || !startDate) {
