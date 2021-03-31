@@ -1,6 +1,6 @@
 import { css } from '@emotion/react'
 import { useUserState } from '../../atoms/authState'
-import BacktestsGrid from '../../components/BacktestsGrid/BacktestsGrid'
+import BacktestsGrid from '../../components/BacktestsGrid'
 import WorkspaceProtected from '../../components/WorkspaceProtected'
 
 export type WorkspaceProps = {}

@@ -67,9 +67,10 @@ export class Backtest {
   portfolios!: Portfolio[]
 
   serialize() {
-    const { user, portfolios, ...rest } = this
+    const { user, portfolios, thumbnail, ...rest } = this
     return {
       ...rest,
+      thumbnail: 'https://d15tp0cfv5jhy5.cloudfront.net/'.concat(thumbnail),
       user: user.serialize(),
       portfolios: portfolios.map((p) => p.serialize()),
     }
