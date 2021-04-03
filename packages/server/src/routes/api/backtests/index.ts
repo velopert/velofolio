@@ -30,6 +30,14 @@ const backtestsRoute: FastifyPluginAsync = async (fastify, opts) => {
     }
   )
 
+  /**
+   * GET /api/backtests/:id
+   */
+  fastify.get<{ Params: { id: string } }>('/:id', async (request, reply) => {
+    const parsedId = parseInt(request.params.id)
+    return backtestService.getBacktest(parsedId)
+  })
+
   fastify.register(protectedRoute, { prefix: '' })
 }
 

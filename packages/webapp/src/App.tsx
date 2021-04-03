@@ -18,7 +18,7 @@ function App() {
       <DebugObserver />
       <Switch>
         <Route
-          path={['/', '/lab', '/workspace', '/explore', '/workspace']}
+          path={['/', '/backtests/:id', '/workspace', '/explore', '/workspace']}
           exact
         >
           <AppLayout>
@@ -27,7 +27,7 @@ function App() {
             </AppLayout.Side>
             <AppLayout.Main>
               <Switch>
-                <Route path={['/', '/lab']} exact>
+                <Route path={['/', '/lab', '/backtests/:id']} exact>
                   <Lab />
                 </Route>
                 <Route path="/workspace">

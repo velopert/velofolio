@@ -102,7 +102,7 @@ const tableStyle = css`
     background: ${palette.grey[100]};
   }
 
-  tr td:first-child {
+  tr td:first-of-type {
     width: 20rem;
   }
 
@@ -114,7 +114,7 @@ const tableStyle = css`
 export default IndicatorsSection
 
 /*
-.bordered th:first-child {
+.bordered th:first-of-type {
   -moz-border-radius: 6px 0 0 0;
   -webkit-border-radius: 6px 0 0 0;
   border-radius: 6px 0 0 0;
@@ -132,7 +132,7 @@ export default IndicatorsSection
   border-radius: 6px 6px 0 0;
 }
 
-.bordered tr:last-child td:first-child {
+.bordered tr:last-child td:first-of-type {
   -moz-border-radius: 0 0 0 6px;
   -webkit-border-radius: 0 0 0 6px;
   border-radius: 0 0 0 6px;

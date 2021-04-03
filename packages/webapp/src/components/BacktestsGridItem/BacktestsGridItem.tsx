@@ -6,6 +6,7 @@ import palette from '../../lib/palette'
 import media from '../../lib/styles/media'
 import { convertToPercentage } from '../../lib/utils/calculateIndicators'
 import { intervalToDuration, formatDuration } from 'date-fns'
+import { Link } from 'react-router-dom'
 export type BacktestsGridItemProps = {
   backtest: Backtest
 }
@@ -22,7 +23,7 @@ function BacktestsGridItem({ backtest }: BacktestsGridItemProps) {
     })
   }, [backtest])
   return (
-    <div css={card}>
+    <Link css={card} to={`/backtests/${backtest.id}`}>
       <div css={imageWrapper}>
         <div className="duration">{duration}</div>
         <img src={backtest.thumbnail} alt={`${backtest.title} chart`} />
@@ -63,15 +64,22 @@ function BacktestsGridItem({ backtest }: BacktestsGridItemProps) {
           </div>
         )}
       </section>
-    </div>
+    </Link>
   )
 }
 
 const card = css`
+  display: block;
   width: 21.625rem;
   height: 26rem;
   box-shadow: 0px 1rem 1rem rgba(67, 67, 67, 0.03);
   border-radius: 2rem;
+  text-decoration: none;
+  transition: all ease-in 0.125s;
+  &:hover {
+    transform: translate3d(0, -0.25rem, 0);
+    box-shadow: 0px 1.125rem 1.125rem rgba(67, 67, 67, 0.08);
+  }
 
   ${media.custom(1050)} {
     width: 100%;

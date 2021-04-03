@@ -20,6 +20,14 @@ export default class Server {
     this.app.register(searchPlugin)
     this.app.register(jwtPlugin)
     this.app.register(apiRoute, { prefix: '/api' })
+    this.app.setErrorHandler((error, request, reply) => {
+      reply.send({
+        statusCode: error.statusCode,
+        name: error.name,
+        message: error.message,
+        validation: error.validation,
+      })
+    })
   }
 
   start() {

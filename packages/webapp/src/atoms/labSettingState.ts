@@ -5,6 +5,7 @@ import {
   selectorFamily,
   useRecoilState,
   useRecoilValue,
+  useResetRecoilState,
   useSetRecoilState,
 } from 'recoil'
 import { MonthYearValue } from '../types/MonthYearValue'
@@ -12,6 +13,8 @@ import produce from 'immer'
 import { useCallback } from 'react'
 import { AssetWeight } from './assetsState'
 import { useReportValue } from './reportState'
+import { Backtest } from '../lib/api/backtests/types'
+import { convertIntervalToPeriod } from '../lib/constants'
 
 export type LabSettingState = {
   dateRange: {
@@ -71,6 +74,11 @@ export const labSettingState = atom({
 export const projectTitleState = atom({
   key: 'projectTitleState',
   default: 'My Project',
+})
+
+export const labLoadingState = atom({
+  key: 'labLoadingState',
+  default: false,
 })
 
 export const dateRangeState = selector<LabSettingState['dateRange']>({
@@ -279,4 +287,66 @@ export function useLabDataValue() {
     title: projectTitle,
     data: rest,
   }
+}
+
+export function useLabLoadingState() {
+  return useRecoilState(labLoadingState)
+}
+/**
+ * Sync remote backtest data to state
+ */
+export function useLabSettingSync() {
+  const setLabSetting = useSetRecoilState(labSettingState)
+  const setProjectTitle = useSetRecoilState(projectTitleState)
+  const setLabLoading = useSetRecoilState(labLoadingState)
+
+  const sync = useCallback(
+    (backtest: Backtest) => {
+      setProjectTitle(backtest.title)
+      setLabLoading(false)
+      setLabSetting({
+        cashflows: {
+          amount: backtest.cashflow_value || 1000,
+          enabled: backtest.cashflow_value !== null,
+          period: convertIntervalToPeriod(backtest.cashflow_interval || 12),
+        },
+        dateRange: {
+          startDate: {
+            year: new Date(backtest.start_date).getFullYear(),
+            month: new Date(backtest.start_date).getMonth() + 1,
+          },
+          endDate: {
+            year: new Date(backtest.end_date).getFullYear(),
+            month: new Date(backtest.end_date).getMonth() + 1,
+          },
+        },
+        initialAmount: backtest.initial_amount,
+        nextPortfolioId:
+          backtest.portfolios[backtest.portfolios.length - 1].id + 1,
+        portfolios: backtest.portfolios.map((portfolio) => ({
+          assets: portfolio.assets,
+          id: portfolio.id,
+          name: portfolio.name,
+          rebalancing: portfolio.rebalancing
+            ? convertIntervalToPeriod(portfolio.rebalancing)
+            : 'No Rebalancing',
+        })),
+      })
+    },
+    [setProjectTitle, setLabSetting, setLabLoading]
+  )
+
+  return sync
+}
+
+export function useResetLabSetting() {
+  const resetLabSetting = useResetRecoilState(labSettingState)
+  const resetLoading = useResetRecoilState(labLoadingState)
+  const resetProjectTitle = useResetRecoilState(projectTitleState)
+
+  const reset = useCallback(() => {
+    ;[resetLabSetting, resetLoading, resetProjectTitle].forEach((fn) => fn())
+  }, [resetLabSetting, resetLoading, resetProjectTitle])
+
+  return reset
 }

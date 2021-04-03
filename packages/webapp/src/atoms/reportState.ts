@@ -4,6 +4,7 @@ import {
   selector,
   useRecoilState,
   useRecoilValue,
+  useResetRecoilState,
   useSetRecoilState,
 } from 'recoil'
 import PortfolioItem from '../components/LabSettings/PortfolioItem'
@@ -65,6 +66,10 @@ const monthsCount = selector({
 
 export function useMonthsCountValue() {
   return useRecoilValue(monthsCount)
+}
+
+export function useResetReport() {
+  return useResetRecoilState(reportState)
 }
 
 // type ReportState = {

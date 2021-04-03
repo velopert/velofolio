@@ -331,26 +331,34 @@ export default function useGenerateReportEffect() {
       : configuredStartDate
   }, [firstHistoricalDate, dateRange])
 
-  useEffect(() => {
-    if (!startDate) return
-    const date = new Date(startDate.getFullYear(), startDate.getMonth() + 2)
-    const startDateInfo = {
-      year: date.getFullYear(),
-      month: date.getMonth(),
-    }
+  // useEffect(() => {
+  //   if (!startDate) return
+  //   const date = new Date(startDate.getFullYear(), startDate.getMonth() + 2)
+  //   const startDateInfo = {
+  //     year: date.getFullYear(),
+  //     month: date.getMonth(),
+  //   }
 
-    // configured
-    const { year: cYear, month: cMonth } = dateRange.startDate
-    // managed
-    const { year: mYear, month: mMonth } = startDateInfo
+  //   // configured
 
-    if (cYear !== mYear || cMonth !== mMonth) {
-      setStartDate({
-        month: mMonth,
-        year: mYear,
-      })
-    }
-  }, [startDate, dateRange.startDate, setStartDate])
+  //   const { year: cYear, month: cMonth } = dateRange.startDate
+  //   // managed
+  //   const { year: mYear, month: mMonth } = startDateInfo
+
+  //   if (cYear !== mYear || cMonth !== mMonth) {
+  //     console.log({
+  //       cYear,
+  //       cMonth,
+  //       mYear,
+  //       mMonth,
+  //     })
+  //     console.log('Check: ', { month: mMonth, year: mYear })
+  //     setStartDate({
+  //       month: mMonth,
+  //       year: mYear,
+  //     })
+  //   }
+  // }, [startDate, dateRange.startDate, setStartDate])
 
   useEffect(() => {
     if (unfetchedTickers.length > 0 || !startDate) {
