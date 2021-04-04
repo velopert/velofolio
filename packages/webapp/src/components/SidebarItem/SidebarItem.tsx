@@ -1,18 +1,23 @@
 import { css } from '@emotion/react'
-import { NavLink } from 'react-router-dom'
+import { match, NavLink } from 'react-router-dom'
 import palette from '../../lib/palette'
 import VeloIcon, { VeloIconType } from '../VeloIcon/VeloIcon'
+import * as H from 'history'
 
 export type SidebarItemProps = {
   icon: VeloIconType
   text: string
   to: string
+  isActive?<Params extends { [K in keyof Params]?: string }>(
+    match: match<Params> | null,
+    location: H.Location
+  ): boolean
 }
 
-function SidebarItem({ icon, text, to }: SidebarItemProps) {
+function SidebarItem({ icon, text, to, isActive }: SidebarItemProps) {
   return (
     <li css={itemStyle}>
-      <NavLink to={to} css={linkStyle} exact>
+      <NavLink to={to} css={linkStyle} exact isActive={isActive}>
         <VeloIcon name={icon} />
         <span>{text}</span>
       </NavLink>

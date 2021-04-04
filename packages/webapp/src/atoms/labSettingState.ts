@@ -81,6 +81,11 @@ export const labLoadingState = atom({
   default: false,
 })
 
+export const isCreatingState = atom({
+  key: 'isCreatingState',
+  default: true,
+})
+
 export const dateRangeState = selector<LabSettingState['dateRange']>({
   key: 'dateRangeState',
   get: ({ get }) => {
@@ -361,4 +366,12 @@ export function useResetLabSetting() {
   }, [resetLabSetting, resetLoading, resetProjectTitle])
 
   return reset
+}
+
+export function useSetIsCreating() {
+  return useSetRecoilState(isCreatingState)
+}
+
+export function useIsCreatingState() {
+  return useRecoilState(isCreatingState)
 }

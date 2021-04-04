@@ -1,4 +1,5 @@
 import { css } from '@emotion/react'
+import { useRouteMatch } from 'react-router-dom'
 import { useUserState } from '../../atoms/authState'
 import palette from '../../lib/palette'
 import CurrentUserInfo from '../CurrentUserInfo'
@@ -9,12 +10,20 @@ export type SidebarProps = {}
 
 function Sidebar({}: SidebarProps) {
   const [user] = useUserState()
+  const match = useRouteMatch()
 
   return (
     <div css={sidebarStyle}>
       <div className="logo">velofolio</div>
       <ul css={menuStyle}>
-        <SidebarItem icon="flask" text="Lab" to="/" />
+        <SidebarItem
+          icon="flask"
+          text="Lab"
+          to="/"
+          isActive={() => {
+            return ['/backtests/:id', '/'].includes(match.path)
+          }}
+        />
         <SidebarItem icon="workspace" text="Workspace" to="/workspace" />
         <SidebarItem icon="globe" text="Explore" to="/explore" />
       </ul>
