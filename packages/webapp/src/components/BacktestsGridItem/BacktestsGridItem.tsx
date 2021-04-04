@@ -7,11 +7,16 @@ import media from '../../lib/styles/media'
 import { convertToPercentage } from '../../lib/utils/calculateIndicators'
 import { intervalToDuration, formatDuration } from 'date-fns'
 import { Link } from 'react-router-dom'
+import { useSetLabLoading } from '../../atoms/labSettingState'
 export type BacktestsGridItemProps = {
   backtest: Backtest
 }
 
 function BacktestsGridItem({ backtest }: BacktestsGridItemProps) {
+  const setLoading = useSetLabLoading()
+  const startLoading = () => {
+    setLoading(true)
+  }
   const duration = useMemo(() => {
     const d = intervalToDuration({
       start: new Date(backtest.end_date),
@@ -23,7 +28,11 @@ function BacktestsGridItem({ backtest }: BacktestsGridItemProps) {
     })
   }, [backtest])
   return (
-    <Link css={card} to={`/backtests/${backtest.id}`}>
+    <Link
+      css={card}
+      to={`/backtests/${backtest.id}`}
+      onMouseDown={startLoading}
+    >
       <div css={imageWrapper}>
         <div className="duration">{duration}</div>
         <img src={backtest.thumbnail} alt={`${backtest.title} chart`} />

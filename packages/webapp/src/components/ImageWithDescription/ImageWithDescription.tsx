@@ -2,13 +2,20 @@ import { css } from '@emotion/react'
 import { undrawAuthentication } from '../../assets/images'
 import palette from '../../lib/palette'
 import GoogleLoginButton from '../GoogleLoginButton'
-export type WorkspaceProtectedProps = {}
 
-function WorkspaceProtected({}: WorkspaceProtectedProps) {
+export type ImageWithDescriptionProps = {
+  image: string
+  description: string
+}
+
+function ImageWithDescription({
+  image,
+  description,
+}: ImageWithDescriptionProps) {
   return (
     <div css={fullScreen}>
-      <img src={undrawAuthentication} alt="need login vector image" />
-      <h2>Please sign in to list your saved backtests</h2>
+      <img src={image} alt={description} />
+      <h2>{description}</h2>
     </div>
   )
 }
@@ -16,11 +23,6 @@ function WorkspaceProtected({}: WorkspaceProtectedProps) {
 const fullScreen = css`
   display: flex;
   align-items: center;
-  justify-content: center;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  width: calc(100% - 16.25rem);
   flex-direction: column;
   img {
     width: 25rem;
@@ -29,9 +31,9 @@ const fullScreen = css`
   h2 {
     margin-top: 3rem;
     color: ${palette.blueGrey[700]};
-    font-weight: normal;
-    font-size: 2.5rem;
+    font-weight: 200;
+    font-size: 1.85rem;
   }
 `
 
-export default WorkspaceProtected
+export default ImageWithDescription

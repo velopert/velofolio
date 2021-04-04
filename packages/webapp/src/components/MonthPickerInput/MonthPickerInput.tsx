@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import useOnClickOutside from 'use-onclickoutside'
 import InputBase from '../InputBase'
 import MonthPicker from '../MonthPicker'
@@ -24,7 +24,6 @@ function MonthPickerInput({
   onChange,
   className,
 }: MonthPickerInputProps) {
-  const [localValue, setLocalValue] = useState<MonthYearValue>(value)
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -36,21 +35,9 @@ function MonthPickerInput({
   }
 
   const handleChange = (value: MonthYearValue) => {
-    setLocalValue(value)
+    onChange(value)
     setOpen(false)
   }
-
-  useEffect(() => {
-    onChange(localValue)
-  }, [localValue, onChange])
-
-  const today = useMemo(() => {
-    const d = new Date()
-    return {
-      year: d.getFullYear(),
-      month: d.getMonth() + 1,
-    }
-  }, [])
 
   const handleOpen = () => {
     setOpen(true)
@@ -68,11 +55,11 @@ function MonthPickerInput({
         }}
         tabIndex={0}
       >
-        {formatDate(localValue)}
+        {formatDate(value)}
       </div>
       <MonthPicker
         onChange={handleChange}
-        value={localValue}
+        value={value}
         visible={open}
         onClose={onClose}
         minimum={minimum}

@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { useHistory } from 'react-router-dom'
 import { useLabDataValue } from '../atoms/labSettingState'
 import { useReportValue } from '../atoms/reportState'
 import { createBacktest } from '../lib/api/backtests/createBacktest'
@@ -6,6 +7,7 @@ import { createBacktest } from '../lib/api/backtests/createBacktest'
 export default function useSaveFooter() {
   const data = useLabDataValue()
   const report = useReportValue()
+  const history = useHistory()
 
   /*
     TODO:
@@ -17,11 +19,11 @@ export default function useSaveFooter() {
   // generate
 
   const name = 'SAVE NEW PROJECT'
-  const onSave = () => {
+  const onSave = async () => {
     const returns = report.map((r) =>
       r.returns.map((item) => ({ x: item.x.toString(), y: item.y }))
     )
-    createBacktest({
+    const backtest = await createBacktest({
       ...data,
       returns,
       indicators: report.map((r) => ({
@@ -30,6 +32,7 @@ export default function useSaveFooter() {
         sharpe: r.indicator.sharpeRatio,
       })),
     })
+    history.replace(`/backtests/${backtest.id}`)
   }
 
   return {

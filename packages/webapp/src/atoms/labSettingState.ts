@@ -197,6 +197,11 @@ export const rebalancingState = selectorFamily<string, number>({
   },
 })
 
+export const hasPortfolio = selector({
+  key: 'hasPortfolio',
+  get: ({ get }) => get(labSettingState).portfolios.length > 0,
+})
+
 export const updateDateRange = (
   state: LabSettingState,
   key: keyof LabSettingState['dateRange'],
@@ -292,18 +297,25 @@ export function useLabDataValue() {
 export function useLabLoadingState() {
   return useRecoilState(labLoadingState)
 }
+
+export function useSetLabLoading() {
+  return useSetRecoilState(labLoadingState)
+}
+
+export function useHasPortfolio() {
+  return useRecoilValue(hasPortfolio)
+}
+
 /**
  * Sync remote backtest data to state
  */
 export function useLabSettingSync() {
   const setLabSetting = useSetRecoilState(labSettingState)
   const setProjectTitle = useSetRecoilState(projectTitleState)
-  const setLabLoading = useSetRecoilState(labLoadingState)
 
   const sync = useCallback(
     (backtest: Backtest) => {
       setProjectTitle(backtest.title)
-      setLabLoading(false)
       setLabSetting({
         cashflows: {
           amount: backtest.cashflow_value || 1000,
@@ -333,7 +345,7 @@ export function useLabSettingSync() {
         })),
       })
     },
-    [setProjectTitle, setLabSetting, setLabLoading]
+    [setProjectTitle, setLabSetting]
   )
 
   return sync

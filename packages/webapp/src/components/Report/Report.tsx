@@ -1,5 +1,9 @@
 import { css } from '@emotion/react'
+import { undrawCreativeExperiment } from '../../assets/images'
+import { useHasPortfolio } from '../../atoms/labSettingState'
+import { useIsReportReady } from '../../atoms/reportState'
 import palette from '../../lib/palette'
+import ImageWithDescription from '../ImageWithDescription'
 import AnnualReturnsSection from './AnnualReturnsSection'
 import DoubleSections from './DoubleSections'
 import IndicatorsSection from './IndicatorsSection'
@@ -10,6 +14,22 @@ import PortfolioReturnsSection from './PortfolioReturnsSection'
 export type ReportProps = {}
 
 function Report({}: ReportProps) {
+  const isReportReady = useIsReportReady()
+  const hasPortfolio = useHasPortfolio()
+
+  if (!hasPortfolio) {
+    return (
+      <div css={emptyWrapper}>
+        <ImageWithDescription
+          image={undrawCreativeExperiment}
+          description="Add a new portfolio to generate report"
+        />
+      </div>
+    )
+  }
+
+  if (!isReportReady) return null
+
   return (
     <div css={block}>
       <h1>Report</h1>
@@ -23,6 +43,16 @@ function Report({}: ReportProps) {
     </div>
   )
 }
+
+const emptyWrapper = css`
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: calc(100% - 40.75rem);
+`
 
 const block = css`
   padding-right: 2rem;

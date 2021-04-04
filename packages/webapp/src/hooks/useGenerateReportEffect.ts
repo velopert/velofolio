@@ -10,6 +10,7 @@ import {
   useDateRangeValue,
   useInitialAmountState,
   usePortfoliosState,
+  useSetLabLoading,
 } from '../atoms/labSettingState'
 import { Indicator, PortfolioResult, useSetReport } from '../atoms/reportState'
 import { HistoricalPrice } from '../lib/api/assets/types'
@@ -318,6 +319,7 @@ export default function useGenerateReportEffect() {
   const unfetchedTickers = useUnfetchedTickers()
   const [{ prices: tb3HistoricalPrices }] = useTB3HistoricalPricesState()
   const setReport = useSetReport()
+  const setLoading = useSetLabLoading()
 
   const { setStartDate } = useDateRangeHook()
 
@@ -377,6 +379,8 @@ export default function useGenerateReportEffect() {
       lastDate: new Date(dateRange.endDate.year, dateRange.endDate.month), // + 1month,
       tb3HistoricalPrices,
     })
+    console.log('??')
+    setLoading(false)
     setReport(report)
   }, [
     initialAmount,
@@ -388,6 +392,7 @@ export default function useGenerateReportEffect() {
     dateRange,
     tb3HistoricalPrices,
     setReport,
+    setLoading,
   ])
   // check unfetchedTickers is empty before fetch
 }

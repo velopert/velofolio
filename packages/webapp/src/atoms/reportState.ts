@@ -51,6 +51,11 @@ const reportState = atom<Report>({
   default: [],
 })
 
+const isReportReady = selector<boolean>({
+  key: 'isReportReady',
+  get: ({ get }) => get(reportState).length > 0,
+})
+
 export function useReportValue() {
   return useRecoilValue(reportState)
 }
@@ -70,6 +75,10 @@ export function useMonthsCountValue() {
 
 export function useResetReport() {
   return useResetRecoilState(reportState)
+}
+
+export function useIsReportReady() {
+  return useRecoilValue(isReportReady)
 }
 
 // type ReportState = {
