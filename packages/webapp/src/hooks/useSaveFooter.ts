@@ -1,14 +1,24 @@
 import { useMemo, useState } from 'react'
-import { useHistory } from 'react-router-dom'
-import { useLabDataValue } from '../atoms/labSettingState'
+import { useHistory, useParams } from 'react-router-dom'
+import { useUserState } from '../atoms/authState'
+import {
+  useBacktestAuthorValue,
+  useLabDataValue,
+  useLabSettingSync,
+} from '../atoms/labSettingState'
 import { useReportValue } from '../atoms/reportState'
 import { createBacktest } from '../lib/api/backtests/createBacktest'
+import { LabRouteParams } from '../types/routeParams'
 
 export default function useSaveFooter() {
   const data = useLabDataValue()
   const report = useReportValue()
   const history = useHistory()
   const [loading, setLoading] = useState(false)
+  const { id } = useParams<LabRouteParams>()
+  const [user] = useUserState()
+  const backtestAuthor = useBacktestAuthorValue()
+  const sync = useLabSettingSync()
 
   /*
     TODO:
@@ -18,8 +28,16 @@ export default function useSaveFooter() {
   */
 
   // generate
+  const name = useMemo(() => {
+    if (id === undefined) {
+      return 'SAVE NEW PROJECT'
+    }
+    if (user?.id === backtestAuthor?.id) {
+      return 'UPDATE PROJECT'
+    }
+    return 'CLONE PROJECT'
+  }, [id, user, backtestAuthor])
 
-  const name = 'SAVE NEW PROJECT'
   const onSave = async () => {
     setLoading(true)
     const returns = report.map((r) =>
@@ -34,8 +52,9 @@ export default function useSaveFooter() {
         sharpe: r.indicator.sharpeRatio,
       })),
     })
-    setLoading(false)
+    sync(backtest)
     history.replace(`/backtests/${backtest.id}`)
+    setLoading(false)
   }
 
   return {

@@ -15,6 +15,7 @@ import { AssetWeight } from './assetsState'
 import { useReportValue } from './reportState'
 import { Backtest } from '../lib/api/backtests/types'
 import { convertIntervalToPeriod } from '../lib/constants'
+import { UserSerialized } from '../lib/api/types'
 
 export type LabSettingState = {
   dateRange: {
@@ -84,6 +85,11 @@ export const labLoadingState = atom({
 export const isCreatingState = atom({
   key: 'isCreatingState',
   default: false,
+})
+
+export const backtestAuthorState = atom<UserSerialized | null>({
+  key: 'backtestAuthorState',
+  default: null,
 })
 
 export const dateRangeState = selector<LabSettingState['dateRange']>({
@@ -319,9 +325,11 @@ export function useHasPortfolio() {
 export function useLabSettingSync() {
   const setLabSetting = useSetRecoilState(labSettingState)
   const setProjectTitle = useSetRecoilState(projectTitleState)
+  const setBacktestAuthor = useSetRecoilState(backtestAuthorState)
 
   const sync = useCallback(
     (backtest: Backtest) => {
+      setBacktestAuthor(backtest.user)
       setProjectTitle(backtest.title)
       setLabSetting({
         cashflows: {
@@ -362,10 +370,14 @@ export function useResetLabSetting() {
   const resetLabSetting = useResetRecoilState(labSettingState)
   const resetLoading = useResetRecoilState(labLoadingState)
   const resetProjectTitle = useResetRecoilState(projectTitleState)
+  const resetBacktestAuthor = useResetRecoilState(backtestAuthorState)
 
   const reset = useCallback(() => {
-    ;[resetLabSetting, resetLoading, resetProjectTitle].forEach((fn) => fn())
-  }, [resetLabSetting, resetLoading, resetProjectTitle])
+    resetLabSetting()
+    resetLoading()
+    resetProjectTitle()
+    resetBacktestAuthor()
+  }, [resetLabSetting, resetLoading, resetProjectTitle, resetBacktestAuthor])
 
   return reset
 }
@@ -376,4 +388,8 @@ export function useSetIsCreating() {
 
 export function useIsCreatingState() {
   return useRecoilState(isCreatingState)
+}
+
+export function useBacktestAuthorValue() {
+  return useRecoilValue(backtestAuthorState)
 }

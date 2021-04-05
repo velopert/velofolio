@@ -16,6 +16,7 @@ import useAssetQuery, {
 } from '../../hooks/query/useAssetQuery'
 import { getAsset } from '../../lib/api/assets/getAsset'
 import { useAssetDetailsActions } from '../../atoms/assetDetailsState'
+import { useHistory } from 'react-router-dom'
 
 export type AssetsSectionProps = {}
 
