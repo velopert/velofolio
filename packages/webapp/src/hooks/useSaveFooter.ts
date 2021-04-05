@@ -1,6 +1,6 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useHistory } from 'react-router-dom'
-import { useLabDataValue, useSetIsCreating } from '../atoms/labSettingState'
+import { useLabDataValue } from '../atoms/labSettingState'
 import { useReportValue } from '../atoms/reportState'
 import { createBacktest } from '../lib/api/backtests/createBacktest'
 
@@ -8,7 +8,7 @@ export default function useSaveFooter() {
   const data = useLabDataValue()
   const report = useReportValue()
   const history = useHistory()
-  const setIsCreating = useSetIsCreating()
+  const [loading, setLoading] = useState(false)
 
   /*
     TODO:
@@ -21,7 +21,7 @@ export default function useSaveFooter() {
 
   const name = 'SAVE NEW PROJECT'
   const onSave = async () => {
-    setIsCreating(true)
+    setLoading(true)
     const returns = report.map((r) =>
       r.returns.map((item) => ({ x: item.x.toString(), y: item.y }))
     )
@@ -34,11 +34,13 @@ export default function useSaveFooter() {
         sharpe: r.indicator.sharpeRatio,
       })),
     })
+    setLoading(false)
     history.replace(`/backtests/${backtest.id}`)
   }
 
   return {
     onSave,
     name,
+    loading,
   }
 }

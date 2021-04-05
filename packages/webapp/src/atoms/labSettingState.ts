@@ -83,7 +83,7 @@ export const labLoadingState = atom({
 
 export const isCreatingState = atom({
   key: 'isCreatingState',
-  default: true,
+  default: false,
 })
 
 export const dateRangeState = selector<LabSettingState['dateRange']>({
@@ -204,7 +204,9 @@ export const rebalancingState = selectorFamily<string, number>({
 
 export const hasPortfolio = selector({
   key: 'hasPortfolio',
-  get: ({ get }) => get(labSettingState).portfolios.length > 0,
+  get: ({ get }) =>
+    get(labSettingState).portfolios.filter((p) => p.assets.length > 0).length >
+    0,
 })
 
 export const updateDateRange = (

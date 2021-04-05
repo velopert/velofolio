@@ -1,16 +1,18 @@
 import { css } from '@emotion/react'
 import palette from '../../lib/palette'
 import { resetButton } from '../../lib/styles/resetButton'
+import Spinner from '../Spinner'
 export type FooterButtonProps = {
+  loading?: boolean
   name: string
   onClick(): void
 }
 
-function FooterButton({ name, onClick }: FooterButtonProps) {
+function FooterButton({ name, onClick, loading }: FooterButtonProps) {
   return (
     <div css={block}>
-      <button css={footerButton} onClick={onClick}>
-        {name}
+      <button css={footerButton(!!loading)} onClick={onClick}>
+        {loading ? <Spinner color="white" size="1.5rem" /> : name}
       </button>
     </div>
   )
@@ -23,8 +25,12 @@ const block = css`
   justify-content: flex-end;
 `
 
-const footerButton = css`
+const footerButton = (loading: boolean) => css`
   ${resetButton}
+  ${loading &&
+  css`
+    padding-top: 0.25rem;
+  `}
   margin-left: -2rem;
   margin-right: -2rem;
   margin-bottom: -2rem;

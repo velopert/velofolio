@@ -10,7 +10,7 @@ import useSaveFooter from '../../hooks/useSaveFooter'
 export type LabSettingsDefaultProps = {}
 
 function LabSettingsDefault({}: LabSettingsDefaultProps) {
-  const { name, onSave } = useSaveFooter()
+  const { name, onSave, loading } = useSaveFooter()
   return (
     <div css={block}>
       <ProjectTitleSection />
@@ -18,7 +18,7 @@ function LabSettingsDefault({}: LabSettingsDefaultProps) {
       <InitialAmountSection />
       <CashflowsSection />
       <PortfoliosSection />
-      <FooterButton name={name} onClick={onSave} />
+      <FooterButton name={name} onClick={onSave} loading={loading} />
     </div>
   )
 }
