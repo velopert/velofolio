@@ -8,7 +8,12 @@ export default class CustomError extends Error {
   }
 }
 
-type ErrorName = 'BadRequestError' | 'NotFoundError' | 'InternalServerError'
+type ErrorName =
+  | 'BadRequestError'
+  | 'NotFoundError'
+  | 'InternalServerError'
+  | 'UnauthorizedError'
+  | 'ForbiddenError'
 
 type CustomErrorParams = {
   statusCode: number
