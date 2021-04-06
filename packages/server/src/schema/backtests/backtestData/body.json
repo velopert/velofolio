@@ -48,6 +48,7 @@
               "id": { "type": "number" },
               "name": { "type": "string" },
               "rebalancing": { "type": "string" },
+              "isTemp": { "type": "boolean" },
               "assets": {
                 "type": "array",
                 "items": {

@@ -26,6 +26,7 @@ export default class Server {
         name: error.name,
         message: error.message,
         validation: error.validation,
+        stack: error.stack,
       })
     })
   }

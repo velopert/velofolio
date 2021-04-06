@@ -32,6 +32,7 @@ export interface BacktestDataBody {
       id: number;
       name: string;
       rebalancing: string;
+      isTemp?: boolean;
       assets: {
         id: number;
         image?: string;

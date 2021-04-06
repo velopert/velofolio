@@ -114,7 +114,23 @@ export const backtestService = {
   },
 
   async updateBacktest(id: number, backtestBody: BacktestDataBody, user: User) {
-    const backtest = await this.getBacktest(id)
+    const backtest = await getRepository(Backtest).findOne(id, {
+      relations: [
+        'user',
+        'portfolios',
+        'portfolios.asset_weights',
+        'portfolios.asset_weights.asset',
+      ],
+    })
+    if (!backtest) {
+      const e = new CustomError({
+        statusCode: 404,
+        message: 'Backtest does not exist',
+        name: 'NotFoundError',
+      })
+      throw e
+    }
+
     if (backtest.user.id !== user.id) {
       throw new CustomError({
         statusCode: 403,
@@ -147,5 +163,80 @@ export const backtestService = {
         convertPeriodToMonth(cashflows.period) ?? undefined
       backtest.cashflow_value = cashflows.amount
     }
+
+    // create new portfolio
+    const tempPortfolios = portfolios.filter((p) => p.isTemp)
+    const manager = getManager()
+
+    const tempPortfoliosPromise = tempPortfolios.map(async (p, i) => {
+      const portfolio = new Portfolio()
+      portfolio.backtest = backtest
+
+      portfolio.name = p.name
+      portfolio.user = user
+      portfolio.rebalancing = convertPeriodToMonth(p.rebalancing) ?? undefined
+      portfolio.sharpe = indicators[i].sharpe ?? undefined
+      portfolio.cagr = indicators[i].cagr ?? undefined
+      portfolio.asset_weights = p.assets.map((a) => {
+        const assetWeight = new PortfolioAssetWeight()
+        assetWeight.asset = new Asset()
+        assetWeight.asset.id = a.id
+        assetWeight.asset.ticker = a.ticker
+        assetWeight.asset.image = a.image
+        assetWeight.weight = a.weight
+        return assetWeight
+      })
+      await manager.save(portfolio.asset_weights)
+      return portfolio
+    })
+
+    const tempPortfoliosData = await Promise.all(tempPortfoliosPromise)
+    await manager.save(tempPortfoliosData)
+
+    // edit portfolios
+    const savedPortfolios = portfolios.filter((p) => !p.isTemp)
+    const savedPortfolioIds = savedPortfolios.map((sp) => sp.id)
+    const savedPortfoliosData = backtest.portfolios.filter((p) =>
+      savedPortfolioIds.includes(p.id)
+    )
+
+    // remove and recreate assets
+    await Promise.all(
+      savedPortfoliosData.map((p) =>
+        getRepository(PortfolioAssetWeight).remove(p.asset_weights)
+      )
+    )
+    const updatedPortfolios = await Promise.all(
+      savedPortfoliosData.map(async (p) => {
+        const raw = savedPortfolios.find((rp) => rp.id === p.id)
+        if (!raw) return p
+        p.asset_weights = raw?.assets.map((a) => {
+          const assetWeight = new PortfolioAssetWeight()
+          assetWeight.asset = new Asset()
+          assetWeight.asset.id = a.id
+          assetWeight.asset.ticker = a.ticker
+          assetWeight.asset.image = a.image
+          assetWeight.weight = a.weight
+          assetWeight.portfolio = p
+          return assetWeight
+        })
+        await manager.save(p.asset_weights)
+        return p
+      })
+    )
+
+    // remove portfolio
+    const allRawId = portfolios.map((p) => p.id)
+    const removedPortfolios = backtest.portfolios.filter(
+      (p) => !allRawId.includes(p.id)
+    )
+    if (removedPortfolios.length > 0) {
+      await getRepository(Portfolio).remove(removedPortfolios)
+    }
+
+    const portfoliosData = [...updatedPortfolios, ...tempPortfoliosData]
+    backtest.portfolios = portfoliosData
+    await manager.save(backtest)
+    return backtest.serialize()
   },
 }

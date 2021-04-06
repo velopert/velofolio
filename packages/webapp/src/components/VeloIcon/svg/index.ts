@@ -10,6 +10,7 @@ import { ReactComponent as arrow_back } from './arrow_back.svg'
 import { ReactComponent as trash } from './trash.svg'
 import { ReactComponent as spinner } from './spinner.svg'
 import { ReactComponent as google } from './google.svg'
+import { ReactComponent as undraw } from './undraw.svg'
 
 export {
   flask,
@@ -24,4 +25,5 @@ export {
   trash,
   spinner,
   google,
+  undraw,
 }

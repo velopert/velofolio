@@ -39,6 +39,7 @@ export type Portfolio = {
   name: string
   rebalancing: string
   assets: AssetWeight[]
+  isTemp?: boolean
 }
 
 const initialState: LabSettingState = {
@@ -250,6 +251,7 @@ export function usePortfoliosAction() {
       name: `Portfolio ${nextId}`,
       assets: [],
       rebalancing: 'Anually',
+      isTemp: true,
     }
     set((prev) => prev.concat(processedPortfolio))
     setNextId(nextId + 1)
@@ -348,8 +350,7 @@ export function useLabSettingSync() {
           },
         },
         initialAmount: backtest.initial_amount,
-        nextPortfolioId:
-          backtest.portfolios[backtest.portfolios.length - 1].id + 1,
+        nextPortfolioId: backtest.portfolios.length + 1,
         portfolios: backtest.portfolios.map((portfolio) => ({
           assets: portfolio.assets,
           id: portfolio.id,
@@ -357,10 +358,11 @@ export function useLabSettingSync() {
           rebalancing: portfolio.rebalancing
             ? convertIntervalToPeriod(portfolio.rebalancing)
             : 'No Rebalancing',
+          isTemp: false,
         })),
       })
     },
-    [setProjectTitle, setLabSetting]
+    [setProjectTitle, setLabSetting, setBacktestAuthor]
   )
 
   return sync

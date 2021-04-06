@@ -8,6 +8,7 @@ import {
 } from '../atoms/labSettingState'
 import { useReportValue } from '../atoms/reportState'
 import { createBacktest } from '../lib/api/backtests/createBacktest'
+import { updateBacktest } from '../lib/api/backtests/updateBacktest'
 import { LabRouteParams } from '../types/routeParams'
 
 export default function useSaveFooter() {
@@ -43,7 +44,8 @@ export default function useSaveFooter() {
     const returns = report.map((r) =>
       r.returns.map((item) => ({ x: item.x.toString(), y: item.y }))
     )
-    const backtest = await createBacktest({
+
+    const payload = {
       ...data,
       returns,
       indicators: report.map((r) => ({
@@ -51,9 +53,18 @@ export default function useSaveFooter() {
         cagr: r.indicator.cagr,
         sharpe: r.indicator.sharpeRatio,
       })),
-    })
-    sync(backtest)
-    history.replace(`/backtests/${backtest.id}`)
+    }
+    if (!id) {
+      const backtest = await createBacktest(payload)
+      sync(backtest)
+      history.replace(`/backtests/${backtest.id}`)
+    } else {
+      const backtest = await updateBacktest({
+        id: parseInt(id, 10),
+        ...payload,
+      })
+      sync(backtest)
+    }
     setLoading(false)
   }
 

@@ -49,11 +49,28 @@ const protectedRoute: FastifyPluginAsync = async (fastify) => {
   fastify.post<{ Body: BacktestDataBody }>(
     '/',
     { schema: { body: ProjectDataBodySchema } },
-    async (request, reply) => {
+    async (request) => {
       const { body, userData } = request
       return backtestService.createBacktest(body, userData!)
     }
   )
+
+  /**
+   * PUT /api/backtests/:id
+   */
+  fastify.put<{ Body: BacktestDataBody; Params: { id: string } }>(
+    '/:id',
+    { schema: { body: ProjectDataBodySchema } },
+    async (request) => {
+      const { body, userData } = request
+      const id = parseInt(request.params.id, 10)
+      return backtestService.updateBacktest(id, body, userData!)
+    }
+  )
+  // fastify.put<{ Body: BacktestDataBody; Params: { id: string } }>('/:id', {
+  //   schema: { body: ProjectDataBodySchema },
+  //   async (request, reply) => {}
+  // })
 }
 
 export default backtestsRoute
