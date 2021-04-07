@@ -7,3 +7,4 @@
 - [plus](https://feathericons.com/)
 - [arrow_back](https://feathericons.com/)
 - [trash](https://feathericons.com/)
+- [undo](https://iconmonstr.com/undo-2-svg/)

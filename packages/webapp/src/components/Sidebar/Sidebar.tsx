@@ -23,6 +23,7 @@ function Sidebar({}: SidebarProps) {
           isActive={() => {
             return ['/backtests/:id', '/'].includes(match.path)
           }}
+          ignore={['/backtests/:id', '/'].includes(match.path)}
         />
         <SidebarItem icon="workspace" text="Workspace" to="/workspace" />
         <SidebarItem icon="globe" text="Explore" to="/explore" />

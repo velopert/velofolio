@@ -19,11 +19,12 @@ import {
   usePortfoliosAction,
   usePortfoliosState,
 } from '../../atoms/labSettingState'
+import GrayIconTextButton from './GrayIconTextButton'
 export type LabSettingsPortfolioProps = {}
 
 function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
   const { closePortfolio } = useLabSettingViewActions()
-  const { isCreating } = useLabSettingView()
+  const { isCreating, selectedPortfolioId } = useLabSettingView()
   const {
     name,
     rebalancing,
@@ -31,7 +32,7 @@ function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
     onChangeRebalancing,
     rebalancingOptions,
   } = usePortfolioOptionState()
-  const { cancelPortfolioCreate } = usePortfoliosAction()
+  const { cancelPortfolioCreate, remove } = usePortfoliosAction()
 
   const [assets] = useAssetsState()
 
@@ -55,11 +56,20 @@ function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
     closePortfolio()
   }
 
+  const onRemove = () => {
+    if (!selectedPortfolioId) return
+    closePortfolio()
+    remove(selectedPortfolioId)
+  }
+
   return (
     <div css={block}>
-      <button css={backButton} onClick={onCancel}>
-        <VeloIcon name="arrow_back" />
-      </button>
+      <div css={portfolioHeader}>
+        <button css={backButton} onClick={onCancel}>
+          <VeloIcon name="arrow_back" />
+        </button>
+        <GrayIconTextButton icon="trash" text="REMOVE" onClick={onRemove} />
+      </div>
       <LabSettingsSection title="Portfolio Name">
         <Input
           placeholder="Portfolio Name"
@@ -85,8 +95,15 @@ const block = css`
   display: flex;
   flex-direction: column;
 `
+
+const portfolioHeader = css`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+`
+
 const backButton = css`
-  align-self: flex-start;
   ${resetButton}
   color: ${palette.blueGrey[600]};
   cursor: pointer;
@@ -96,7 +113,6 @@ const backButton = css`
   :focus-visible {
     color: ${palette.blueGrey[800]};
   }
-  margin-bottom: 1.5rem;
 `
 
 export default LabSettingsPortfolio

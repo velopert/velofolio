@@ -12,12 +12,23 @@ export type SidebarItemProps = {
     match: match<Params> | null,
     location: H.Location
   ): boolean
+  ignore?: boolean
 }
 
-function SidebarItem({ icon, text, to, isActive }: SidebarItemProps) {
+function SidebarItem({ icon, text, to, isActive, ignore }: SidebarItemProps) {
   return (
     <li css={itemStyle}>
-      <NavLink to={to} css={linkStyle} exact isActive={isActive}>
+      <NavLink
+        to={to}
+        css={linkStyle}
+        exact
+        isActive={isActive}
+        onClick={(e) => {
+          if (ignore) {
+            e.preventDefault()
+          }
+        }}
+      >
         <VeloIcon name={icon} />
         <span>{text}</span>
       </NavLink>

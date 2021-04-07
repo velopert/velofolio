@@ -276,7 +276,14 @@ export function usePortfoliosAction() {
     setNextId((prevId) => prevId - 1)
   }, [set, setNextId])
 
-  return { append, updateById, cancelPortfolioCreate }
+  const remove = useCallback(
+    (id: number) => {
+      set((prev) => prev.filter((portfolio) => portfolio.id !== id))
+    },
+    [set]
+  )
+
+  return { append, updateById, cancelPortfolioCreate, remove }
 }
 
 export function useUniqueTickersValue() {
