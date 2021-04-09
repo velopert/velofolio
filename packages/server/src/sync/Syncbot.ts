@@ -51,12 +51,17 @@ class Syncbot {
 
     const profile = await getStockProfile(ticker)
 
+    await sleep(500)
+
     const rawHistoricalPrices = await getHistoricalPrice(ticker, {
       from: '1985-01-01',
     })
+    await sleep(500)
 
     const sectorWeightingsData =
       profile.sector === '' ? await getSectorWeightings(ticker) : null
+
+    await sleep(500)
 
     const monthlyHistoricalPrices = groupByMonth(rawHistoricalPrices)
 
