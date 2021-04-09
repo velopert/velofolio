@@ -23,31 +23,21 @@ const sleep = (duration: number) =>
 
 class Syncbot {
   async parseTickers(name: string) {
-    const data = await fs.readFile(path.join(tickersDir, `${name}.txt`), 'utf8')
+    const data = await fs.readFile(path.join(tickersDir, `${name}.csv`), 'utf8')
     const lines = data.split('\n')
-    const tickers = lines
-      .map((line) => line.split('\t')[0])
-      .filter((ticker) => !ticker.includes('.'))
+    const tickers = lines.map((line) => line.split(',')[0])
+    tickers.shift()
     return tickers
-  }
-
-  async parseTickersAndNames(name: string) {
-    const data = await fs.readFile(path.join(tickersDir, `${name}.txt`), 'utf8')
-    const lines = data.split('\n')
-    const tickersAndNames = lines
-      .map((line) => line.split('\t'))
-      .filter((ticker) => !ticker[0].includes('.'))
-    return tickersAndNames
   }
 
   async loadTickers() {
-    const tickers = await this.parseTickers('INITIAL')
-    // const amex = await this.parseTickers('AMEX')
-    // const nasdaq = await this.parseTickers('NASDAQ')
-    // const nyse = await this.parseTickers('nyse')
+    // const tickers = await this.parseTickers('INITIAL')
+    const amex = await this.parseTickers('AMEX')
+    const nasdaq = await this.parseTickers('NASDAQ')
+    const nyse = await this.parseTickers('NYSE')
     // TODO: load more tickers
-    return tickers
-    // return [...amex, ...nasdaq, ...nyse]
+    // return tickers
+    return [...amex, ...nasdaq, ...nyse]
   }
 
   async syncStock(ticker: string) {
@@ -61,7 +51,9 @@ class Syncbot {
 
     const profile = await getStockProfile(ticker)
 
-    const rawHistoricalPrices = await getHistoricalPrice(ticker)
+    const rawHistoricalPrices = await getHistoricalPrice(ticker, {
+      from: '1985-01-01',
+    })
 
     const sectorWeightingsData =
       profile.sector === '' ? await getSectorWeightings(ticker) : null
@@ -145,39 +137,6 @@ class Syncbot {
     await getRepository(Asset).save(asset)
   }
 
-  // TEMP
-  async registerAssets() {
-    const amex = await this.parseTickersAndNames('AMEX')
-    const nasdaq = await this.parseTickersAndNames('NASDAQ')
-    const nyse = await this.parseTickersAndNames('nyse')
-    const data = [...amex, ...nasdaq, ...nyse]
-
-    const bar = new cliProgress.SingleBar(
-      {},
-      cliProgress.Presets.shades_classic
-    )
-    bar.start(data.length, 0)
-
-    let busyWorkers = 0
-    while (data.length > 0 || busyWorkers !== 0) {
-      if (busyWorkers >= LIMIT || data.length === 0) {
-        await sleep(6)
-        continue
-      }
-      busyWorkers += 1
-      const ticker = data.pop()
-      this.registerAsset(ticker![0], ticker![1])
-        .catch((e) => {
-          console.log(e)
-        })
-        .finally(() => {
-          busyWorkers -= 1
-          bar.increment(1)
-        })
-    }
-    bar.stop()
-  }
-
   async syncStocks() {
     const tickers = await this.loadTickers()
     const bar = new cliProgress.SingleBar(
@@ -198,7 +157,7 @@ class Syncbot {
       const ticker = tickers.pop()
       this.syncStock(ticker!)
         .catch((e) => {
-          console.log(e)
+          console.log(`Error: ${ticker}`)
           failedTickers.push(ticker!)
           fs.appendFile(errorsDir, `${ticker}\n`, 'utf8')
         })
