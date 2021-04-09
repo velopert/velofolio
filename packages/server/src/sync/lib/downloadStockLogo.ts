@@ -20,6 +20,7 @@ function createHashFromStream(readStream: fs.ReadStream) {
 
 export function downloadStockLogo(symbol: string, dir: string) {
   return new Promise(async (resolve, reject) => {
+    setTimeout(reject, 8000)
     try {
       const response = await axios.get(
         `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${symbol}.png`,
