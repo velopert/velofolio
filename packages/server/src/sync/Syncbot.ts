@@ -66,7 +66,10 @@ class Syncbot {
     const monthlyHistoricalPrices = groupByMonth(rawHistoricalPrices)
 
     const asset = new Asset()
-    asset.name = profile.companyName
+    asset.name =
+      profile.companyName.length > 128
+        ? profile.companyName.slice(0, 128).concat('...')
+        : profile.companyName
     asset.description = profile.description ?? ''
     asset.asset_type = assetType!
     asset.ipo_date = new Date(profile.ipoDate)
