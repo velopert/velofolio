@@ -23,7 +23,7 @@ interface StockProfile {
   exchangeShortName: string
   industry: string
   website: string
-  description: string
+  description: string | null
   ceo: string
   sector: string
   country: string

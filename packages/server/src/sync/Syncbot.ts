@@ -67,7 +67,7 @@ class Syncbot {
 
     const asset = new Asset()
     asset.name = profile.companyName
-    asset.description = profile.description
+    asset.description = profile.description ?? ''
     asset.asset_type = assetType!
     asset.ipo_date = new Date(profile.ipoDate)
     asset.is_etf = profile.sector === ''
