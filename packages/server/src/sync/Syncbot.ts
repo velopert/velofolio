@@ -27,7 +27,7 @@ class Syncbot {
     const lines = data.split('\n')
     const tickers = lines.map((line) => line.split(',')[0])
     tickers.shift()
-    return tickers
+    return tickers.filter((ticker) => !ticker.includes('^'))
   }
 
   async loadTickers() {
@@ -157,6 +157,7 @@ class Syncbot {
       const ticker = tickers.pop()
       this.syncStock(ticker!)
         .catch((e) => {
+          console.log(e)
           console.log(`Error: ${ticker}`)
           failedTickers.push(ticker!)
           fs.appendFile(errorsDir, `${ticker}\n`, 'utf8')
