@@ -43,8 +43,9 @@ export class Asset {
 
   @Column({
     type: 'datetime',
+    nullable: true,
   })
-  ipo_date!: Date
+  ipo_date!: Date | null
 
   @Column({
     nullable: true,

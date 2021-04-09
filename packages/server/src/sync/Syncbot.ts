@@ -70,9 +70,13 @@ class Syncbot {
       profile.companyName.length > 128
         ? profile.companyName.slice(0, 125).concat('...')
         : profile.companyName
-    asset.description = profile.description ?? ''
+    const description = profile.description ?? ''
+    asset.description =
+      description.length > 2048
+        ? description.slice(0, 2045).concat('...')
+        : description
     asset.asset_type = assetType!
-    asset.ipo_date = new Date(profile.ipoDate)
+    asset.ipo_date = profile.ipoDate ? new Date(profile.ipoDate) : null
     asset.is_etf = profile.sector === ''
     asset.sector = profile.sector || ''
     asset.ticker = ticker
