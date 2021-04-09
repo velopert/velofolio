@@ -16,7 +16,7 @@ import cliProgress from 'cli-progress'
 import getThreeMonthsTreasuryRate from './lib/getThreeMonthsTreasuryRate'
 
 const tickersDir = path.resolve(__dirname, 'tickers')
-const LIMIT = 5
+const LIMIT = 3
 
 const sleep = (duration: number) =>
   new Promise((resolve) => setTimeout(resolve, duration))
