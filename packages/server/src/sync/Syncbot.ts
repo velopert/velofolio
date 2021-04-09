@@ -49,6 +49,8 @@ class Syncbot {
       },
     })
 
+    await sleep(500)
+
     const profile = await getStockProfile(ticker)
 
     await sleep(500)
