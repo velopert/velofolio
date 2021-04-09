@@ -42,7 +42,7 @@ export class Asset {
   sector!: string
 
   @Column({
-    type: 'timestamp',
+    type: 'datetime',
   })
   ipo_date!: Date
 
