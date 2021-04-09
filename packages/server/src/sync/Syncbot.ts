@@ -169,6 +169,7 @@ class Syncbot {
       }
       busyWorkers += 1
       const ticker = tickers.pop()
+      console.log(ticker)
       this.syncStock(ticker!)
         .catch((e) => {
           console.log(e)
