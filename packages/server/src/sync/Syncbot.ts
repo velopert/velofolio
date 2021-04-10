@@ -214,7 +214,10 @@ class Syncbot {
   }
 
   async clearErrorTickers() {
-    const data = await fs.readFile(path.join(`error_tickers.txt`), 'utf8')
+    const data = await fs.readFile(
+      path.join(__dirname, `error_tickers.txt`),
+      'utf8'
+    )
     const tickers = data.split('\n')
 
     const repo = getRepository(Asset)
