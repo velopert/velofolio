@@ -22,22 +22,13 @@ const sleep = (duration: number) =>
   new Promise((resolve) => setTimeout(resolve, duration))
 
 class Syncbot {
-  async parseTickers(name: string) {
-    const data = await fs.readFile(path.join(tickersDir, `${name}.csv`), 'utf8')
+  async parseTickers() {
+    const data = await fs.readFile(path.join(tickersDir, `stocks.txt`), 'utf8')
     const lines = data.split('\n')
-    const tickers = lines.map((line) => line.split(',')[0])
-    tickers.shift()
-    return tickers.filter((ticker) => !ticker.includes('^'))
-  }
-
-  async loadTickers() {
-    // const tickers = await this.parseTickers('INITIAL')
-    const amex = await this.parseTickers('AMEX')
-    const nasdaq = await this.parseTickers('NASDAQ')
-    const nyse = await this.parseTickers('NYSE')
-    // TODO: load more tickers
-    // return tickers
-    return [...amex, ...nasdaq, ...nyse]
+    const tickers = lines.map((line) => line.split('\t')[0])
+    return tickers.filter(
+      (ticker) => !['.', '-'].some((c) => ticker.includes(c))
+    )
   }
 
   async syncStock(ticker: string) {
@@ -152,7 +143,7 @@ class Syncbot {
   }
 
   async syncStocks() {
-    const tickers = await this.loadTickers()
+    const tickers = await this.parseTickers()
     const bar = new cliProgress.SingleBar(
       {},
       cliProgress.Presets.shades_classic
