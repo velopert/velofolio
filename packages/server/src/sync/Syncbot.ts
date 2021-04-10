@@ -212,6 +212,17 @@ class Syncbot {
     await getRepository(Asset).save(asset)
     await getRepository(HistoricalPrice).save(historicalPrices)
   }
+
+  async clearErrorTickers() {
+    const data = await fs.readFile(path.join(`error_tickers.txt`), 'utf8')
+    const tickers = data.split('\n')
+
+    const repo = getRepository(Asset)
+
+    for (let i = 0; i < tickers.length; i++) {
+      await repo.delete({ ticker: tickers[i] })
+    }
+  }
 }
 
 export default Syncbot
