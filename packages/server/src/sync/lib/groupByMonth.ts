@@ -26,13 +26,13 @@ export function groupByMonth(historicalPrices: RawHistoricalPrice[]) {
         high: current.high,
         low: current.low,
         open: current.open,
-        volume: current.volume,
+        volume: current.volume ?? 0,
       })
     } else {
       priceInfo.high = Math.max(priceInfo.high, current.high)
       priceInfo.low = Math.min(priceInfo.low, current.low)
       priceInfo.open = current.open
-      priceInfo.volume += current.volume
+      priceInfo.volume += current.volume ?? 0
     }
     return acc
   }, [] as MonthlyHistoricalPrice[])
