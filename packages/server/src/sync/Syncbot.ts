@@ -81,7 +81,7 @@ class Syncbot {
         `${ticker}.png`
       )
       await downloadStockLogo(ticker, imageDir)
-      asset.image = `/logos/us_stock/${ticker}.png`
+      asset.image = `logos/us_stock/${ticker}.png`
     } catch (e) {}
     const assetMeta = new AssetMeta()
     assetMeta.asset = asset
@@ -172,6 +172,48 @@ class Syncbot {
           busyWorkers -= 1
           bar.increment(1)
         })
+    }
+    bar.stop()
+  }
+
+  async syncStockImage(ticker: string) {
+    const repo = getRepository(Asset)
+    const asset = await repo.findOne({ ticker })
+    if (!asset) return
+
+    try {
+      const imageDir = path.resolve(
+        __dirname,
+        'logos/us_stocks',
+        `${ticker}.png`
+      )
+      await downloadStockLogo(ticker, imageDir)
+      asset.image = `logos/us_stock/${ticker}.png`
+      await repo.save(asset)
+    } catch (e) {}
+  }
+
+  async syncStockImages() {
+    const tickers = await this.parseTickers()
+    const bar = new cliProgress.SingleBar(
+      {},
+      cliProgress.Presets.shades_classic
+    )
+
+    bar.start(tickers.length, 0)
+
+    let busyWorkers = 0
+    while (tickers.length > 0 || busyWorkers !== 0) {
+      if (busyWorkers >= LIMIT || tickers.length === 0) {
+        await sleep(6)
+        continue
+      }
+      busyWorkers += 1
+      const ticker = tickers.pop()
+      this.syncStockImage(ticker!).finally(() => {
+        busyWorkers -= 1
+        bar.increment(1)
+      })
     }
     bar.stop()
   }
