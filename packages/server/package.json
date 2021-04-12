@@ -31,12 +31,16 @@
     "jsonwebtoken": "^8.5.1",
     "mime-types": "^2.1.29",
     "mysql": "^2.14.1",
+    "pm2": "^4.5.6",
     "reflect-metadata": "^0.1.10",
     "typeorm": "0.2.29"
   },
   "scripts": {
-    "start": "NODE_PATH=src ts-node --transpile-only src/index.ts | pino-pretty -c -t",
-    "start:dev": "NODE_PATH=src ts-node-dev --respawn --transpile-only src/index.ts | pino-pretty",
+    "build": "tsc",
+    "start:pm2": "pm2 start deploy.config.json",
+    "reload": "pm2 start deploy.config.json",
+    "start": "TS_NODE=1 NODE_PATH=src ts-node --transpile-only src/index.ts | pino-pretty -c -t",
+    "start:dev": "TS_NODE=1 NODE_PATH=src ts-node-dev --respawn --transpile-only src/index.ts | pino-pretty",
     "typeorm": "node --require ts-node/register ./node_modules/typeorm/cli.js",
     "syncbot": "ts-node --transpile-only src/sync/index.ts",
     "initialize": "ts-node src/init.ts",

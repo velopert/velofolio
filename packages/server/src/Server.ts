@@ -4,6 +4,7 @@ import apiRoute from './routes/api'
 import searchPlugin from './plugins/searchPlugin'
 import compress from 'fastify-compress'
 import jwtPlugin from 'plugins/jwtPlugin'
+import closePlugin from 'plugins/closePlugin'
 
 const PORT = parseInt(process.env.PORT!, 10)
 
@@ -20,6 +21,8 @@ export default class Server {
     this.app.register(searchPlugin)
     this.app.register(jwtPlugin)
     this.app.register(apiRoute, { prefix: '/api' })
+    this.app.register(closePlugin)
+
     this.app.setErrorHandler((error, request, reply) => {
       reply.send({
         statusCode: error.statusCode,
@@ -32,10 +35,10 @@ export default class Server {
   }
 
   start() {
-    try {
-      this.app.listen(PORT)
-    } catch (e) {
-      this.app.log.error(e)
-    }
+    return this.app.listen(PORT)
+  }
+
+  close() {
+    return this.app.close()
   }
 }

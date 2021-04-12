@@ -1,0 +1,18 @@
+{
+  "apps": [
+    {
+      "name": "server",
+      "script": "ts-node",
+      "args": "--transpile-only src/index.ts | pino-pretty -c -t",
+      "instances": 2,
+      "exec_mode": "cluster",
+      "wait_ready": true,
+      "kill_timeout": 15000,
+      "listen_timeout": 30000,
+      "env": {
+        "TS_NODE": 1,
+        "NODE_PATH": "src"
+      }
+    }
+  ]
+}
