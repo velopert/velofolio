@@ -1,4 +1,5 @@
 import { css } from '@emotion/react'
+import { Helmet } from 'react-helmet-async'
 import { undrawAuthentication } from '../../assets/images'
 import { useUserState } from '../../atoms/authState'
 import BacktestsGrid from '../../components/BacktestsGrid'
@@ -12,6 +13,9 @@ function Workspace({}: WorkspaceProps) {
   if (!user) {
     return (
       <div css={wrapper}>
+        <Helmet>
+          <title>Workspace – Velofolio</title>
+        </Helmet>
         <ImageWithDescription
           image={undrawAuthentication}
           description="Please sign in to list your saved backtests"

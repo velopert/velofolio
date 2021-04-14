@@ -69,7 +69,7 @@ const monthsCount = selector({
   get: ({ get }) => get(reportState)?.[0]?.returns.length,
 })
 
-export function useMonthsCountValue() {
+export function useMonthsCount() {
   return useRecoilValue(monthsCount)
 }
 

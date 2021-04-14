@@ -3,12 +3,16 @@ import { undrawWelcoming } from '../../assets/images'
 import palette from '../../lib/palette'
 import Input from '../../components/Input'
 import RegisterForm from '../../components/RegisterForm/RegisterForm'
+import { Helmet } from 'react-helmet-async'
 
 export type RegisterProps = {}
 
 function Register({}: RegisterProps) {
   return (
     <div css={block}>
+      <Helmet>
+        <title>Register – Velofolio</title>
+      </Helmet>
       <div css={whiteBox}>
         <h1>Welcome!</h1>
         <img src={undrawWelcoming} alt="welcome" />

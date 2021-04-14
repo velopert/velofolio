@@ -1,5 +1,6 @@
 import { css } from '@emotion/react'
 import { useRouteMatch } from 'react-router-dom'
+import { logo } from '../../assets/images'
 import { useUserState } from '../../atoms/authState'
 import palette from '../../lib/palette'
 import CurrentUserInfo from '../CurrentUserInfo'
@@ -14,7 +15,9 @@ function Sidebar({}: SidebarProps) {
 
   return (
     <div css={sidebarStyle}>
-      <div className="logo">velofolio</div>
+      <div className="logo">
+        <img src={logo} alt="logo" />
+      </div>
       <ul css={menuStyle}>
         <SidebarItem
           icon="flask"
@@ -41,6 +44,9 @@ const sidebarStyle = css`
     font-weight: bold;
     font-size: 1.5rem;
     color: ${palette.blueGrey[900]};
+    img {
+      display: block;
+    }
   }
 `
 

@@ -1,7 +1,11 @@
 import { css } from '@emotion/react'
 import { useEffect } from 'react'
+import { Helmet } from 'react-helmet-async'
 import { useParams } from 'react-router-dom'
-import { useResetLabSetting } from '../../atoms/labSettingState'
+import {
+  useProjectTitleState,
+  useResetLabSetting,
+} from '../../atoms/labSettingState'
 import { useResetReport } from '../../atoms/reportState'
 import LabSettings from '../../components/LabSettings'
 import Report from '../../components/Report/Report'
@@ -20,6 +24,7 @@ function Lab({}: LabProps) {
   const { id } = useParams<LabParams>()
   const reset = useResetLabSetting()
   const resetReport = useResetReport()
+  const [title] = useProjectTitleState()
   useGenerateReportEffect()
   useTickerSync()
   useTB3HistoricalPricesSync()
@@ -36,6 +41,13 @@ function Lab({}: LabProps) {
 
   return (
     <div css={pageStyle}>
+      <Helmet>
+        <title>
+          {id
+            ? `${title} – Velofolio`
+            : 'Velofolio – Backtest your financial portfolio'}
+        </title>
+      </Helmet>
       <LabSettings />
       <div css={contentStyle}>
         <Report />

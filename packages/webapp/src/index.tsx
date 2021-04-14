@@ -7,17 +7,23 @@ import { BrowserRouter } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import recoilInitializer from './atoms/recoilInitializer'
+import { Helmet, HelmetProvider } from 'react-helmet-async'
 
 const queryClient = new QueryClient()
 ReactDOM.render(
   <React.StrictMode>
-    <RecoilRoot initializeState={recoilInitializer}>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </QueryClientProvider>
-    </RecoilRoot>
+    <HelmetProvider>
+      <Helmet>
+        <title>Velofolio</title>
+      </Helmet>
+      <RecoilRoot initializeState={recoilInitializer}>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </QueryClientProvider>
+      </RecoilRoot>
+    </HelmetProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )

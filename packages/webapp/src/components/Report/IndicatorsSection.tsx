@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import { useEffect, useMemo } from 'react'
 import { useInitialAmountState } from '../../atoms/labSettingState'
-import { useMonthsCountValue, useReportValue } from '../../atoms/reportState'
+import { useMonthsCount, useReportValue } from '../../atoms/reportState'
 import palette from '../../lib/palette'
 import {
   convertToPercentage,
@@ -12,7 +12,7 @@ export interface IndicatorsSectionProps {}
 
 function IndicatorsSection({}: IndicatorsSectionProps) {
   const [initialAmount] = useInitialAmountState()
-  const monthsCount = useMonthsCountValue()
+  const monthsCount = useMonthsCount()
   const report = useReportValue()
 
   const moreThanOneYear = useMemo(() => monthsCount && monthsCount >= 12, [
