@@ -30,11 +30,13 @@ export const historicalPricesState = atom({
 export type TB3PricesState = {
   prices: HistoricalPrice[] | null
   loading: boolean
+  error: boolean
 }
 
 export const tb3PricesState = atom<TB3PricesState>({
   key: 'tb3PricesState',
   default: {
+    error: false,
     loading: false,
     prices: null,
   },
@@ -145,10 +147,10 @@ export function useTB3HistoricalPricesActions() {
         set((prev) => ({ ...prev, loading: true }))
       },
       success(prices: HistoricalPrice[]) {
-        set((prev) => ({ loading: true, prices: prices }))
+        set((prev) => ({ loading: true, prices: prices, error: false }))
       },
       error() {
-        set((prev) => ({ ...prev, loading: false }))
+        set((prev) => ({ ...prev, loading: false, error: true }))
       },
     }),
     [set]

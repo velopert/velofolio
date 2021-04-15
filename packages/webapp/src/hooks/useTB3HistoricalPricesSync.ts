@@ -13,10 +13,12 @@ export default function useTB3HistoricalPricesSync() {
   const [state] = useTB3HistoricalPricesState()
   const fetchData = useFetchTB3HistoricalPrices()
 
+  console.log(state)
+
   useEffect(() => {
     const hasKey = Object.keys(pricesByTicker).length > 0
     if (!hasKey) return
-    if (state.loading || state.prices) return
+    if (state.loading || state.prices || state.error) return
     fetchData()
   }, [pricesByTicker, state, fetchData])
 }
