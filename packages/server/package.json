@@ -25,6 +25,7 @@
     "fastify": "^3.11.0",
     "fastify-compress": "^3.4.1",
     "fastify-cookie": "^5.2.0",
+    "fastify-cors": "^5.2.0",
     "fuse.js": "^6.4.6",
     "googleapis": "^67.1.1",
     "json-schema-to-typescript": "^10.1.3",
