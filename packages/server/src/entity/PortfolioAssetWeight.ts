@@ -15,11 +15,17 @@ export class PortfolioAssetWeight {
   @PrimaryGeneratedColumn()
   id!: number
 
-  @ManyToOne(() => Portfolio, (portfolio) => portfolio.asset_weights)
+  @ManyToOne(() => Portfolio, (portfolio) => portfolio.asset_weights, {
+    onDelete: 'CASCADE',
+    cascade: true,
+  })
   @JoinColumn({ name: 'portfolio_id' })
   portfolio!: Portfolio
 
-  @ManyToOne(() => Asset)
+  @ManyToOne(() => Asset, {
+    onDelete: 'CASCADE',
+    cascade: true,
+  })
   @JoinColumn({ name: 'asset_id' })
   asset!: Asset
 
