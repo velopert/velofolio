@@ -1,11 +1,12 @@
 import { css } from '@emotion/react'
 import { useAutocompleteIndex } from '../../atoms/autocompleteIndex'
 import palette from '../../lib/palette'
+import FallbackStockLogo from './FallbackStockLogo'
 export type TickerListItemProps = {
   id: number
   ticker: string
   name: string
-  image: string
+  image: string | null
   selected: boolean
   index: number
 }
@@ -28,7 +29,11 @@ function TickerListItem({
       data-type="ticker-item"
       onMouseEnter={onMouseEnter}
     >
-      <img src={image} alt={`${ticker} logo`} />
+      {image ? (
+        <img src={image} alt={`${ticker} logo`} />
+      ) : (
+        <FallbackStockLogo name={ticker} />
+      )}
       <span css={tickerStyle}>{ticker}</span>
       <span css={nameStyle}>{name}</span>
     </div>
@@ -54,6 +59,7 @@ const item = (selected: boolean) => css`
     height: 1.5rem;
     border: 0.0625rem solid ${palette.blueGrey[100]};
     border-radius: 0.75rem;
+    flex-shrink: 0;
   }
   span {
     margin-left: 0.5rem;

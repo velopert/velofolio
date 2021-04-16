@@ -9,6 +9,7 @@ import { usePortfoliosAction } from '../../atoms/labSettingState'
 import { useLabSettingView } from '../../atoms/labSettingViewState'
 import palette from '../../lib/palette'
 import VeloIcon from '../VeloIcon'
+import FallbackStockLogo from './FallbackStockLogo'
 export type AssetsTableProps = {
   focusInput(): void
 }
@@ -52,14 +53,15 @@ function AssetsTable({ focusInput }: AssetsTableProps) {
         {assets.map((asset) => (
           <div key={asset.id} css={row}>
             <div css={[columnTicker, leftAlign]}>
-              <img
-                src={
-                  asset.image
-                    ? `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${asset.ticker}.png`
-                    : ''
-                }
-                alt={`${asset.ticker} logo`}
-              />
+              <div css={paddingLeft}></div>
+              {asset.image ? (
+                <img
+                  src={`https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${asset.ticker}.png`}
+                  alt={`${asset.ticker} logo`}
+                />
+              ) : (
+                <FallbackStockLogo name={asset.ticker} />
+              )}
               <span>{asset.ticker}</span>
               <div className="icon-wrapper" onClick={() => remove(asset.id)}>
                 <VeloIcon name="trash" />
@@ -135,6 +137,10 @@ const rowContents = css`
   overflow-y: auto;
 `
 
+const paddingLeft = css`
+  padding-left: 0.5rem;
+`
+
 const column = css`
   display: flex;
   align-items: center;
@@ -150,16 +156,16 @@ const columnTicker = css`
   align-items: center;
 
   img {
-    margin-left: 0.5rem;
+    /* margin-left: 0.5rem; */
     display: block;
     background: white;
     width: 1.5rem;
     height: 1.5rem;
     border: 0.0625rem solid ${palette.blueGrey[100]};
     border-radius: 0.75rem;
-    margin-right: 0.4375rem;
   }
   span {
+    margin-left: 0.4375rem;
     line-height: 1;
     flex: 1;
   }

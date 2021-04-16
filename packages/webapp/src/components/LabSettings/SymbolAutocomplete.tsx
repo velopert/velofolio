@@ -29,7 +29,11 @@ function SymbolAutocomplete({
         {results.map((result, i) => (
           <TickerListItem
             id={result.id}
-            image={`https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${result.ticker}.png`}
+            image={
+              result.image
+                ? `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${result.ticker}.png`
+                : null
+            }
             name={result.name}
             ticker={result.ticker}
             key={result.id}
