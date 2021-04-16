@@ -21,6 +21,7 @@ export default class Server {
       origin: (origin, callback) => {
         const host = origin.split('://')[1]
         const allowedHost = [
+          'www.velofolio.net',
           'velopert.vercel.app',
           'velofolio.net',
           'velofolio.vlpt.us',
