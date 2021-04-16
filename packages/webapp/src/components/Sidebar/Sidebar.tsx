@@ -1,5 +1,5 @@
 import { css } from '@emotion/react'
-import { useRouteMatch } from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
 import { logo } from '../../assets/images'
 import { useUserState } from '../../atoms/authState'
 import palette from '../../lib/palette'
@@ -16,7 +16,9 @@ function Sidebar({}: SidebarProps) {
   return (
     <div css={sidebarStyle}>
       <div className="logo">
-        <img src={logo} alt="logo" />
+        <Link to="/">
+          <img src={logo} alt="logo" />
+        </Link>
       </div>
       <ul css={menuStyle}>
         <SidebarItem

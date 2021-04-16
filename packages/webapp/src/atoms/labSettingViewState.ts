@@ -1,6 +1,10 @@
 import { useCallback } from 'react'
-import { atom, useRecoilValue, useSetRecoilState } from 'recoil'
-import { useAssetsActions } from './assetsState'
+import {
+  atom,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from 'recoil'
 
 export type LabSettingViewType = {
   mode: 'default' | 'portfolio'
@@ -61,4 +65,8 @@ export function useLabSettingViewActions() {
     openPortfolio,
     closePortfolio,
   }
+}
+
+export function useResetLabSettingView() {
+  return useResetRecoilState(labSettingViewState)
 }

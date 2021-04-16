@@ -6,6 +6,7 @@ import {
   useProjectTitleState,
   useResetLabSetting,
 } from '../../atoms/labSettingState'
+import { useResetLabSettingView } from '../../atoms/labSettingViewState'
 import { useResetReport } from '../../atoms/reportState'
 import LabSettings from '../../components/LabSettings'
 import Report from '../../components/Report/Report'
@@ -24,6 +25,8 @@ function Lab({}: LabProps) {
   const { id } = useParams<LabParams>()
   const reset = useResetLabSetting()
   const resetReport = useResetReport()
+  const resetLabSettingView = useResetLabSettingView()
+
   const [title] = useProjectTitleState()
   useGenerateReportEffect()
   useTickerSync()
@@ -33,8 +36,9 @@ function Lab({}: LabProps) {
     return () => {
       reset()
       resetReport()
+      resetLabSettingView()
     }
-  }, [reset, resetReport])
+  }, [reset, resetReport, resetLabSettingView])
 
   const { loading } = useBacktestLoad(id ? parseInt(id) : 0)
   if (loading) return null
