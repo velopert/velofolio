@@ -98,8 +98,11 @@ function generateReportData({
   // 2. generate report data based on portfolios
   const monthsCount = Object.values(filteredPricesByTicker)[0].length
   const months = Object.values(filteredPricesByTicker)[0].map((hp) => hp.date)
-  if (riskFreeRates.length < months.length - 1) {
-    riskFreeRates.push(riskFreeRates[riskFreeRates.length - 1])
+  const diff = months.length - 1 - riskFreeRates.length
+  if (diff > 0) {
+    for (let i = 0; i < diff; i += 1) {
+      riskFreeRates.push(riskFreeRates[riskFreeRates.length - 1])
+    }
   }
 
   return portfolios.map((portfolio) => {
@@ -371,7 +374,6 @@ export default function useGenerateReportEffect() {
       lastDate: new Date(dateRange.endDate.year, dateRange.endDate.month), // + 1month,
       tb3HistoricalPrices,
     })
-    console.log('??')
     setLoading(false)
     setReport(report)
   }, [
