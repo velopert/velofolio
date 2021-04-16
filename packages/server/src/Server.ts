@@ -19,6 +19,9 @@ export default class Server {
   setup() {
     this.app.register(corsPlugin, {
       origin: (origin, callback) => {
+        if (!origin) {
+          return callback(null, true)
+        }
         const host = origin.split('://')[1]
         const allowedHost = [
           'www.velofolio.net',
