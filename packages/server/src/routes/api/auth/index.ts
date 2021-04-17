@@ -100,6 +100,7 @@ const authRoute: FastifyPluginCallback = (fastify, opts, done) => {
           path: '/',
           httpOnly: true,
           maxAge: 60 * 60 * 24 * 15,
+          sameSite: 'none',
         })
 
         reply.send({
