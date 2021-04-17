@@ -37,7 +37,7 @@ function SymbolAutocomplete({
             id={result.id}
             image={
               result.image
-                ? `https://storage.googleapis.com/iexcloud-hl37opg/api/logos/${result.ticker}.png`
+                ? `https://files.velofolio.net/logos/us_stocks/${result.ticker}.png`
                 : null
             }
             name={result.name}
