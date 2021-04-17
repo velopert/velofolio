@@ -70,7 +70,7 @@ export class Backtest {
     const { user, portfolios, thumbnail, ...rest } = this
     return {
       ...rest,
-      thumbnail: 'https://d15tp0cfv5jhy5.cloudfront.net/'.concat(thumbnail),
+      thumbnail: 'https://files.velofolio.net/'.concat(thumbnail),
       user: user.serialize(),
       portfolios: portfolios.map((p) => p.serialize()),
     }
