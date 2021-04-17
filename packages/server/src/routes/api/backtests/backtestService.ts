@@ -65,6 +65,9 @@ export const backtestService = {
     backtest.initial_amount = initialAmount
     backtest.thumbnail = ''
 
+    const manager = getManager()
+    await manager.save(backtest)
+
     const fileDir = await generateBacktestChart(returns)
     await upload(fileDir, `backtest_chart/${backtest.id}.png`)
     backtest.thumbnail = `backtest_chart/${backtest.id}.png`
@@ -79,8 +82,6 @@ export const backtestService = {
         convertPeriodToMonth(cashflows.period) ?? undefined
       backtest.cashflow_value = cashflows.amount
     }
-
-    const manager = getManager()
 
     const portfoliosPromise = portfolios.map(async (p, i) => {
       const portfolio = new Portfolio()
