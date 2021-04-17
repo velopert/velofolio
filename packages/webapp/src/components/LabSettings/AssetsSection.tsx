@@ -1,4 +1,3 @@
-import { css } from '@emotion/react'
 import { useEffect, useRef, useState } from 'react'
 import useOnClickOutside from 'use-onclickoutside'
 import useTickerAutocomplete from '../../hooks/useTickerAutocomplete'
@@ -11,16 +10,10 @@ import {
   useAssetsActions,
   useResetAssetsUnmountEffect,
 } from '../../atoms/assetsState'
-import useAssetQuery, {
-  useAssetQuerySetter,
-} from '../../hooks/query/useAssetQuery'
-import { getAsset } from '../../lib/api/assets/getAsset'
+import { useAssetQuerySetter } from '../../hooks/query/useAssetQuery'
 import { useAssetDetailsActions } from '../../atoms/assetDetailsState'
-import { useHistory } from 'react-router-dom'
 
-export type AssetsSectionProps = {}
-
-function AssetsSection({}: AssetsSectionProps) {
+function AssetsSection() {
   const [keyword, setKeyword] = useState('')
   const [debouncedKeyword] = useDebounce(keyword, 400)
   const [open, setOpen] = useState(false)
@@ -39,11 +32,33 @@ function AssetsSection({}: AssetsSectionProps) {
   }, [open, reset])
 
   const onFocus = () => setOpen(true)
-  const onBlur = () => setOpen(false)
+  const onBlur = () => {
+    // setOpen(false)
+  }
   const onClose: Parameters<typeof useOnClickOutside>[1] = (e) => {
     if (ref.current === e.target || ref.current?.contains(e.target as Node)) {
       return
     }
+    setOpen(false)
+  }
+
+  const onSelect = ({
+    id,
+    image,
+    ticker,
+  }: {
+    id: number
+    image: string | null
+    ticker: string
+  }) => {
+    setOpen(false)
+    setKeyword('')
+    append({
+      id,
+      image,
+      ticker,
+      weight: 1,
+    })
   }
 
   const appendWhenTickerExists = async () => {
@@ -124,6 +139,7 @@ function AssetsSection({}: AssetsSectionProps) {
           visible={open}
           results={results}
           onClose={onClose}
+          onSelect={onSelect}
           selectedIndex={selectedIndex}
         />
       </div>

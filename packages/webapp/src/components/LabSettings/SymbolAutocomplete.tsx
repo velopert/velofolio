@@ -9,6 +9,11 @@ export type SymbolAutocompleteProps = {
   visible: boolean
   onClose: Parameters<typeof useOnClickOutside>[1]
   selectedIndex: number
+  onSelect: (params: {
+    id: number
+    image: string | null
+    ticker: string
+  }) => void
 }
 
 function SymbolAutocomplete({
@@ -16,6 +21,7 @@ function SymbolAutocomplete({
   onClose,
   results,
   selectedIndex,
+  onSelect,
 }: SymbolAutocompleteProps) {
   const ref = useRef<HTMLDivElement>(null)
 
@@ -39,6 +45,7 @@ function SymbolAutocomplete({
             key={result.id}
             selected={i === selectedIndex}
             index={i}
+            onSelect={onSelect}
           />
         ))}
       </div>

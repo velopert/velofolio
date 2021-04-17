@@ -9,6 +9,11 @@ export type TickerListItemProps = {
   image: string | null
   selected: boolean
   index: number
+  onSelect: (params: {
+    id: number
+    image: string | null
+    ticker: string
+  }) => void
 }
 
 function TickerListItem({
@@ -18,16 +23,29 @@ function TickerListItem({
   image,
   selected,
   index,
+  onSelect,
 }: TickerListItemProps) {
   const [, setSelectedIndex] = useAutocompleteIndex()
   const onMouseEnter = () => {
     setSelectedIndex(index)
+  }
+  const onClick = () => {
+    console.log('DDYONG')
+    onSelect({
+      id,
+      ticker,
+      image,
+    })
   }
   return (
     <div
       css={item(selected)}
       data-type="ticker-item"
       onMouseEnter={onMouseEnter}
+      onClick={(e) => {
+        e.stopPropagation()
+        onClick()
+      }}
     >
       {image ? (
         <img src={image} alt={`${ticker} logo`} />

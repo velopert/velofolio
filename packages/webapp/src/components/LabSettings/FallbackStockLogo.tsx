@@ -14,7 +14,6 @@ function FallbackStockLogo({ name }: FallbackStockLogoProps) {
       .reduce((acc, current) => acc + current, 0)
   }, [name])
 
-  console.log(name, charsum)
   const color = chartColors[charsum % chartColors.length]
   return <div css={style(color)}>{char.toLocaleUpperCase()}</div>
 }
