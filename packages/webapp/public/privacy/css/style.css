@@ -1,0 +1,385 @@
+/*
+	Helvetica Neue
+
+	Demo css to show basic, more technical styling
+
+	Visit http://www.ulysses.app/styles for full reference
+
+*/
+
+article {
+  width: 768px;
+  margin: 0 auto;
+  word-break: break-word;
+}
+
+@media screen and (max-width: 768px) {
+  article {
+    width: 100%;
+  }
+}
+
+body {
+  font-size: 13pt;
+  color: #222;
+  background: #fbfbfb;
+  font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  line-height: 1.4;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: normal;
+  color: #111;
+}
+
+h1 {
+  font-size: 3em;
+  line-height: 1;
+  margin-bottom: 0.5em;
+  margin-top: 2em;
+}
+
+h2 {
+  font-size: 2em;
+  margin-bottom: 0.75em;
+  margin-top: 1.5em;
+}
+
+h3 {
+  font-size: 1.5em;
+  line-height: 1;
+  margin-top: 1.5em;
+}
+
+h4 {
+  font-size: 1.2em;
+  line-height: 1.25;
+  margin-bottom: 1.25em;
+}
+
+h5 {
+  font-size: 1em;
+  font-weight: bold;
+  margin-bottom: 1.5em;
+}
+
+h6 {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+h1 img,
+h2 img,
+h3 img,
+h4 img,
+h5 img,
+h6 img {
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+}
+
+video {
+  width: 100%;
+  object-fit: scale-down;
+}
+
+p {
+  margin: 0 0 1.5em;
+}
+
+a:focus,
+a:hover {
+  color: #09f;
+}
+
+a {
+  color: #06c;
+  text-decoration: underline;
+}
+
+blockquote {
+  margin: 1.5em;
+  color: #666;
+}
+
+strong,
+dfn {
+  font-weight: bold;
+}
+
+em,
+dfn {
+  font-style: italic;
+}
+
+del {
+  color: #666;
+}
+
+pre {
+  margin: 1.5em 0;
+  white-space: pre;
+}
+
+pre,
+code,
+tt {
+  font: 1em 'andale mono', 'lucida console', monospace;
+  line-height: 1.5;
+}
+
+li ul,
+li ol {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0 3em 1.5em 1.5em;
+  padding-left: 1.5em;
+}
+
+ul {
+  list-style-type: disc;
+}
+
+ol {
+  list-style-type: decimal;
+}
+
+figure {
+  margin: 1.5em 0;
+  width: 100%;
+  text-align: center;
+}
+
+figcaption {
+  font-size: 0.75em;
+  padding: 0.5em 2em;
+  margin-bottom: 2em;
+}
+
+figure img {
+  margin-bottom: 0px;
+}
+
+hr {
+  border: 0px;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #fff;
+  margin-top: 4em;
+  margin-bottom: 2em;
+}
+
+h1 + hr {
+  margin-top: 2em;
+}
+
+ol#footnotes {
+  font-size: 0.75em;
+  padding-top: 1.5em;
+  margin-top: 3em;
+  margin-left: 0;
+}
+
+ol#footnotes:before {
+  content: '———';
+  letter-spacing: -4px;
+  margin-left: -1.5em;
+}
+
+ol p,
+ul p {
+  margin-bottom: 0px;
+}
+
+li {
+  margin-bottom: 0.75em;
+  margin-top: 0.75em;
+}
+
+/* Code Highlighting */
+
+code {
+  font-family: 'Menlo', monospace;
+  font-size: 10.5pt;
+}
+
+p > code {
+  padding: 0.2em 0.4em;
+  background: #eee;
+}
+
+pre {
+  color: #000;
+  text-align: left;
+  line-height: 1.2em;
+  overflow-x: scroll;
+  background: #f8f8f8;
+  padding: 20pt;
+  margin: 20pt 0;
+  border-radius: 3pt;
+  white-space: pre-wrap;
+  tab-size: 4;
+}
+
+.syntax-all {
+}
+
+.syntax-entity {
+  color: #6f42c1;
+}
+
+.syntax-tag {
+  color: #22863a;
+}
+
+.syntax-keyword {
+  color: #d73a49;
+}
+
+.syntax-parameter {
+  color: #24292e;
+}
+
+.syntax-string {
+  color: #003878;
+}
+
+.syntax-constant {
+  color: #005cc5;
+}
+
+.syntax-variable {
+  color: #e36209;
+}
+
+.syntax-escape {
+  font-weight: bold;
+  color: #22863a;
+}
+
+.syntax-comment {
+  color: #6a737d;
+}
+
+.syntax-error {
+  color: #b31d28;
+}
+
+/* Markup Highlighting */
+
+.syntax-heading {
+  font-weight: bold;
+  color: #005cc5;
+}
+
+.syntax-italic {
+  font-style: italic;
+  color: #24292e;
+}
+
+.syntax-bold {
+  font-weight: bold;
+  color: #24292e;
+}
+
+.syntax-deleted {
+  color: #b31d28;
+  background-color: #ffeef0;
+}
+
+.syntax-inserted {
+  color: #22863a;
+  background-color: #f0fff4;
+}
+
+.syntax-changed {
+  color: #e36209;
+  background-color: #ffebda;
+}
+
+.syntax-link {
+  text-decoration: underline;
+  color: #032f62;
+}
+
+.syntax-list {
+  color: #e36209;
+}
+
+@keyframes highfade {
+  0% {
+    background-color: none;
+  }
+  20% {
+    background-color: yellow;
+  }
+  100% {
+    background-color: none;
+  }
+}
+
+@-webkit-keyframes highfade {
+  0% {
+    background-color: none;
+  }
+  20% {
+    background-color: yellow;
+  }
+  100% {
+    background-color: none;
+  }
+}
+
+a:target,
+ol#footnotes li:target,
+sup a:target {
+  animation-name: highfade;
+  animation-duration: 2s;
+  animation-iteration-count: 1;
+  animation-timing-function: ease-in-out;
+  -webkit-animation-name: highfade;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-timing-function: ease-in-out;
+}
+
+a:target {
+  border: 0;
+  outline: 0;
+}
+
+@media screen and (max-width: 768px) {
+  body {
+    margin: 30px;
+  }
+}
+
+@media screen and (max-width: 736px),
+  screen and (max-width: 808px) and (max-height: 414px) {
+  body {
+    margin: 20px;
+  }
+
+  ul,
+  ol {
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  h2 {
+    font-size: 1.8em;
+  }
+}
