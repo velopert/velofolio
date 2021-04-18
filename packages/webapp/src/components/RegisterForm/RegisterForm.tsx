@@ -38,7 +38,17 @@ function RegisterForm({}: RegisterFormProps) {
       </button>
       <div css={description(false)}>
         By signing up, I accept to Terms of Use. I have read and understood the
-        Privacy Policy and Cookies Policy
+        <a href="/policy" target="_blank" rel="external nofollow noopener">
+          Privacy Policy
+        </a>{' '}
+        and{' '}
+        <a
+          href="/policy/cookies"
+          target="_blank"
+          rel="external nofollow noopener"
+        >
+          Cookies Policy
+        </a>
       </div>
     </form>
   )
