@@ -106,6 +106,7 @@ const imageWrapper = css`
   height: 13.8125rem;
   img {
     width: 100%;
+    height: 100%;
   }
   .duration {
     color: ${palette.blueGrey[300]};
