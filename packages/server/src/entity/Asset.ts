@@ -8,6 +8,7 @@ import {
   Index,
   OneToMany,
   getRepository,
+  UpdateDateColumn,
 } from 'typeorm'
 import { AssetMeta } from './AssetMeta'
 import { AssetType } from './AssetType'
@@ -66,6 +67,10 @@ export class Asset {
 
   @OneToMany(() => SectorWeighting, (sectorWeighting) => sectorWeighting.asset)
   sector_weightings!: SectorWeighting[]
+
+  @Column('timestamptz')
+  @UpdateDateColumn()
+  updated_at!: Date
 
   static findByTicker(ticker: string, join: boolean = false) {
     const repo = getRepository(Asset)

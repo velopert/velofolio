@@ -5,6 +5,7 @@ import {
   OneToOne,
   JoinColumn,
   Index,
+  UpdateDateColumn,
 } from 'typeorm'
 import { Asset } from './Asset'
 
@@ -36,4 +37,8 @@ export class AssetMeta {
   @Index()
   @Column({ type: 'double' })
   changes!: number
+
+  @Column('timestamptz')
+  @UpdateDateColumn()
+  updated_at!: Date
 }
