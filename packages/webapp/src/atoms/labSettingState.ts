@@ -16,6 +16,7 @@ import { useReportValue } from './reportState'
 import { Backtest } from '../lib/api/backtests/types'
 import { convertIntervalToPeriod } from '../lib/constants'
 import { UserSerialized } from '../lib/api/types'
+import { useAssetDetailsActions } from './assetDetailsState'
 
 export type LabSettingState = {
   dateRange: {
@@ -335,9 +336,15 @@ export function useLabSettingSync() {
   const setLabSetting = useSetRecoilState(labSettingState)
   const setProjectTitle = useSetRecoilState(projectTitleState)
   const setBacktestAuthor = useSetRecoilState(backtestAuthorState)
+  const { loadTicker } = useAssetDetailsActions()
 
   const sync = useCallback(
     (backtest: Backtest) => {
+      const uniqueTickers = backtest.portfolios.flatMap((p) =>
+        p.assets.map((a) => a.ticker)
+      )
+
+      uniqueTickers.forEach(loadTicker)
       setBacktestAuthor(backtest.user)
       setProjectTitle(backtest.title)
       setLabSetting({
