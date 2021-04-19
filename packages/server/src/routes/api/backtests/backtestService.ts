@@ -57,6 +57,22 @@ export const backtestService = {
       data: { cashflows, dateRange, initialAmount, portfolios },
     } = backtestBody
 
+    if (portfolios.length === 0) {
+      throw new CustomError({
+        statusCode: 400,
+        name: 'BadRequestError',
+        message: 'No portfolio added',
+      })
+    }
+
+    if (portfolios.some((p) => p.assets.length === 0)) {
+      throw new CustomError({
+        statusCode: 400,
+        name: 'BadRequestError',
+        message: 'One of portfolio is empty',
+      })
+    }
+
     const backtest = new Backtest()
     backtest.user = user
     backtest.title = title
@@ -146,6 +162,22 @@ export const backtestService = {
       title,
       data: { cashflows, dateRange, initialAmount, portfolios },
     } = backtestBody
+
+    if (portfolios.length === 0) {
+      throw new CustomError({
+        statusCode: 400,
+        name: 'BadRequestError',
+        message: 'No portfolio added',
+      })
+    }
+
+    if (portfolios.some((p) => p.assets.length === 0)) {
+      throw new CustomError({
+        statusCode: 400,
+        name: 'BadRequestError',
+        message: 'One of portfolio is empty',
+      })
+    }
 
     backtest.title = title
     backtest.initial_amount = initialAmount
