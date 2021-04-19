@@ -16,11 +16,13 @@ import { GetTickerParams } from 'types/assets/getTicker/params'
 import { GetHistoricalPricesParams } from 'types/assets/getHistoricalPrices/params'
 import { GetHistoricalPricesQuerystring } from 'types/assets/getHistoricalPrices/querystring'
 import { HistoricalPrice } from 'entity/HistoricalPrice'
+import Etag from 'fastify-etag'
 
 interface SearchAssetQuery {}
 interface Headers {}
 
 const assetsRoute: FastifyPluginCallback = (fastify, opts, done) => {
+  fastify.register(Etag)
   // autocomplete
   fastify.get<{ Querystring: AutocompleteQuerystring }>(
     '/',
