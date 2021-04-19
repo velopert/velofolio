@@ -40,6 +40,7 @@ const assetsRoute: FastifyPluginCallback = (fastify, opts, done) => {
           image: result.item.image,
         }))
       reply.send(results)
+      reply.header('Cache-Control', 'max-age=86400')
     }
   )
 

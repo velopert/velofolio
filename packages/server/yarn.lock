@@ -1721,6 +1721,13 @@ fastify-error@^0.3.0:
   resolved "https://registry.yarnpkg.com/fastify-error/-/fastify-error-0.3.0.tgz#08866323d521156375a8be7c7fcaf98df946fafb"
   integrity sha512-Jm2LMTB5rsJqlS1+cmgqqM9tTs0UrlgYR7TvDT3ZgXsUI5ib1NjQlqZHf+tDK5tVPdFGwyq02wAoJtyYIRSiFA==
 
+fastify-etag@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/fastify-etag/-/fastify-etag-2.1.0.tgz#760a574d4d5239e7f4b8a5b8538ddeeaf1f4e7aa"
+  integrity sha512-guGp8u2GZDgDyenx80k8qrUNo22gP1qCBxuwuK+fxjdfDSlgh+ENJCm/mfO/YoB9eWKaqK5DlMSOOlDA78013w==
+  dependencies:
+    fastify-plugin "^3.0.0"
+
 fastify-plugin@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/fastify-plugin/-/fastify-plugin-3.0.0.tgz#cf1b8c8098e3b5a7c8c30e6aeb06903370c054ca"
