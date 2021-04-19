@@ -40,7 +40,6 @@ const assetsRoute: FastifyPluginCallback = (fastify, opts, done) => {
           image: result.item.image,
         }))
       reply.send(results)
-      reply.header('Cache-Control', 'max-age=86400')
     }
   )
 
@@ -61,6 +60,7 @@ const assetsRoute: FastifyPluginCallback = (fastify, opts, done) => {
         reply.status(404)
         throw new Error('Asset is not found')
       }
+      reply.header('Cache-Control', 'max-age=86400')
       reply.send(asset)
     }
   )
