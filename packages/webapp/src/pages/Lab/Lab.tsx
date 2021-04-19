@@ -10,10 +10,12 @@ import { useResetLabSettingView } from '../../atoms/labSettingViewState'
 import { useResetReport } from '../../atoms/reportState'
 import LabSettings from '../../components/LabSettings'
 import Report from '../../components/Report/Report'
+import Spinner from '../../components/Spinner'
 import useBacktestLoad from '../../hooks/useBacktestLoad'
 import useGenerateReportEffect from '../../hooks/useGenerateReportEffect'
 import useTB3HistoricalPricesSync from '../../hooks/useTB3HistoricalPricesSync'
 import useTickerSync from '../../hooks/useTickerSync'
+import palette from '../../lib/palette'
 
 export type LabProps = {}
 
@@ -41,7 +43,12 @@ function Lab({}: LabProps) {
   }, [reset, resetReport, resetLabSettingView])
 
   const { loading } = useBacktestLoad(id ? parseInt(id) : 0)
-  if (loading) return null
+  if (loading)
+    return (
+      <div css={fullPageSpinner}>
+        <Spinner color={palette.cyan[600]} size="4rem" />
+      </div>
+    )
 
   return (
     <div css={pageStyle}>
@@ -66,4 +73,13 @@ const contentStyle = css`
   padding-left: 22.5rem;
 `
 
+const fullPageSpinner = css`
+  width: calc(100% - 16.25rem);
+  height: 100%;
+  position: fixed;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`
 export default Lab

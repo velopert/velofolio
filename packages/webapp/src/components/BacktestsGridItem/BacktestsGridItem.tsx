@@ -18,14 +18,18 @@ function BacktestsGridItem({ backtest }: BacktestsGridItemProps) {
     setLoading(true)
   }
   const duration = useMemo(() => {
-    const d = intervalToDuration({
-      start: new Date(backtest.end_date),
-      end: new Date(backtest.start_date),
-    })
-    return formatDuration({
-      years: d.years,
-      months: d.months,
-    })
+    try {
+      const d = intervalToDuration({
+        start: new Date(backtest.start_date),
+        end: new Date(backtest.end_date),
+      })
+      return formatDuration({
+        years: d.years,
+        months: d.months,
+      })
+    } catch (e) {
+      return ''
+    }
   }, [backtest])
   return (
     <Link
