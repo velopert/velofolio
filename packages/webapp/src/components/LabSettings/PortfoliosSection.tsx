@@ -22,7 +22,7 @@ function PortfoliosSection({}: PortfoliosSectionProps) {
   }
 
   return (
-    <LabSettingsSection title="Portfolios">
+    <LabSettingsSection title="Portfolios" extendedSectionStyle={sectionStyle}>
       <div css={buttonPositioner}>
         <CircularIconButton icon="plus" onClick={onClick} />
       </div>
@@ -40,6 +40,11 @@ function PortfoliosSection({}: PortfoliosSectionProps) {
     </LabSettingsSection>
   )
 }
+
+const sectionStyle = css`
+  flex: 1;
+  overflow-y: scroll;
+`
 
 const buttonPositioner = css`
   position: absolute;

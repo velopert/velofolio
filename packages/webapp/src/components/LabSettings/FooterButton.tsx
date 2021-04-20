@@ -10,20 +10,13 @@ export type FooterButtonProps = {
 
 function FooterButton({ name, onClick, loading }: FooterButtonProps) {
   return (
-    <div css={block}>
-      <button css={footerButton(!!loading)} onClick={onClick}>
-        {loading ? <Spinner color="white" size="1.5rem" /> : name}
-      </button>
-    </div>
+    <button css={footerButton(!!loading)} onClick={onClick}>
+      {loading ? <Spinner color="white" size="1.5rem" /> : name}
+    </button>
   )
 }
 
-const block = css`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-`
+const block = css``
 
 const footerButton = (loading: boolean) => css`
   ${resetButton}

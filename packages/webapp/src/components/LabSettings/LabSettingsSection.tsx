@@ -6,15 +6,17 @@ export type LabSettingsSectionProps = {
   title: string
   children: React.ReactNode
   contentStyle?: SerializedStyles
+  extendedSectionStyle?: SerializedStyles
 }
 
 function LabSettingsSection({
   title,
   children,
   contentStyle,
+  extendedSectionStyle,
 }: LabSettingsSectionProps) {
   return (
-    <section css={sectionStyle}>
+    <section css={[sectionStyle, extendedSectionStyle]}>
       <h3>{title}</h3>
       <div css={contentStyle}>{children}</div>
     </section>
@@ -22,7 +24,7 @@ function LabSettingsSection({
 }
 
 const sectionStyle = css`
-  & + & {
+  section + & {
     margin-top: 1.5rem;
   }
   h3 {

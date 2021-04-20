@@ -45,6 +45,7 @@ function App() {
         </Route>
       </Switch>
       <Global styles={globalStyle} />
+      <div id="root-portal"></div>
     </>
   )
 }

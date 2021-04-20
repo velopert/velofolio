@@ -85,6 +85,8 @@ function LabSettingsPortfolio({}: LabSettingsPortfolioProps) {
         />
       </LabSettingsSection>
       <AssetsSection />
+      <div css={space}></div>
+
       <FooterButton name="OK" onClick={onSubmit} />
     </div>
   )
@@ -113,6 +115,10 @@ const backButton = css`
   :focus-visible {
     color: ${palette.blueGrey[800]};
   }
+`
+
+const space = css`
+  flex: 1;
 `
 
 export default LabSettingsPortfolio
