@@ -4,11 +4,13 @@ import { undrawAuthentication } from '../../assets/images'
 import { useUserState } from '../../atoms/authState'
 import BacktestsGrid from '../../components/BacktestsGrid'
 import ImageWithDescription from '../../components/ImageWithDescription'
+import useResetLabEffect from '../../hooks/useResetLabEffect'
 
 export type WorkspaceProps = {}
 
 function Workspace({}: WorkspaceProps) {
   const [user] = useUserState()
+  useResetLabEffect()
 
   if (!user) {
     return (

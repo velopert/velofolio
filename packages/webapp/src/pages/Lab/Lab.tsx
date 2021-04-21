@@ -25,22 +25,11 @@ type LabParams = {
 
 function Lab({}: LabProps) {
   const { id } = useParams<LabParams>()
-  const reset = useResetLabSetting()
-  const resetReport = useResetReport()
-  const resetLabSettingView = useResetLabSettingView()
 
   const [title] = useProjectTitleState()
   useGenerateReportEffect()
   useTickerSync()
   useTB3HistoricalPricesSync()
-
-  useEffect(() => {
-    return () => {
-      reset()
-      resetReport()
-      resetLabSettingView()
-    }
-  }, [reset, resetReport, resetLabSettingView])
 
   const { loading } = useBacktestLoad(id ? parseInt(id) : 0)
   if (loading)
