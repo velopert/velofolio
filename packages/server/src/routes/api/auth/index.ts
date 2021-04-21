@@ -98,8 +98,8 @@ const authRoute: FastifyPluginCallback = (fastify, opts, done) => {
         const accessToken = await user.generateToken()
         reply.setCookie('access_token', accessToken, {
           path: '/',
-          httpOnly: true,
           maxAge: 60 * 60 * 24 * 15,
+          httpOnly: true,
           sameSite: 'none',
           secure: true,
         })
@@ -175,6 +175,8 @@ const authRoute: FastifyPluginCallback = (fastify, opts, done) => {
             path: '/',
             httpOnly: true,
             maxAge: 60 * 60 * 24 * 15,
+            sameSite: 'none',
+            secure: true,
           })
           // TODO: generate accessToken
           reply.send({
