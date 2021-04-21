@@ -130,6 +130,31 @@ export const backtestService = {
     return backtest.serialize()
   },
 
+  async deleteBacktest(id: number, user: User) {
+    const backtest = await getRepository(Backtest).findOne(id, {
+      relations: ['user'],
+    })
+
+    if (!backtest) {
+      const e = new CustomError({
+        statusCode: 404,
+        message: 'Backtest does not exist',
+        name: 'NotFoundError',
+      })
+      throw e
+    }
+
+    if (backtest.user.id !== user.id) {
+      throw new CustomError({
+        statusCode: 403,
+        message: 'You have no permission to update this backtest',
+        name: 'UnauthorizedError',
+      })
+    }
+
+    return getRepository(Backtest).remove(backtest)
+  },
+
   async updateBacktest(id: number, backtestBody: BacktestDataBody, user: User) {
     const backtest = await getRepository(Backtest).findOne(id, {
       relations: [

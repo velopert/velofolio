@@ -67,6 +67,16 @@ const protectedRoute: FastifyPluginAsync = async (fastify) => {
       return backtestService.updateBacktest(id, body, userData!)
     }
   )
+
+  /**
+   * DELETE /api/backtests/:id
+   */
+  fastify.delete<{ Params: { id: string } }>('/:id', async (request, reply) => {
+    const { userData } = request
+    const id = parseInt(request.params.id, 10)
+    await backtestService.deleteBacktest(id, userData!)
+    reply.status(204)
+  })
   // fastify.put<{ Body: BacktestDataBody; Params: { id: string } }>('/:id', {
   //   schema: { body: ProjectDataBodySchema },
   //   async (request, reply) => {}
