@@ -37,8 +37,20 @@ function RegisterForm({}: RegisterFormProps) {
         {loading ? <VeloIcon name="spinner" /> : 'REGISTER'}
       </button>
       <div css={description(false)}>
-        By signing up, I accept to Terms of Use. I have read and understood the
-        <a href="/policy" target="_blank" rel="external nofollow noopener">
+        By signing up, I accept to{' '}
+        <a
+          href="/policy/terms"
+          target="_blank"
+          rel="external nofollow noopener"
+        >
+          Terms of Use
+        </a>
+        . I have read and understood the
+        <a
+          href="/policy/privacy"
+          target="_blank"
+          rel="external nofollow noopener"
+        >
           Privacy Policy
         </a>{' '}
         and{' '}
