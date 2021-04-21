@@ -1,4 +1,11 @@
-import { InfiniteData, QueryOptions, useInfiniteQuery } from 'react-query'
+import produce from 'immer'
+import { useMemo } from 'react'
+import {
+  InfiniteData,
+  QueryOptions,
+  useInfiniteQuery,
+  useQueryClient,
+} from 'react-query'
 import { getBacktests } from '../../lib/api/backtests/getBacktests'
 import { Backtest } from '../../lib/api/backtests/types'
 
@@ -18,6 +25,31 @@ export default function useBacktestsQuery(
         lastPage.length === 20 ? lastPage[19].id : undefined,
       ...options,
     }
+  )
+}
+
+export function useBacktestQueryUpdater() {
+  const queryClient = useQueryClient()
+  return useMemo(
+    () => ({
+      remove(backtestId: number, userId?: number) {
+        queryClient.setQueryData<InfiniteData<Backtest[]> | undefined>(
+          createKey(userId),
+          (prevData) =>
+            produce(prevData, (draft) => {
+              const page = draft?.pages.find((page) =>
+                page.find((backtest) => backtest.id === backtestId)
+              )
+              if (!page) return
+              const index = page.findIndex(
+                (backtest) => backtest.id === backtestId
+              )
+              page.splice(index)
+            })
+        )
+      },
+    }),
+    [queryClient]
   )
 }
 
