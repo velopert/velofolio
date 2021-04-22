@@ -31,12 +31,14 @@ export default function useSaveFooter() {
     3. CLONE PROJECT
   */
 
+  const isMyBacktest = user?.id === backtestAuthor?.id
+
   // generate
   const name = useMemo(() => {
     if (id === undefined) {
       return 'SAVE NEW PROJECT'
     }
-    if (user?.id === backtestAuthor?.id) {
+    if (isMyBacktest) {
       return 'UPDATE PROJECT'
     }
     return 'CLONE PROJECT'
@@ -57,7 +59,7 @@ export default function useSaveFooter() {
         sharpe: r.indicator.sharpeRatio,
       })),
     }
-    if (!id) {
+    if (!id || !isMyBacktest) {
       try {
         const backtest = await createBacktest(payload)
         sync(backtest)
