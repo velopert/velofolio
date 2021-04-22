@@ -1,6 +1,7 @@
 import { css, keyframes } from '@emotion/react'
 import { useState } from 'react'
 import useGoogleSignup from '../../hooks/useGoogleSignup'
+import logger from '../../lib/logger'
 import palette from '../../lib/palette'
 import { resetButton } from '../../lib/styles/resetButton'
 import Input from '../Input/Input'
@@ -17,6 +18,7 @@ function RegisterForm({}: RegisterFormProps) {
     e.preventDefault()
     try {
       await signup(username)
+      logger.signUp()
     } catch (e) {
       setUsername('')
     }

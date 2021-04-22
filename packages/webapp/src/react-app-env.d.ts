@@ -72,4 +72,5 @@ declare module '*.module.sass' {
 
 interface Window {
   gapi: any | undefined
+  firebase: any | undefined
 }
