@@ -9,6 +9,7 @@ import Explore from './pages/Explore'
 import DebugObserver from './components/DebugObserver/DebugObserver'
 import Register from './pages/Register'
 import useCheckUserEffect from './hooks/useCheckUserEffect'
+import GlobalDialog from './components/GlobalDialog/GlobalDialog'
 
 function App() {
   useCheckUserEffect()
@@ -45,6 +46,7 @@ function App() {
         </Route>
       </Switch>
       <Global styles={globalStyle} />
+      <GlobalDialog />
       <div id="root-portal"></div>
     </>
   )
