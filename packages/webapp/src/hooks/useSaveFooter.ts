@@ -10,9 +10,11 @@ import {
 import { useReportValue } from '../atoms/reportState'
 import { createBacktest } from '../lib/api/backtests/createBacktest'
 import { updateBacktest } from '../lib/api/backtests/updateBacktest'
+import logger from '../lib/logger'
 import isAxiosError from '../lib/utils/isAxiosError'
 import { LabRouteParams } from '../types/routeParams'
 
+// TODO: Rename this with better name
 export default function useSaveFooter() {
   const data = useLabDataValue()
   const report = useReportValue()
@@ -61,6 +63,7 @@ export default function useSaveFooter() {
     }
     if (!id || !isMyBacktest) {
       try {
+        logger.createBacktest()
         const backtest = await createBacktest(payload)
         sync(backtest)
         history.replace(`/backtests/${backtest.id}`)

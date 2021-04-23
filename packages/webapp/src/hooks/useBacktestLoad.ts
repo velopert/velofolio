@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef } from 'react'
 import { useLabLoadingState, useLabSettingSync } from '../atoms/labSettingState'
+import logger from '../lib/logger'
 import useBacktestQuery from './query/useBacktestQuery'
 
 export default function useBacktestLoad(id: number) {
@@ -23,6 +24,12 @@ export default function useBacktestLoad(id: number) {
     if (!data) return
     sync(data)
   }, [data, sync])
+
+  useEffect(() => {
+    if (id !== 0) {
+      logger.viewBacktest(id)
+    }
+  }, [id])
 
   return {
     loading,

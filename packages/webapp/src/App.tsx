@@ -10,9 +10,11 @@ import DebugObserver from './components/DebugObserver/DebugObserver'
 import Register from './pages/Register'
 import useCheckUserEffect from './hooks/useCheckUserEffect'
 import GlobalDialog from './components/GlobalDialog/GlobalDialog'
+import useFirebasePageViewEffect from './hooks/useFirebasePageViewEffect'
 
 function App() {
   useCheckUserEffect()
+  useFirebasePageViewEffect()
 
   return (
     <>

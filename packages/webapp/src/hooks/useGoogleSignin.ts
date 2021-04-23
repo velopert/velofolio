@@ -23,6 +23,7 @@ export default function useGoogleSignin() {
           authorize(user)
           logger.login()
         } else {
+          logger.enterSignup()
           history.push('/register')
         }
       } catch (e) {
