@@ -25,6 +25,12 @@ Server project is built with Fastify and TypeORM. Fuse.js is used for the stock 
 
 MariaDB is used for the database. Server is currently running on AWS.
 
+#### Scripts
+
+- `yarn sync-db`: Sync TypeORM Entity with Database. Make sure you setup ormconfig.json before running this script.
+- `yarn init`: Initializes asset type. You have to run this script after syncing your database.
+- `yarn syncbot`: Downloads historical data and stock information. Input file is server/src/sync/tickers/stocks.txt. Check the README.md of the tickers directory.
+
 ## Datasets
 
 Historical prices / Stock information is provided from https://financialmodelingprep.com/

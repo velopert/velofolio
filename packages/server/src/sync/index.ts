@@ -7,16 +7,9 @@ import { downloadStockLogo } from './lib/downloadStockLogo'
 
 createConnection().then(async (connection) => {
   const syncbot = new Syncbot()
-  // await syncbot.syncTreasuryRate()
-  // await syncbot.syncStocks()
-  // await syncbot.clearErrorTickers()
-  // await syncbot.registerAssets()
+  await syncbot.syncTreasuryRate()
+  await syncbot.syncStocks()
   await syncbot.syncStockImages()
+  // await syncbot.clearErrorTickers()
   connection.close()
 })
-
-// async function hashFile() {
-//   const result = await fsPromise.readFile(emptyImageDir, 'hex')
-//   const hash = crypto.createHash('md5').update(result).digest('hex')
-//   return hash
-// }
