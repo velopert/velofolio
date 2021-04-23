@@ -5,8 +5,6 @@ const client = axios.create({
 })
 
 client.defaults.baseURL =
-  process.env.NODE_ENV === 'development'
-    ? 'https://api.velofolio.net'
-    : 'https://api.velofolio.net'
+  process.env.NODE_ENV === 'development' ? '/' : 'https://api.velofolio.net'
 
 export default client

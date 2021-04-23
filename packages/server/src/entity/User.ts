@@ -6,6 +6,7 @@ import {
   CreateDateColumn,
   Index,
 } from 'typeorm'
+import { sha256 } from 'js-sha256'
 
 @Entity({
   name: 'users',
@@ -51,5 +52,9 @@ export class User {
   serialize() {
     const { is_certified, created_at, email, ...rest } = this
     return rest
+  }
+
+  get member_id() {
+    return sha256.hmac(process.env.JWT_SECRET!, this.id.toString())
   }
 }

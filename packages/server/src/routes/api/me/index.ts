@@ -28,7 +28,7 @@ const meRoute: FastifyPluginAsync = async (fastify, opts) => {
       throw error
     }
 
-    reply.send(user)
+    reply.send({ ...user, member_id: user.member_id })
   })
 
   /**
@@ -75,7 +75,10 @@ const meRoute: FastifyPluginAsync = async (fastify, opts) => {
         await userRepo.save(userData!)
       }
 
-      reply.send(userData)
+      reply.send({
+        ...userData,
+        member_id: userData!.member_id,
+      })
     }
   )
 }

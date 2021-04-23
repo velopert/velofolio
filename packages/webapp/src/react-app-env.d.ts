@@ -73,4 +73,7 @@ declare module '*.module.sass' {
 interface Window {
   gapi: any | undefined
   firebase: any | undefined
+  ChannelIO: any | undefined
+  ChannelIOInitialized: boolean
+  attachEvent: any | undefined
 }

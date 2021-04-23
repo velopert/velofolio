@@ -105,7 +105,10 @@ const authRoute: FastifyPluginCallback = (fastify, opts, done) => {
         })
 
         reply.send({
-          user: user,
+          user: {
+            ...user,
+            member_id: user.member_id,
+          },
           access_token: accessToken,
         })
       } catch (e) {
@@ -178,10 +181,13 @@ const authRoute: FastifyPluginCallback = (fastify, opts, done) => {
             sameSite: 'none',
             secure: true,
           })
-          // TODO: generate accessToken
           reply.send({
-            user: user,
+            user: {
+              ...user,
+              member_id: user.member_id,
+            },
             access_token: accessToken,
+            member_id: user.member_id,
           })
         } else {
           const usernameExists = await getRepository(User).findOne({
@@ -220,7 +226,10 @@ const authRoute: FastifyPluginCallback = (fastify, opts, done) => {
 
           // await socialAccountRepo.save(socialAccount)
           reply.send({
-            user: user,
+            user: {
+              ...user,
+              member_id: user.member_id,
+            },
             access_token: accessToken,
           })
         }

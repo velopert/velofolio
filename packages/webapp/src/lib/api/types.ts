@@ -8,6 +8,10 @@ export type User = {
   photo_url: string | null
   created_at: string
   is_certified: boolean
+  member_id: string
 }
 
-export type UserSerialized = Omit<User, 'email' | 'created_at' | 'is_certified'>
+export type UserSerialized = Omit<
+  User,
+  'email' | 'created_at' | 'is_certified' | 'memberId'
+>

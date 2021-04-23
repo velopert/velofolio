@@ -11,10 +11,12 @@ import Register from './pages/Register'
 import useCheckUserEffect from './hooks/useCheckUserEffect'
 import GlobalDialog from './components/GlobalDialog/GlobalDialog'
 import useFirebasePageViewEffect from './hooks/useFirebasePageViewEffect'
+import useChannelPluginEffect from './hooks/useChannelPluginEffect'
 
 function App() {
   useCheckUserEffect()
   useFirebasePageViewEffect()
+  useChannelPluginEffect()
 
   return (
     <>
