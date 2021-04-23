@@ -389,7 +389,7 @@ export function useLabSettingSync() {
       setProjectTitle,
       setLabSetting,
       setBacktestAuthor,
-      // loadTicker,
+      loadTicker,
       setDescription,
     ]
   )
