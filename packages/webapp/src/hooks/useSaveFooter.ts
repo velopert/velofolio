@@ -4,6 +4,7 @@ import { useUserState } from '../atoms/authState'
 import { useGlobalDialogActions } from '../atoms/globalDialogState'
 import {
   useBacktestAuthorValue,
+  useDescriptionState,
   useLabDataValue,
   useLabSettingSync,
 } from '../atoms/labSettingState'

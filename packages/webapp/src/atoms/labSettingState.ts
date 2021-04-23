@@ -315,9 +315,11 @@ export function useProjectTitleState() {
 export function useLabDataValue() {
   const { nextPortfolioId, ...rest } = useRecoilValue(labSettingState)
   const projectTitle = useRecoilValue(projectTitleState)
+  const [description] = useDescriptionState()
 
   return {
     title: projectTitle,
+    description,
     data: rest,
   }
 }
@@ -341,6 +343,7 @@ export function useLabSettingSync() {
   const setLabSetting = useSetRecoilState(labSettingState)
   const setProjectTitle = useSetRecoilState(projectTitleState)
   const setBacktestAuthor = useSetRecoilState(backtestAuthorState)
+  const setDescription = useSetRecoilState(descriptionState)
   const { loadTicker } = useAssetDetailsActions()
 
   const sync = useCallback(
@@ -352,6 +355,7 @@ export function useLabSettingSync() {
       uniqueTickers.forEach(loadTicker)
       setBacktestAuthor(backtest.user)
       setProjectTitle(backtest.title)
+      setDescription(backtest.description ?? '')
       setLabSetting({
         cashflows: {
           amount: backtest.cashflow_value || 1000,
@@ -381,7 +385,7 @@ export function useLabSettingSync() {
         })),
       })
     },
-    [setProjectTitle, setLabSetting, setBacktestAuthor]
+    [setProjectTitle, setLabSetting, setBacktestAuthor, loadTicker]
   )
 
   return sync

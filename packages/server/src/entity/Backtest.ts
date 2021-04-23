@@ -24,7 +24,7 @@ export class Backtest {
   @Column()
   title!: string
 
-  @Column({ type: 'text', nullable: true })
+  @Column({ type: 'text', nullable: true, default: '' })
   description!: string
 
   @Column({ length: 255 })

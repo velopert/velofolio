@@ -5,6 +5,7 @@ import { UserSerialized } from '../types'
 
 export type BacktestPayload = {
   title: string
+  description: string
   data: Omit<LabSettingState, 'nextPortfolioId'>
   returns: { x: string; y: number }[][]
   indicators: {
@@ -19,7 +20,7 @@ export type BacktestPayload = {
 export interface Backtest {
   id: number
   title: string
-  body: string
+  description: string
   start_date: string
   end_date: string
   initial_amount: number
