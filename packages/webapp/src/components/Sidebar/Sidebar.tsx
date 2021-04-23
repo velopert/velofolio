@@ -5,6 +5,7 @@ import { useUserState } from '../../atoms/authState'
 import palette from '../../lib/palette'
 import CurrentUserInfo from '../CurrentUserInfo'
 import GoogleLoginButton from '../GoogleLoginButton/GoogleLoginButton'
+import Policies from '../Policies'
 import SidebarItem from '../SidebarItem'
 
 export type SidebarProps = {}
@@ -34,6 +35,7 @@ function Sidebar({}: SidebarProps) {
         <SidebarItem icon="globe" text="Explore" to="/explore" />
       </ul>
       {user ? <CurrentUserInfo /> : <GoogleLoginButton />}
+      <Policies />
     </div>
   )
 }
