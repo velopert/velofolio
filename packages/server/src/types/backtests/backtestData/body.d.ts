@@ -7,6 +7,7 @@
 
 export interface BacktestDataBody {
   title: string;
+  description: string;
   data: {
     dateRange: {
       startDate: {

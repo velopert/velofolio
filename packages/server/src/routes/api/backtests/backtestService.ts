@@ -1,3 +1,4 @@
+import sanitize from 'sanitize-html'
 import { Asset } from 'entity/Asset'
 import { Backtest } from 'entity/Backtest'
 import { Portfolio } from 'entity/Portfolio'
@@ -54,6 +55,7 @@ export const backtestService = {
       indicators,
       returns,
       title,
+      description,
       data: { cashflows, dateRange, initialAmount, portfolios },
     } = backtestBody
 
@@ -76,7 +78,7 @@ export const backtestService = {
     const backtest = new Backtest()
     backtest.user = user
     backtest.title = title
-    backtest.body = ''
+    backtest.description = sanitize(description)
     backtest.is_private = false
     backtest.initial_amount = initialAmount
     backtest.thumbnail = ''
@@ -185,6 +187,7 @@ export const backtestService = {
       indicators,
       returns,
       title,
+      description,
       data: { cashflows, dateRange, initialAmount, portfolios },
     } = backtestBody
 
@@ -205,6 +208,7 @@ export const backtestService = {
     }
 
     backtest.title = title
+    backtest.description = sanitize(description)
     backtest.initial_amount = initialAmount
 
     const fileDir = await generateBacktestChart(returns)

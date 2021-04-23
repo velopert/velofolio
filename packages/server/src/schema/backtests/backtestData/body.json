@@ -5,6 +5,9 @@
     "title": {
       "type": "string"
     },
+    "description": {
+      "type": "string"
+    },
     "data": {
       "type": "object",
       "properties": {
@@ -96,5 +99,5 @@
       }
     }
   },
-  "required": ["title", "data", "returns", "indicators"]
+  "required": ["title", "data", "returns", "indicators", "description"]
 }

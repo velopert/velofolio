@@ -25,7 +25,7 @@ export class Backtest {
   title!: string
 
   @Column({ type: 'text', nullable: true })
-  body!: string
+  description!: string
 
   @Column({ length: 255 })
   thumbnail!: string
