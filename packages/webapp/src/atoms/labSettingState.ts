@@ -94,6 +94,11 @@ export const backtestAuthorState = atom<UserSerialized | null>({
   default: null,
 })
 
+export const descriptionState = atom<string>({
+  key: 'descriptionState',
+  default: '',
+})
+
 export const dateRangeState = selector<LabSettingState['dateRange']>({
   key: 'dateRangeState',
   get: ({ get }) => {
@@ -408,4 +413,8 @@ export function useIsCreatingState() {
 
 export function useBacktestAuthorValue() {
   return useRecoilValue(backtestAuthorState)
+}
+
+export function useDescriptionState() {
+  return useRecoilState(descriptionState)
 }

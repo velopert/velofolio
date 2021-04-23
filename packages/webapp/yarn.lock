@@ -1741,6 +1741,14 @@
   dependencies:
     "@babel/runtime" "^7.12.5"
 
+"@tinymce/tinymce-react@^3.12.2":
+  version "3.12.2"
+  resolved "https://registry.yarnpkg.com/@tinymce/tinymce-react/-/tinymce-react-3.12.2.tgz#1271d63e2071dc95f3b48dd20363309d19012c9f"
+  integrity sha512-M6YQ9e+9rpxrZDOeNPmjgroEfooEKiMVuI4I3+xQtMX1hQQ/t9pGE9nUdS0faZDvqhlc8B/w12GJQNU5ekPo4g==
+  dependencies:
+    prop-types "^15.6.2"
+    tinymce "^5.7.1"
+
 "@types/anymatch@*":
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/@types/anymatch/-/anymatch-1.3.1.tgz#336badc1beecb9dacc38bea2cf32adf627a8421a"
@@ -10793,6 +10801,11 @@ tiny-warning@^1.0.0, tiny-warning@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/tiny-warning/-/tiny-warning-1.0.3.tgz#94a30db453df4c643d0fd566060d60a875d84754"
   integrity sha512-lBN9zLN/oAf68o3zNXYrdCt1kP8WsiGW8Oo2ka41b2IM5JL/S1CTyX1rW0mb/zSuJun0ZUrDxx4sqvYS2FWzPA==
+
+tinymce@^5.7.1:
+  version "5.7.1"
+  resolved "https://registry.yarnpkg.com/tinymce/-/tinymce-5.7.1.tgz#658a6fb4c7d53a8496cc00f8da33f4b8290da06d"
+  integrity sha512-1gY8RClc734srSlkYwY0MQzmkS1j73PuPC+nYtNtrrQVPY9VNcZ4bOiRwzTbdjPPD8GOtv6BAk8Ww/H2RiqKpA==
 
 tmpl@1.0.x:
   version "1.0.4"

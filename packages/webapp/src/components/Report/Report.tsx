@@ -5,6 +5,7 @@ import { useIsReportReady } from '../../atoms/reportState'
 import palette from '../../lib/palette'
 import ImageWithDescription from '../ImageWithDescription'
 import AnnualReturnsSection from './AnnualReturnsSection'
+import DescriptionSection from './DescriptionSection'
 import DoubleSections from './DoubleSections'
 import IndicatorsSection from './IndicatorsSection'
 import MonthlyReturnsSection from './MonthlyReturnsSection'
@@ -35,6 +36,7 @@ function Report({}: ReportProps) {
       <h1>Report</h1>
       <IndicatorsSection />
       <PortfolioReturnsSection />
+      <DescriptionSection />
       <DoubleSections>
         <AnnualReturnsSection />
         <MonthlyReturnsSection />

@@ -8,3 +8,4 @@
 - [arrow_back](https://feathericons.com/)
 - [trash](https://feathericons.com/)
 - [undo](https://iconmonstr.com/undo-2-svg/)
+- [triangle](https://iconmonstr.com/triangle-3-svg/)
