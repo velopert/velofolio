@@ -10,7 +10,7 @@ import {
 } from 'recoil'
 import { MonthYearValue } from '../types/MonthYearValue'
 import produce from 'immer'
-import { useCallback } from 'react'
+import { useCallback, useRef } from 'react'
 import { AssetWeight } from './assetsState'
 import { useReportValue } from './reportState'
 import { Backtest } from '../lib/api/backtests/types'
@@ -385,7 +385,13 @@ export function useLabSettingSync() {
         })),
       })
     },
-    [setProjectTitle, setLabSetting, setBacktestAuthor, loadTicker]
+    [
+      setProjectTitle,
+      setLabSetting,
+      setBacktestAuthor,
+      // loadTicker,
+      setDescription,
+    ]
   )
 
   return sync
