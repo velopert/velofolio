@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom'
 import { useGoogleTokenState } from '../atoms/authState'
 import { checkGoogleRegistered } from '../lib/api/auth/checkGoogleRegistered'
 import { googleSignin } from '../lib/api/auth/googleSignin'
+import getFirebaseAnalytics from '../lib/getFirebaseAnalytics'
+import logger from '../lib/logger'
 import useAuth from './useAuth'
 
 export default function useGoogleSignin() {
@@ -19,7 +21,9 @@ export default function useGoogleSignin() {
         if (exists) {
           const { user } = await googleSignin(accessToken)
           authorize(user)
+          logger.login()
         } else {
+          logger.enterSignup()
           history.push('/register')
         }
       } catch (e) {

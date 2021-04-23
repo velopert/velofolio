@@ -5,6 +5,7 @@ import {
 } from '../../atoms/labSettingState'
 import { useLabSettingViewActions } from '../../atoms/labSettingViewState'
 import useOpenPortfolio from '../../hooks/useOpenPortfolio'
+import logger from '../../lib/logger'
 import CircularIconButton from '../CircularIconButton'
 import LabSettingsSection from './LabSettingsSection'
 import PortfolioItem from './PortfolioItem'
@@ -18,6 +19,7 @@ function PortfoliosSection({}: PortfoliosSectionProps) {
 
   const onClick = () => {
     const portfolio = append()
+    logger.createPortfolio()
     createPortfolio(portfolio.id)
   }
 

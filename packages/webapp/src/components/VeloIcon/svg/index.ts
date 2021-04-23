@@ -11,6 +11,7 @@ import { ReactComponent as trash } from './trash.svg'
 import { ReactComponent as spinner } from './spinner.svg'
 import { ReactComponent as google } from './google.svg'
 import { ReactComponent as undo } from './undo.svg'
+import { ReactComponent as triangle } from './triangle.svg'
 
 export {
   flask,
@@ -26,4 +27,5 @@ export {
   spinner,
   google,
   undo,
+  triangle,
 }

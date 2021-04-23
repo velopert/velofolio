@@ -18,6 +18,7 @@ function ReportSection({ title, children }: ReportSectionProps) {
 const sectionStyle = css`
   h3 {
     margin: 0;
+    font-size: 1.125rem;
     color: ${palette.blueGrey[800]};
     margin-bottom: 1rem;
   }
