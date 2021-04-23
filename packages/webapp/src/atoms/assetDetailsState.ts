@@ -62,7 +62,8 @@ export function useAssetDetailsActions() {
         set(assetDetailState(ticker), loadableHandlers.error(e))
         throw e
       }
-    }
+    },
+    []
   )
 
   return useMemo(() => ({ loadTicker }), [loadTicker])
