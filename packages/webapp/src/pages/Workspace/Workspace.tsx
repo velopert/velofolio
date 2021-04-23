@@ -1,3 +1,4 @@
+import React from 'react'
 import { css } from '@emotion/react'
 import { Helmet } from 'react-helmet-async'
 import { undrawAuthentication } from '../../assets/images'
@@ -26,7 +27,14 @@ function Workspace({}: WorkspaceProps) {
     )
   }
 
-  return <BacktestsGrid userId={user.id} />
+  return (
+    <>
+      <Helmet>
+        <title>Workspace – Velofolio</title>
+      </Helmet>
+      <BacktestsGrid userId={user.id} />
+    </>
+  )
 }
 
 const wrapper = css`

@@ -1,9 +1,11 @@
 import { css } from '@emotion/react'
 import { useEffect, useMemo, useRef } from 'react'
+import { undrawNotFound } from '../../assets/images'
 import useBacktestsQuery from '../../hooks/query/useBacktestsQuery'
 import media from '../../lib/styles/media'
 import BacktestsGridItem from '../BacktestsGridItem'
 import BacktestsGridItemSkeleton from '../BacktestsGridItemSkeleton'
+import ImageWithDescription from '../ImageWithDescription'
 export type BacktestsGridProps = {
   userId?: number
 }
@@ -37,6 +39,17 @@ function BacktestsGrid({ userId }: BacktestsGridProps) {
       observer.unobserve(el)
     }
   }, [observer, items])
+
+  if (items && items.length === 0) {
+    return (
+      <div css={wrapper}>
+        <ImageWithDescription
+          image={undrawNotFound}
+          description="List is empty"
+        />
+      </div>
+    )
+  }
 
   return (
     <div css={block}>
@@ -86,6 +99,16 @@ const grid = css`
     width: 100%;
     grid-template-columns: 1fr;
   }
+`
+
+const wrapper = css`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  width: calc(100% - 16.25rem);
 `
 
 export default BacktestsGrid
