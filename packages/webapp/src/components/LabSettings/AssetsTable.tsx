@@ -71,7 +71,6 @@ function AssetsTable({ focusInput }: AssetsTableProps) {
               <input
                 value={asset.weight}
                 type="number"
-                step=".01"
                 onChange={(e) => {
                   const value = parseFloat(e.target.value)
                   updateWeight(asset.id, isNaN(value) ? 0 : value)
