@@ -269,11 +269,11 @@ function generateReportData({
     }, [])
 
     const best = {
-      year: Math.max(...yearlyRateWOC),
+      year: Math.max(...fixedYearlyRate.map((fyr) => fyr.rate)),
       month: Math.max(...monthlyRateWOC),
     }
     const worst = {
-      year: Math.min(...yearlyRateWOC),
+      year: Math.min(...fixedYearlyRate.map((fyr) => fyr.rate)),
       month: Math.min(...monthlyRateWOC),
     }
 
