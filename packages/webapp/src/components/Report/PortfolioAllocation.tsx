@@ -63,7 +63,7 @@ function PortfolioAllocation({ portfolio }: PortfolioAllocationProps) {
           name: 'Asset Allocation',
           type: 'pie',
           radius: '75%',
-          center: ['50%', '40%'],
+          center: ['50%', '50%'],
           data: seriesData,
           label: {
             show: false,

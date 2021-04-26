@@ -1,5 +1,6 @@
 import { css } from '@emotion/react'
 import palette from '../../lib/palette'
+import media from '../../lib/styles/media'
 import { resetButton } from '../../lib/styles/resetButton'
 import Spinner from '../Spinner'
 export type FooterButtonProps = {
@@ -43,6 +44,10 @@ const footerButton = (loading: boolean) => css`
     background: ${palette.cyan[600]};
   }
   font-weight: bold;
+
+  ${media.medium} {
+    margin-top: 2rem;
+  }
 `
 
 export default FooterButton

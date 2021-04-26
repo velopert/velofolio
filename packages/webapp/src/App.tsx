@@ -14,6 +14,7 @@ import useFirebasePageViewEffect from './hooks/useFirebasePageViewEffect'
 import useChannelPluginEffect from './hooks/useChannelPluginEffect'
 import VerticalBar from './components/VerticalBar'
 import MobileHeader from './components/MobileHeader/MobileHeader'
+import MobileFooter from './components/MobileFooter'
 
 function App() {
   useCheckUserEffect()
@@ -48,6 +49,7 @@ function App() {
               </Switch>
             </AppLayout.Main>
           </AppLayout>
+          <MobileFooter />
         </Route>
         <Route path="/register">
           <Register />

@@ -61,6 +61,12 @@ const wrapper = css`
   position: absolute;
   top: 0;
   width: calc(100% - 16.25rem);
+  ${media.xlarge} {
+    width: calc(100% - 5rem);
+  }
+  ${media.small} {
+    width: 100%;
+  }
 `
 
 export default Workspace

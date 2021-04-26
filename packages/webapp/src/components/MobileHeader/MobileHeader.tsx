@@ -5,7 +5,7 @@ import media from '../../lib/styles/media'
 import { resetButton } from '../../lib/styles/resetButton'
 import palette from '../../lib/palette'
 import VeloIcon from '../VeloIcon'
-import { useRouteMatch } from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
 import useAuth from '../../hooks/useAuth'
 import SiginInModal from '../SignInModal'
 import { useUserState } from '../../atoms/authState'
@@ -37,7 +37,9 @@ function MobileHeader({}: MobileHeaderProps) {
   return (
     <>
       <header css={[common, headerStyle]}>
-        <img src={logo} className="logo" alt="logo" />
+        <Link to="/">
+          <img src={logo} className="logo" alt="logo" />
+        </Link>
         <div css={headerRightWrapper}>
           <div css={headerRight}>
             {user ? (
@@ -80,6 +82,9 @@ const headerStyle = css`
   background: white;
   z-index: 30;
   box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.125);
+  a {
+    display: block;
+  }
 `
 
 const headerPlacer = css`

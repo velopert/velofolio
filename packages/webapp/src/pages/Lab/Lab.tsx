@@ -16,6 +16,7 @@ import useGenerateReportEffect from '../../hooks/useGenerateReportEffect'
 import useTB3HistoricalPricesSync from '../../hooks/useTB3HistoricalPricesSync'
 import useTickerSync from '../../hooks/useTickerSync'
 import palette from '../../lib/palette'
+import media from '../../lib/styles/media'
 
 export type LabProps = {}
 
@@ -56,14 +57,32 @@ function Lab({}: LabProps) {
   )
 }
 
-const pageStyle = css``
+const pageStyle = css`
+  ${media.large} {
+    padding-right: 2rem;
+  }
+  ${media.small} {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1rem;
+  }
+`
 
 const contentStyle = css`
   padding-left: 22.5rem;
+  ${media.medium} {
+    padding-left: 0;
+  }
 `
 
 const fullPageSpinner = css`
   width: calc(100% - 16.25rem);
+  ${media.xlarge} {
+    width: calc(100% - 5rem);
+  }
+  ${media.small} {
+    width: 100%;
+  }
   height: 100%;
   position: fixed;
   top: 0;

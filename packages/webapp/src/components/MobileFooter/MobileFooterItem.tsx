@@ -4,7 +4,7 @@ import palette from '../../lib/palette'
 import VeloIcon, { VeloIconType } from '../VeloIcon/VeloIcon'
 import * as H from 'history'
 
-export type VerticalBarItemProps = {
+export type MobilerFooterItemPropsp = {
   icon: VeloIconType
   text: string
   to: string
@@ -15,13 +15,13 @@ export type VerticalBarItemProps = {
   ignore?: boolean
 }
 
-function VerticalBarItem({
+function MobileFooterItem({
   icon,
   text,
   to,
   isActive,
   ignore,
-}: VerticalBarItemProps) {
+}: MobilerFooterItemPropsp) {
   return (
     <NavLink
       to={to}
@@ -45,28 +45,22 @@ const item = css`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 5rem;
+  flex: 1;
   svg {
-    width: 1.75rem;
-    height: 1.75rem;
+    width: 1rem;
+    height: 1rem;
   }
   text-decoration: none;
   span {
     font-size: 0.75rem;
-    margin-top: 0.5rem;
   }
 
-  color: ${palette.blueGrey[600]};
-
-  &:hover {
-    color: ${palette.blueGrey[500]};
-  }
+  color: ${palette.blueGrey[400]};
 
   &.active {
-    background: ${palette.blueGrey[50]};
-    color: ${palette.blueGrey[900]};
+    color: ${palette.cyan[600]};
     border-radius: 0.25rem;
   }
 `
 
-export default VerticalBarItem
+export default MobileFooterItem

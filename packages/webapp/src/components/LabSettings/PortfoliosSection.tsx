@@ -6,6 +6,7 @@ import {
 import { useLabSettingViewActions } from '../../atoms/labSettingViewState'
 import useOpenPortfolio from '../../hooks/useOpenPortfolio'
 import logger from '../../lib/logger'
+import media from '../../lib/styles/media'
 import CircularIconButton from '../CircularIconButton'
 import LabSettingsSection from './LabSettingsSection'
 import PortfolioItem from './PortfolioItem'
@@ -46,6 +47,10 @@ function PortfoliosSection({}: PortfoliosSectionProps) {
 const sectionStyle = css`
   flex: 1;
   overflow-y: scroll;
+  ${media.medium} {
+    min-height: 6rem;
+    overflow-y: inherit;
+  }
 `
 
 const buttonPositioner = css`

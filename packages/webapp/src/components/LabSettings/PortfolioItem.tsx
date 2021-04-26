@@ -1,9 +1,10 @@
 import { css } from '@emotion/react'
 import { AssetWeight } from '../../atoms/assetsState'
 import palette from '../../lib/palette'
-import Chart from 'chart.js'
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import chartColors from '../../lib/chartColors'
+import { ECBasicOption } from 'echarts/types/dist/shared'
+import echarts from '../../lib/echarts'
 
 export type PortfolioItemProps = {
   id: number
@@ -13,48 +14,98 @@ export type PortfolioItemProps = {
 }
 
 function PortfolioItem({ id, assets, name, onOpen }: PortfolioItemProps) {
-  const ref = useRef<HTMLCanvasElement>(null)
-  const chartRef = useRef<Chart | null>(null)
+  const ref = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    const ctx = ref.current?.getContext('2d')
-    const data = {
-      datasets: [
+  const totalWeight = useMemo(
+    () => assets.reduce((acc, current) => acc + current.weight, 0),
+    [assets]
+  )
+
+  const pieChartOptions = useMemo(() => {
+    const options: ECBasicOption = {
+      color: chartColors,
+      tooltip: {
+        show: false,
+      },
+      label: {
+        show: false,
+        position: 'center',
+      },
+      series: [
         {
-          data: assets.map((asset) => asset.weight),
-          backgroundColor: chartColors.slice(0, assets.length),
+          name: 'Asset Allocation',
+          type: 'pie',
+          radius: '75%',
+          center: ['50%', '50%'],
+          data: assets.map((asset) => ({
+            value: asset.weight / totalWeight,
+            name: asset.ticker,
+          })),
+          label: {
+            show: false,
+            position: 'center',
+          },
+          animation: false,
+          silent: true,
         },
       ],
-      labels: assets.map((asset) => asset.ticker),
     }
+    return options
+  }, [assets, totalWeight])
 
-    if (!ctx) return
-    if (!chartRef.current) {
-      const chart = new Chart(ctx, {
-        type: 'pie',
-        data,
-        options: {
-          legend: {
-            display: false,
-          },
-          animation: {
-            duration: 0,
-          },
-        },
-      })
-      chartRef.current = chart
-    } else {
-      const chart = chartRef.current
-      chart.data = data
-      chart.update()
+  useEffect(() => {
+    const pieElement = ref.current
+    if (!pieElement || !pieChartOptions) return
+
+    const pieChart = echarts.init(pieElement)
+    pieChart.setOption(pieChartOptions)
+
+    const handleResize = () => {
+      pieChart.resize()
     }
-  }, [assets])
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+    }
+  }, [pieChartOptions])
+
+  // useEffect(() => {
+  //   const ctx = ref.current?.getContext('2d')
+  //   const data = {
+  //     datasets: [
+  //       {
+  //         data: assets.map((asset) => asset.weight),
+  //         backgroundColor: chartColors.slice(0, assets.length),
+  //       },
+  //     ],
+  //     labels: assets.map((asset) => asset.ticker),
+  //   }
+
+  //   if (!ctx) return
+  //   if (!chartRef.current) {
+  //     const chart = new Chart(ctx, {
+  //       type: 'pie',
+  //       data,
+  //       options: {
+  //         legend: {
+  //           display: false,
+  //         },
+  //         animation: {
+  //           duration: 0,
+  //         },
+  //       },
+  //     })
+  //     chartRef.current = chart
+  //   } else {
+  //     const chart = chartRef.current
+  //     chart.data = data
+  //     chart.update()
+  //   }
+  // }, [assets])
 
   return (
     <div css={gridItem} onClick={() => onOpen(id)}>
-      <div css={pieBox}>
-        <canvas ref={ref} />
-      </div>
+      <div css={pieBox} ref={ref}></div>
       <div css={nameStyle}>{name}</div>
     </div>
   )

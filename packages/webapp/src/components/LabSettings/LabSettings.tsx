@@ -6,6 +6,7 @@ import palette from '../../lib/palette'
 import { useLabSettingView } from '../../atoms/labSettingViewState'
 import LabSettingsDefault from './LabSettingsDefault'
 import LabSettingsPortfolio from './LabSettingsPortfolio'
+import media from '../../lib/styles/media'
 
 export type LabSettingsProps = {}
 
@@ -27,6 +28,10 @@ const blockStyle = css`
   width: 22.5rem;
   height: calc(100% - 6rem);
   padding: 2rem;
+  ${media.medium} {
+    position: relative;
+    width: 100%;
+  }
 `
 
 export default LabSettings

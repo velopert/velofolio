@@ -56,14 +56,23 @@ const emptyWrapper = css`
   position: absolute;
   width: calc(100% - 40.75rem);
   ${media.xlarge} {
-    width: 10rem;
     width: calc(100% - 29.5rem);
+  }
+  ${media.medium} {
+    position: relative;
+    width: 100%;
+    margin-top: 5rem;
   }
 `
 
 const block = css`
   padding-right: 2rem;
   padding-left: 2rem;
+  ${media.medium} {
+    padding: 0;
+    margin-top: 3rem;
+  }
+
   h1 {
     font-weight: 500;
     color: ${palette.blueGrey[800]};

@@ -1,6 +1,6 @@
 import { css } from '@emotion/react'
 import { useState } from 'react'
-import { useRouteMatch } from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
 import { circleLogo } from '../../assets/images'
 import { useUserState } from '../../atoms/authState'
 import useAuth from '../../hooks/useAuth'
@@ -27,7 +27,9 @@ function VerticalBar({}: VerticalBarProps) {
   return (
     <div css={bar}>
       <div css={endBlock('top')}>
-        <img src={circleLogo} alt="small logo" className="logo" />
+        <Link to="/">
+          <img src={circleLogo} alt="small logo" className="logo" />
+        </Link>
       </div>
       <div css={links}>
         <VerticalBarItem
@@ -98,6 +100,9 @@ const endBlock = (position: 'top' | 'bottom') => css`
   flex-direction: column;
   align-items: center;
   justify-content: ${position === 'top' ? 'flex-start' : 'flex-end'};
+  a {
+    display: block;
+  }
 `
 
 const loginButton = css`
