@@ -12,6 +12,8 @@ import { ReactComponent as spinner } from './spinner.svg'
 import { ReactComponent as google } from './google.svg'
 import { ReactComponent as undo } from './undo.svg'
 import { ReactComponent as triangle } from './triangle.svg'
+import { ReactComponent as user_circle } from './user_circle.svg'
+import { ReactComponent as close } from './close.svg'
 
 export {
   flask,
@@ -28,4 +30,6 @@ export {
   google,
   undo,
   triangle,
+  user_circle,
+  close,
 }

@@ -1,4 +1,5 @@
 import { css } from '@emotion/react'
+import media from '../../lib/styles/media'
 
 export type AppLayoutProps = {
   children: React.ReactNode
@@ -35,11 +36,18 @@ const sidebarStyle = css`
   padding-top: 3rem;
   padding-bottom: 3rem;
   padding-left: 3rem;
+  ${media.xlarge} {
+    width: 5rem;
+    padding: 0;
+  }
 `
 
 const mainStyle = css`
   padding-left: 2rem;
   margin-left: 16.25rem;
+  ${media.xlarge} {
+    margin-left: 5rem;
+  }
   padding-top: 3rem;
   padding-bottom: 3rem;
 `

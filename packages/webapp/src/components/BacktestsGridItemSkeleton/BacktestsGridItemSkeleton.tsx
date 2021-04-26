@@ -1,6 +1,7 @@
 import { css, keyframes } from '@emotion/react'
 import { forwardRef } from 'react'
 import palette from '../../lib/palette'
+import media from '../../lib/styles/media'
 export type BacktestsGridItemSkeletonProps = {}
 
 function BacktestsGridItemSkeleton(
@@ -43,6 +44,10 @@ const card = css`
   height: 26rem;
   box-shadow: 0px 1rem 1rem rgba(67, 67, 67, 0.03);
   border-radius: 2rem;
+  ${media.xlarge} {
+    width: 100%;
+    /* grid-template-columns: 1fr; */
+  }
 `
 
 const imageWrapper = css`

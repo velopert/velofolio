@@ -3,6 +3,7 @@ import { Link, useRouteMatch } from 'react-router-dom'
 import { logo } from '../../assets/images'
 import { useUserState } from '../../atoms/authState'
 import palette from '../../lib/palette'
+import media from '../../lib/styles/media'
 import CurrentUserInfo from '../CurrentUserInfo'
 import GoogleLoginButton from '../GoogleLoginButton/GoogleLoginButton'
 import Policies from '../Policies'
@@ -41,6 +42,9 @@ function Sidebar({}: SidebarProps) {
 }
 
 const sidebarStyle = css`
+  ${media.xlarge} {
+    display: none;
+  }
   flex: 1;
   display: flex;
   flex-direction: column;

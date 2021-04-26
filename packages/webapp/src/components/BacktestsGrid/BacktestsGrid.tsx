@@ -92,10 +92,9 @@ const grid = css`
     grid-template-columns: repeat(3, 1fr);
   }
   ${media.xlarge} {
-    width: auto;
     grid-template-columns: repeat(2, 1fr);
   }
-  ${media.custom(1050)} {
+  ${media.small} {
     width: 100%;
     grid-template-columns: 1fr;
   }

@@ -4,6 +4,7 @@ export type RootPortalProps = { children: React.ReactNode }
 
 function RootPortal({ children }: RootPortalProps) {
   const el = useMemo(() => document.getElementById('root-portal'), [])
+  console.log(el, children)
   if (!el) return null
   return ReactDOM.createPortal(children, el)
 }

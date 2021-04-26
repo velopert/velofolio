@@ -168,12 +168,12 @@ function IndicatorsSection({}: IndicatorsSectionProps) {
 }
 
 const tableStyle = css`
-  ${media.xlarge} {
+  ${media.large} {
     display: none;
   }
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   td,
   th {
     padding: 0.75rem;
@@ -196,7 +196,7 @@ const tableStyle = css`
 const mobileView = css`
   font-size: 0.875rem;
   display: none;
-  ${media.xlarge} {
+  ${media.large} {
     display: block;
   }
 

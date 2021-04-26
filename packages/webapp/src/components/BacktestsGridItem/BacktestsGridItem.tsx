@@ -94,7 +94,7 @@ const card = css`
     box-shadow: 0px 1.125rem 1.125rem rgba(67, 67, 67, 0.08);
   }
 
-  ${media.custom(1050)} {
+  ${media.xlarge} {
     width: 100%;
     /* grid-template-columns: 1fr; */
   }

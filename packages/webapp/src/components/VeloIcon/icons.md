@@ -9,3 +9,5 @@
 - [trash](https://feathericons.com/)
 - [undo](https://iconmonstr.com/undo-2-svg/)
 - [triangle](https://iconmonstr.com/triangle-3-svg/)
+- [user_circle](https://iconmonstr.com/user-20-svg/)
+- [close](https://iconmonstr.com/x-mark-1-svg/)

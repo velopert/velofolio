@@ -12,6 +12,7 @@ import useCheckUserEffect from './hooks/useCheckUserEffect'
 import GlobalDialog from './components/GlobalDialog/GlobalDialog'
 import useFirebasePageViewEffect from './hooks/useFirebasePageViewEffect'
 import useChannelPluginEffect from './hooks/useChannelPluginEffect'
+import VerticalBar from './components/VerticalBar'
 
 function App() {
   useCheckUserEffect()
@@ -29,6 +30,7 @@ function App() {
           <AppLayout>
             <AppLayout.Side>
               <Sidebar />
+              <VerticalBar />
             </AppLayout.Side>
             <AppLayout.Main>
               <Switch>
