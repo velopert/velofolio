@@ -35,7 +35,6 @@ function MobileFooterItem({
       }}
     >
       <VeloIcon name={icon} />
-      <span>{text}</span>
     </NavLink>
   )
 }
@@ -47,8 +46,8 @@ const item = css`
   justify-content: center;
   flex: 1;
   svg {
-    width: 1rem;
-    height: 1rem;
+    width: 1.5rem;
+    height: 1.5rem;
   }
   text-decoration: none;
   span {
