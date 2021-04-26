@@ -57,9 +57,6 @@ function PortfolioAllocation({ portfolio }: PortfolioAllocationProps) {
         show: false,
         position: 'center',
       },
-      legend: {
-        top: 'bottom',
-      },
       series: [
         {
           name: 'Asset Allocation',
@@ -234,9 +231,17 @@ function PortfolioAllocation({ portfolio }: PortfolioAllocationProps) {
               </tr>
             </thead>
             <tbody>
-              {portfolio.assets.map((asset) => (
+              {portfolio.assets.map((asset, i) => (
                 <tr key={asset.id}>
-                  <td>{asset.ticker}</td>
+                  <td>
+                    <div css={tickerWrapper}>
+                      <div
+                        css={circle}
+                        style={{ background: chartColors[i] }}
+                      ></div>
+                      {asset.ticker}
+                    </div>
+                  </td>
                   <td>{assetDetails[asset.ticker]?.data?.name ?? ''}</td>
                   <td>{convertToPercentage(asset.weight / totalWeight)}</td>
                 </tr>
@@ -298,12 +303,24 @@ const tableStyle = css`
   }
 
   tr td:first-of-type {
-    width: 5rem;
+    width: 6.5rem;
   }
 
   thead th {
     color: ${palette.blueGrey[800]};
   }
+`
+
+const tickerWrapper = css`
+  display: flex;
+  align-items: center;
+`
+
+const circle = css`
+  width: 0.75rem;
+  height: 0.75rem;
+  margin-right: 0.5rem;
+  border-radius: 50%;
 `
 
 const pieChartStyle = css`
