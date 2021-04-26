@@ -21,7 +21,7 @@ function Workspace({}: WorkspaceProps) {
         <Helmet>
           <title>Workspace – Velofolio</title>
         </Helmet>
-        <h1 css={title}>Workspace</h1>
+
         <ImageWithDescription
           image={undrawAuthentication}
           description="Please sign in to list your saved backtests"
