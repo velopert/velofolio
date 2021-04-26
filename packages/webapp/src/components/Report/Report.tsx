@@ -3,6 +3,7 @@ import { undrawCreativeExperiment } from '../../assets/images'
 import { useHasPortfolio } from '../../atoms/labSettingState'
 import { useIsReportReady } from '../../atoms/reportState'
 import palette from '../../lib/palette'
+import media from '../../lib/styles/media'
 import ImageWithDescription from '../ImageWithDescription'
 import AnnualReturnsSection from './AnnualReturnsSection'
 import DescriptionSection from './DescriptionSection'
@@ -54,6 +55,10 @@ const emptyWrapper = css`
   justify-content: center;
   position: absolute;
   width: calc(100% - 40.75rem);
+  ${media.xlarge} {
+    width: 10rem;
+    width: calc(100% - 29.5rem);
+  }
 `
 
 const block = css`

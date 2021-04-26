@@ -6,6 +6,8 @@ import { useUserState } from '../../atoms/authState'
 import BacktestsGrid from '../../components/BacktestsGrid'
 import ImageWithDescription from '../../components/ImageWithDescription'
 import useResetLabEffect from '../../hooks/useResetLabEffect'
+import palette from '../../lib/palette'
+import media from '../../lib/styles/media'
 
 export type WorkspaceProps = {}
 
@@ -19,6 +21,7 @@ function Workspace({}: WorkspaceProps) {
         <Helmet>
           <title>Workspace – Velofolio</title>
         </Helmet>
+        <h1 css={title}>Workspace</h1>
         <ImageWithDescription
           image={undrawAuthentication}
           description="Please sign in to list your saved backtests"
@@ -32,10 +35,23 @@ function Workspace({}: WorkspaceProps) {
       <Helmet>
         <title>Workspace – Velofolio</title>
       </Helmet>
+      <h1 css={title}>Workspace</h1>
       <BacktestsGrid userId={user.id} />
     </>
   )
 }
+
+const title = css`
+  padding-left: 1rem;
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: ${palette.blueGrey[800]};
+  display: none;
+  ${media.small} {
+    display: block;
+  }
+`
 
 const wrapper = css`
   display: flex;

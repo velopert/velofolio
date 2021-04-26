@@ -26,6 +26,7 @@ export function useGlobalDialogValue() {
 
 type OpenDialogParams = Omit<GlobalDialogState, 'visible' | 'onConfirm'> & {
   onConfirm?(): void
+  showCancel?: boolean
 }
 export function useGlobalDialogActions() {
   const set = useSetRecoilState(globalDialogState)
@@ -35,6 +36,8 @@ export function useGlobalDialogActions() {
         set({
           ...defaultDialogState,
           ...params,
+          onCancel:
+            params.onCancel ?? (params.showCancel ? () => {} : undefined),
           visible: true,
         })
       },

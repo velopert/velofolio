@@ -13,6 +13,7 @@ import GlobalDialog from './components/GlobalDialog/GlobalDialog'
 import useFirebasePageViewEffect from './hooks/useFirebasePageViewEffect'
 import useChannelPluginEffect from './hooks/useChannelPluginEffect'
 import VerticalBar from './components/VerticalBar'
+import MobileHeader from './components/MobileHeader/MobileHeader'
 
 function App() {
   useCheckUserEffect()
@@ -21,6 +22,7 @@ function App() {
 
   return (
     <>
+      <MobileHeader />
       <DebugObserver />
       <Switch>
         <Route

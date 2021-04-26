@@ -79,6 +79,10 @@ const block = css`
   padding-right: 2rem;
   display: flex;
   justify-content: center;
+  ${media.small} {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 `
 const grid = css`
   width: 100%;

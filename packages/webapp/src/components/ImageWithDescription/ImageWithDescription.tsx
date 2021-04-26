@@ -1,6 +1,7 @@
 import { css } from '@emotion/react'
 import { undrawAuthentication } from '../../assets/images'
 import palette from '../../lib/palette'
+import media from '../../lib/styles/media'
 import GoogleLoginButton from '../GoogleLoginButton'
 
 export type ImageWithDescriptionProps = {
@@ -27,12 +28,19 @@ const fullScreen = css`
   img {
     width: 25rem;
     height: auto;
+    ${media.xlarge} {
+      width: 10rem;
+    }
   }
   h2 {
     margin-top: 3rem;
     color: ${palette.blueGrey[700]};
     font-weight: 200;
     font-size: 1.85rem;
+    ${media.xlarge} {
+      font-size: 1.25rem;
+      font-weight: 300;
+    }
   }
 `
 

@@ -40,6 +40,9 @@ const sidebarStyle = css`
     width: 5rem;
     padding: 0;
   }
+  ${media.small} {
+    display: none;
+  }
 `
 
 const mainStyle = css`
@@ -50,4 +53,8 @@ const mainStyle = css`
   }
   padding-top: 3rem;
   padding-bottom: 3rem;
+  ${media.small} {
+    margin-left: 0;
+    padding: 0;
+  }
 `

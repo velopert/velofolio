@@ -5,11 +5,11 @@ import GoogleLoginButton from '../GoogleLoginButton'
 import { undrawLogin } from '../../assets/images'
 import VeloIcon from '../VeloIcon'
 import { resetButton } from '../../lib/styles/resetButton'
-export type SiginInModalProps = {
+export type SignInModalProps = {
   onClose(): void
 }
 
-function SiginInModal({ onClose }: SiginInModalProps) {
+function SignInModal({ onClose }: SignInModalProps) {
   return (
     <>
       <div css={overlay}></div>
@@ -55,6 +55,7 @@ const centerWrapper = css`
 const whiteBox = css`
   position: relative;
   width: 380px;
+  max-width: calc(100vw - 1rem);
   padding: 3rem 1.5rem;
   background: white;
   border-radius: 1rem;
@@ -95,4 +96,4 @@ const close = css`
   ${resetButton}
 `
 
-export default SiginInModal
+export default SignInModal

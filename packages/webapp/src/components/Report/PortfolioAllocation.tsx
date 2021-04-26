@@ -10,6 +10,7 @@ import palette from '../../lib/palette'
 import { convertToPercentage } from '../../lib/utils/calculateIndicators'
 import echarts from '../../lib/echarts'
 import chartColors from '../../lib/chartColors'
+import media from '../../lib/styles/media'
 
 export type PortfolioAllocationProps = {
   portfolio: Portfolio
@@ -275,6 +276,9 @@ const wrapper = css`
 const block = css`
   display: flex;
   min-height: 20rem;
+  ${media.xlarge} {
+    flex-direction: column;
+  }
 `
 
 const pane = css`
