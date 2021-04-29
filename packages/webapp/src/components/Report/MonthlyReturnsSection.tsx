@@ -10,6 +10,7 @@ export type MonthlyReturnsSectionProps = {}
 
 function MonthlyReturnsSection({}: MonthlyReturnsSectionProps) {
   const report = useReportValue()
+  const chartRef = useRef<echarts.ECharts | null>(null)
 
   // x-axis
   const categoryData = useMemo(() => {
@@ -92,11 +93,17 @@ function MonthlyReturnsSection({}: MonthlyReturnsSectionProps) {
     const element = divRef.current
     if (!element || !chartOptions) return
 
-    const chart = echarts.init(element)
-    chart.setOption(chartOptions)
+    let c: echarts.ECharts | null = chartRef.current ?? null
+    if (!c) {
+      const chart = echarts.init(element)
+      chartRef.current = chart
+      c = chart
+    }
+
+    c.setOption(chartOptions)
 
     const handleResize = () => {
-      chart.resize()
+      c?.resize()
     }
     window.addEventListener('resize', handleResize)
     return () => {

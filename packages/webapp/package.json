@@ -185,5 +185,5 @@
       "@emotion"
     ]
   },
-  "proxy": "http://localhost:4000/"
+  "proxy": "https://api.velofolio.net/"
 }

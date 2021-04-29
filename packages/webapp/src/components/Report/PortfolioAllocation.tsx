@@ -17,6 +17,8 @@ export type PortfolioAllocationProps = {
 }
 
 function PortfolioAllocation({ portfolio }: PortfolioAllocationProps) {
+  const pieChartRef = useRef<echarts.ECharts | null>(null)
+  const barChartRef = useRef<echarts.ECharts | null>(null)
   const totalWeight = useMemo(
     () => portfolio.assets.reduce((acc, current) => acc + current.weight, 0),
     [portfolio]
@@ -175,7 +177,10 @@ function PortfolioAllocation({ portfolio }: PortfolioAllocationProps) {
     const pieElement = divRef.current
     if (!pieElement || !pieChartOptions) return
 
-    const pieChart = echarts.init(pieElement)
+    const pieChart = pieChartRef.current ?? echarts.init(pieElement)
+    if (!pieChartRef.current) {
+      pieChartRef.current = pieChart
+    }
     pieChart.setOption(pieChartOptions)
 
     const handleResize = () => {
@@ -195,7 +200,12 @@ function PortfolioAllocation({ portfolio }: PortfolioAllocationProps) {
     if (sectorWeightingsEntries.length === 0) {
       return
     }
-    const barChart = echarts.init(sectorChartElement)
+
+    const barChart = barChartRef.current ?? echarts.init(sectorChartElement)
+    if (!barChartRef.current) {
+      barChartRef.current = barChart
+    }
+
     barChart.setOption(barChartOptions)
     barChart.resize()
 
