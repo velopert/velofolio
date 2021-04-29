@@ -75,6 +75,9 @@ function AssetsTable({ focusInput }: AssetsTableProps) {
                   const value = parseFloat(e.target.value)
                   updateWeight(asset.id, isNaN(value) ? 0 : value)
                 }}
+                onBlur={(e) => {
+                  e.target.value = Number(e.target.value).toString()
+                }}
               />
             </div>
             <div css={columnPercent}>{calculatePercent(asset.weight)}</div>
