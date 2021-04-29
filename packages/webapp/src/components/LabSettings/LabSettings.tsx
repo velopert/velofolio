@@ -22,6 +22,7 @@ function LabSettings({}: LabSettingsProps) {
 }
 
 const blockStyle = css`
+  z-index: 1;
   position: fixed;
   background: ${palette.grey[100]};
   border-radius: 2rem;
