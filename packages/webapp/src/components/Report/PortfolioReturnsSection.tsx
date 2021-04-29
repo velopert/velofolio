@@ -10,8 +10,7 @@ export type PortfolioReturnsSectionProps = {}
 
 function PortfolioReturnsSection({}: PortfolioReturnsSectionProps) {
   const report = useReportValue()
-
-  console.log(report)
+  const chartRef = useRef<echarts.ECharts | null>(null)
 
   // x-axis
   const categoryData = useMemo(() => {
@@ -103,12 +102,19 @@ function PortfolioReturnsSection({}: PortfolioReturnsSectionProps) {
     const element = divRef.current
     if (!element || !chartOptions) return
 
-    const chart = echarts.init(element)
-    chart.setOption(chartOptions as any)
+    let c: echarts.ECharts | null = chartRef.current ?? null
+    if (!c) {
+      const chart = echarts.init(element)
+      chartRef.current = chart
+      c = chart
+    }
+
+    c.setOption(chartOptions as any)
 
     const handleResize = () => {
-      chart.resize()
+      c?.resize()
     }
+
     window.addEventListener('resize', handleResize)
     return () => {
       window.removeEventListener('resize', handleResize)
