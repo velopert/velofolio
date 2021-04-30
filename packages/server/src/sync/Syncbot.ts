@@ -66,10 +66,10 @@ class Syncbot {
         return format(d, 'yyyy-MM-dd')
       })()
 
+      await sleep(1000)
       const rawHistoricalPrices = await getHistoricalPrice(ticker, {
         from: fromDate,
       })
-      await sleep(1000)
 
       const monthlyHistoricalPrices = groupByMonth(rawHistoricalPrices)
 
