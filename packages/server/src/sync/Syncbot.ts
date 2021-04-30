@@ -14,6 +14,7 @@ import { SectorWeighting } from '../entity/SectorWeighting'
 import { HistoricalPrice } from '../entity/HistoricalPrice'
 import cliProgress from 'cli-progress'
 import getThreeMonthsTreasuryRate from './lib/getThreeMonthsTreasuryRate'
+import { format } from 'date-fns'
 
 const tickersDir = path.resolve(__dirname, 'tickers')
 const LIMIT = 10
@@ -26,14 +27,67 @@ class Syncbot {
     const data = await fs.readFile(path.join(tickersDir, `stocks.txt`), 'utf8')
     const lines = data.split('\n')
     const tickers = lines.map((line) => line.split('\t')[0])
-    return tickers.filter(
-      (ticker) => !['.', '-'].some((c) => ticker.includes(c))
-    )
+    return tickers
+      .filter((ticker) => !['.', '-'].some((c) => ticker.includes(c)))
+      .map((ticker) => ticker.replace('.', '-'))
   }
 
   async syncStock(ticker: string) {
     const exists = await getRepository(Asset).findOne({ where: { ticker } })
-    if (exists) return exists
+    if (exists) {
+      // removes the last one
+      const historicalPriceRepo = getRepository(HistoricalPrice)
+      let lastPrice = await historicalPriceRepo.findOne({
+        where: {
+          asset_id: exists.id,
+        },
+        order: {
+          date: 'DESC',
+        },
+      })
+      if (lastPrice) {
+        await historicalPriceRepo.delete(lastPrice)
+      }
+
+      // get last last one
+      lastPrice = await historicalPriceRepo.findOne({
+        where: {
+          asset_id: exists.id,
+        },
+        order: {
+          date: 'DESC',
+        },
+      })
+
+      const fromDate = (() => {
+        if (!lastPrice) return '1962-01-01'
+        const d = new Date(lastPrice.date)
+        d.setDate(d.getDate() + 1)
+        return format(d, 'yyyy-MM-dd')
+      })()
+
+      const rawHistoricalPrices = await getHistoricalPrice(ticker, {
+        from: fromDate,
+      })
+
+      const monthlyHistoricalPrices = groupByMonth(rawHistoricalPrices)
+
+      const historicalPrices = monthlyHistoricalPrices.map((mhp) => {
+        const historicalPrice = new HistoricalPrice()
+        historicalPrice.asset = exists
+        historicalPrice.volume = mhp.volume
+        historicalPrice.close = mhp.close
+        historicalPrice.date = new Date(mhp.closeDate)
+        historicalPrice.high = mhp.high
+        historicalPrice.low = mhp.low
+        historicalPrice.type = 'monthly'
+        historicalPrice.open = mhp.open
+        historicalPrice.adjusted_close = mhp.adjustedClose
+        return historicalPrice
+      })
+      await getRepository(HistoricalPrice).save(historicalPrices)
+      return
+    }
     const assetType = await getRepository(AssetType).findOne({
       where: {
         type: 'U.S. Stock',
@@ -47,7 +101,7 @@ class Syncbot {
     await sleep(500)
 
     const rawHistoricalPrices = await getHistoricalPrice(ticker, {
-      from: '1985-01-01',
+      from: '1962-01-01',
     })
     await sleep(500)
 
