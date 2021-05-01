@@ -177,7 +177,7 @@ function PortfolioAllocation({ portfolio }: PortfolioAllocationProps) {
     const pieElement = divRef.current
     if (!pieElement || !pieChartOptions) return
 
-    const pieChart = pieChartRef.current ?? echarts.init(pieElement)
+    const pieChart = echarts.init(pieElement)
     if (!pieChartRef.current) {
       pieChartRef.current = pieChart
     }
@@ -201,10 +201,7 @@ function PortfolioAllocation({ portfolio }: PortfolioAllocationProps) {
       return
     }
 
-    const barChart = barChartRef.current ?? echarts.init(sectorChartElement)
-    if (!barChartRef.current) {
-      barChartRef.current = barChart
-    }
+    const barChart = echarts.init(sectorChartElement)
 
     barChart.setOption(barChartOptions)
     barChart.resize()
